@@ -13,20 +13,24 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <vector.h>
-#include <camera.h>
 
 using namespace std;
 
-
 //****************************************************
-// Global Variables
+// Classes and Methods
 //****************************************************
-int image_width;
-int image_height;
+class Camera {     
+	public:
+		Vector origin, uLeft, uRight, lLeft, lRight = Vector(0.0, 0.0, 0.0);
+		Camera();
+		Camera(Vector, Vector, Vector, Vector, Vector);
 
-int main(int argc, char *argv[]) {
-  Vector a = Vector(1.0, 1.0, 1.0); //test
-  Camera c = Camera(a, a, a, a, a);
-  return 0;
+};
+
+Camera::Camera(Vector e, Vector lL, Vector lR, Vector uL, Vector uR){
+	origin = e;
+	uLeft = uL;
+	uRight = uR;
+	lLeft = lL;
+	lRight = lR;
 }
