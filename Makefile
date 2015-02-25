@@ -1,10 +1,11 @@
 CC = g++
+CFLAGS = -Iinclude
 	
 RM = /bin/rm -f 
 all: main 
 main: raytracer.o 
-	$(CC) $(CFLAGS) -o raytracer lodepng.cpp raytracer.o $(LDFLAGS)  
-raytracer.o: raytracer.cpp
-	$(CC) $(CFLAGS) -c raytracer.cpp -o raytracer.o
+	$(CC) $(CFLAGS) -o raytracer src/lodepng.cpp raytracer.o $(LDFLAGS)  
+raytracer.o: src/raytracer.cpp
+	$(CC) $(CFLAGS) -c src/raytracer.cpp -o raytracer.o
 clean: 
 	$(RM) *.o raytracer
