@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Iinclude
-HELPER = src/matrix.cpp src/vector.cpp src/camera.cpp
+HELPER = src/matrix.cpp
 	
 RM = /bin/rm -f 
 all: main 
