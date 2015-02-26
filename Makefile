@@ -1,10 +1,11 @@
 CC = g++
 CFLAGS = -Iinclude
+HELPER = src/matrix.cpp src/vector.cpp src/camera.cpp
 	
 RM = /bin/rm -f 
 all: main 
 main: raytracer.o 
-	$(CC) $(CFLAGS) -o raytracer src/lodepng.cpp raytracer.o $(LDFLAGS)  
+	$(CC) $(CFLAGS) -o raytracer src/lodepng.cpp $(HELPER)  raytracer.o $(LDFLAGS) 
 raytracer.o: src/raytracer.cpp
 	$(CC) $(CFLAGS) -c src/raytracer.cpp -o raytracer.o
 clean: 
