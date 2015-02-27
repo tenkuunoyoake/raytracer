@@ -1,12 +1,27 @@
-CC = g++
-CFLAGS = -Iinclude
-HELPER = src/matrix.cpp
-	
-RM = /bin/rm -f 
+CXXFLAGS = -g -Wall -Iinclude
+LDFLAGS =
+LDLIBS =
+VPATH = src
+
+TARGET = bin/raytracer
+SRCEXT = cpp
+SRCDIR = src
+BUILDDIR = build
+
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCES := $(filter-out src/input.cpp, $(SOURCES))
+OBJECTS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(BUILDDIR)/%.o, $(SOURCES))
+
 all: main 
-main: raytracer.o 
-	$(CC) $(CFLAGS) -o raytracer src/lodepng.cpp $(HELPER)  raytracer.o $(LDFLAGS) 
-raytracer.o: src/raytracer.cpp
-	$(CC) $(CFLAGS) -c src/raytracer.cpp -o raytracer.o
+
+main: $(OBJECTS)
+	mkdir -p bin
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	mkdir -p $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+.PHONY: clean
 clean: 
-	$(RM) *.o raytracer
+	$(RM) -r $(BUILDDIR) $(TARGET) *.o raytracer 
