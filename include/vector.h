@@ -20,16 +20,17 @@ class Vector {                                        // note: vectors are simpl
     float x, y, z;
 
     Vector (float, float, float);
-    int len();
+    float len();
     Vector normalize();
 
     Vector& operator+=(const Vector&);
     Vector& operator-=(const Vector&);
     Vector& operator*=(const float);
     Vector& operator/=(const float);
-
-    Vector operator+(const Vector&);
-    Vector operator-(const Vector&);
-    Vector operator*(const float);
-    Vector operator/(const float);
 };
+
+Vector operator+(Vector, const Vector&);
+Vector operator-(Vector, const Vector&);
+Vector operator*(Vector, const float);
+Vector operator*(const float, Vector&);
+Vector operator/(Vector, const float);

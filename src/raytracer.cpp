@@ -17,7 +17,7 @@
 // Self-defined
 
 #include <matrix.h>
-// #include <vector.h>
+#include <vector.h>
 // #include <camera.h>
 
 using namespace std;
@@ -60,8 +60,26 @@ void matrix_test() {
 }
 
 int main(int argc, char *argv[]) {
-  matrix_test();
-  // Vector a = Vector(1.0, 1.0, 1.0); //test
+  // matrix_test();
+  Vector a = Vector(1.0, 2.0, 3.0);
+  Vector b = Vector(4.0, 5.0, 6.0);
+  Vector c = a + b;
+  Vector d = b - a;
+  Vector e = a * 2;
+  Vector f = 3 * b;
+  Vector g = a / 4;
+  Vector h = b.normalize();
+
+  cout << a.x << " " << a.y << " " << a.z << endl;
+  cout << b.x << " " << b.y << " " << b.z << endl;
+  cout << c.x << " " << c.y << " " << c.z << endl;
+  cout << d.x << " " << d.y << " " << d.z << endl;
+  cout << e.x << " " << e.y << " " << e.z << endl;
+  cout << f.x << " " << f.y << " " << f.z << endl;
+  cout << g.x << " " << g.y << " " << g.z << endl;
+  cout << h.x << " " << h.y << " " << h.z << endl;
+  cout << (float) b.len() << endl;
+  cout << (float) h.len() << endl;
   // Camera c = Camera(a, a, a, a, a);
   return 0;
 }

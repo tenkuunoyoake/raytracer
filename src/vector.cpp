@@ -10,15 +10,15 @@ Vector::Vector (float a, float b, float c) {
   z = c;
 }
 
-int Vector::len() {
+float Vector::len() {
   return sqrt(x * x + y * y + z * z);
 }
 
 Vector Vector::normalize() {
-  float len = sqrt(x * x + y * y + z * z);
-  if (len < 1e-10)
+  float length = len();
+  if (length < 1e-10)
     return Vector(x, y, z);
-  return Vector(x / len, y / len, z / len);
+  return Vector(x / length, y / length, z / length);
 }
 
 Vector& Vector::operator+=(const Vector& rhs) {
@@ -62,7 +62,8 @@ Vector operator*(Vector lhs, const float scalar) {
 }
 
 Vector operator*(const float scalar, Vector& rhs) {
-  return rhs *= scalar;
+  Vector result = Vector(rhs.x, rhs.y, rhs.z);
+  return result *= scalar;
 }
 
 Vector operator/(Vector lhs, const float scalar) {
