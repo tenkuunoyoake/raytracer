@@ -17,7 +17,11 @@
 // Self-defined
 
 #include <matrix.h>
+
+#ifndef _INCLUDE_VECTOR_H
+#define _INCLUDE_VECTOR_H
 #include <vector.h>
+#endif
 // #include <camera.h>
 
 using namespace std;
@@ -56,11 +60,24 @@ void matrix_test() {
   Matrix::print(identity);
   Matrix::print(inverse_input);
   Matrix::print(inverse_output);
+  Matrix::print(Matrix::multiply(inverse_input, identity));
+  Matrix::print(inverse_input);
+  
+}
+
+void transform_test() {
+ 
+  Matrix::print(Matrix::scalar_matrix(2, 2, 2));
+  Matrix::print(Matrix::rotation_matrix(90 / sqrt(2), 0, 90 / sqrt(2)));
   
 }
 
 int main(int argc, char *argv[]) {
+  
   // matrix_test();
+  transform_test();
+  
+  /*
   Vector a = Vector(1.0, 2.0, 3.0);
   Vector b = Vector(4.0, 5.0, 6.0);
   Vector c = a + b;
@@ -80,6 +97,8 @@ int main(int argc, char *argv[]) {
   cout << h.x << " " << h.y << " " << h.z << endl;
   cout << (float) b.len() << endl;
   cout << (float) h.len() << endl;
+  */
+  
   // Camera c = Camera(a, a, a, a, a);
   return 0;
 }

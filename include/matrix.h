@@ -3,6 +3,15 @@
 #include <cmath>
 #include <math.h>
 
+#ifndef _INCLUDE_VECTOR_H
+#define _INCLUDE_VECTOR_H
+#include <vector.h>
+#endif
+
+#ifndef PI
+#define PI 3.14159265
+#endif
+
 //****************************************************
 // Matrix
 //****************************************************
@@ -20,6 +29,15 @@ class Matrix {
     // Scale
     void scale(float scalar);
     
+    // Given input matrix and scalar, returns the scaled matrix
+    static Matrix scaled_matrix(Matrix input, float scalar);
+    
+    // Matrix addition
+    static Matrix add(Matrix matrix_1, Matrix matrix_2);
+    
+    // Matrix multiply
+    static Matrix multiply(Matrix matrix_1, Matrix matrix_2);
+    
     // Determinant
     static float determinant(Matrix input);
     
@@ -28,9 +46,6 @@ class Matrix {
     
     // Inverse
     static Matrix inverse(Matrix input);
-    
-    // Matrix multiply
-    static Matrix multiply(Matrix matrix_1, Matrix matrix_2); 
     
     // Construct translation matrix
     static Matrix translation_matrix(float tx, float ty, float tz);

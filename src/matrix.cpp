@@ -22,6 +22,62 @@ void Matrix::scale(float scalar) {
   
 }
 
+Matrix Matrix::scaled_matrix(Matrix input, float scalar) {
+  
+  // Declarations
+  Matrix result = Matrix();
+  
+  for (int j = 0; j < 4; j++) {
+    for (int i = 0; i < 4; i++) {
+      result.set_value(i, j, input.get_value(i, j) * scalar);
+    }
+  }
+  
+  return result;
+  
+}
+
+// Matrix addition
+Matrix Matrix::add(Matrix matrix_1, Matrix matrix_2) {
+ 
+   // Declarations
+  Matrix result = Matrix();
+  float a;
+  float b;
+  
+  for (int j = 0; j < 4; j++) {
+    for (int i = 0; i < 4; i++) {
+      a = matrix_1.get_value(i, j);
+      b = matrix_2.get_value(i, j);
+      result.set_value(i, j, a + b);
+    }
+  }
+  
+  return result;
+  
+}
+
+// Matrix multiply
+Matrix Matrix::multiply(Matrix matrix_1, Matrix matrix_2) {
+  
+  // Declarations
+  Matrix result = Matrix();
+  float value;
+  
+  for (int y = 0; y < 4; y++) {
+    for (int x = 0; x < 4; x++) {
+      value = 0;
+      for (int i = 0; i < 4; i++) {
+	value += matrix_1.get_value(i, y) * matrix_2.get_value(x, i);
+      }
+      result.set_value(x, y, value);
+    }
+  }
+  
+  return result;
+  
+}
+
 float Matrix::determinant(Matrix input) {
   
   // Declarations
@@ -207,40 +263,13 @@ Matrix Matrix::inverse(Matrix input) {
   return result;
   
 }
-
-// Matrix multiply
-Matrix Matrix::multiply(Matrix matrix_1, Matrix matrix_2) {
-  
-  // Declarations
-  Matrix result = Matrix();
-  float value;
-  
-  for (int y = 0; y < 4; y++) {
-    for (int x = 0; x < 4; x++) {
-      value = 0;
-      for (int i = 0; i < 4; i++) {
-	for (int j = 0; j < 4; j++) {
-	  value += matrix_1.get_value(i, y) * matrix_2.get_value(x, j);
-	}
-      }
-      result.set_value(x, y, value);
-    }
-  }
-  
-  return result;
-  
-}
   
 // Construct translation matrix
 Matrix Matrix::translation_matrix(float tx, float ty, float tz) {
   
   // Declarations
-  Matrix result = Matrix();
+  Matrix result = Matrix::identity_matrix();
   
-  result.set_value(0, 0, 1);
-  result.set_value(1, 1, 1);
-  result.set_value(2, 2, 1);
-  result.set_value(3, 3, 1);
   result.set_value(3, 0, tx);
   result.set_value(3, 1, ty);
   result.set_value(3, 2, tz);
@@ -252,8 +281,41 @@ Matrix Matrix::translation_matrix(float tx, float ty, float tz) {
 // Construct rotation matrix
 Matrix Matrix::rotation_matrix(float rx, float ry, float rz) {
   
+  // Exponential Maps are not vectors, so don't encode in a vector
+  
   // Declarations
-  Matrix result = Matrix();
+  float theta;
+  Matrix cross_matrix;
+  Matrix cross_squared;
+  Matrix sine_term;
+  Matrix cosine_term;
+  Matrix result = Matrix::identity_matrix();
+  
+  // Theta is magnitude, direction is normalised axis, in degrees
+  // Want radians so the trig functions don't mess up
+  theta = Vector(rx, ry, rz).len() * PI / 180.0;
+  
+  // Direction is direction of the axis
+  Vector direction = Vector(rx, ry, rz).normalize();
+  
+  // Cross product matrix of the direction vector
+  cross_matrix = Matrix();
+  cross_matrix.set_value(1, 0, -direction.z);
+  cross_matrix.set_value(2, 0,  direction.y);
+  cross_matrix.set_value(0, 1,  direction.z);
+  cross_matrix.set_value(2, 1, -direction.x);
+  cross_matrix.set_value(0, 2, -direction.y);
+  cross_matrix.set_value(1, 2,  direction.x);
+  
+  cross_squared = Matrix::multiply(cross_matrix, cross_matrix);
+  
+  sine_term = Matrix::scaled_matrix(cross_matrix, sin(theta));
+  cosine_term = Matrix::scaled_matrix(cross_squared, 1 - cos(theta));
+  
+  // I + (r x) * sin(theta) + (r x)^2 * cos(theta)
+  result = Matrix::identity_matrix();
+  result = Matrix::add(sine_term, result);
+  result = Matrix::add(cosine_term, result);
   
   return result;
   
@@ -262,7 +324,11 @@ Matrix Matrix::rotation_matrix(float rx, float ry, float rz) {
 // Construct scalar matrix
 Matrix Matrix::scalar_matrix(float sx, float sy, float sz) {
   
-  Matrix result = Matrix();
+  Matrix result = Matrix::identity_matrix();
+  
+  result.set_value(0, 0, sx);
+  result.set_value(1, 1, sy);
+  result.set_value(2, 2, sz);
   
   return result;
   
