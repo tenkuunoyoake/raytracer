@@ -1,4 +1,4 @@
-#include "vector.h"
+#include <vector.h>
 
 //****************************************************
 // Vector
@@ -19,6 +19,12 @@ Vector Vector::normalize() {
   if (length < 1e-10)
     return Vector(x, y, z);
   return Vector(x / length, y / length, z / length);
+}
+
+void Vector::print(Vector v) {
+  
+  printf("(%f, %f, %f)\n", v.x, v.y, v.z);
+  
 }
 
 Vector& Vector::operator+=(const Vector& rhs) {

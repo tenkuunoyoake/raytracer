@@ -38,6 +38,9 @@ class Matrix {
     // Matrix multiply
     static Matrix multiply(Matrix matrix_1, Matrix matrix_2);
     
+    // Vector multiply
+    static Vector transform(Matrix matrix, Vector vector);
+    
     // Determinant
     static float determinant(Matrix input);
     

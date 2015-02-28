@@ -67,17 +67,25 @@ void matrix_test() {
 
 void transform_test() {
  
-  Matrix::print(Matrix::scalar_matrix(2, 2, 2));
-  Matrix::print(Matrix::rotation_matrix(90 / sqrt(2), 0, 90 / sqrt(2)));
+  Matrix scalar = Matrix::scalar_matrix(2, 2, 2);
+  Matrix translation = Matrix::translation_matrix(2, 3, 4);
+  Matrix rotation = Matrix::rotation_matrix(90 / sqrt(2), 0, 90 / sqrt(2));
+  
+  // Rotate -> translate -> scale
+  Matrix composite = Matrix::multiply(translation, scalar);
+  composite = Matrix::multiply(composite, rotation);
+  
+  Matrix::print(scalar);
+  Matrix::print(translation);
+  Matrix::print(rotation);
+  Matrix::print(composite);
+  
+  Vector::print(Matrix::transform(composite, Vector(0, 0, 1)));
   
 }
 
-int main(int argc, char *argv[]) {
-  
-  // matrix_test();
-  transform_test();
-  
-  /*
+void vector_test() {
+ 
   Vector a = Vector(1.0, 2.0, 3.0);
   Vector b = Vector(4.0, 5.0, 6.0);
   Vector c = a + b;
@@ -97,7 +105,14 @@ int main(int argc, char *argv[]) {
   cout << h.x << " " << h.y << " " << h.z << endl;
   cout << (float) b.len() << endl;
   cout << (float) h.len() << endl;
-  */
+  
+}
+
+int main(int argc, char *argv[]) {
+  
+  // matrix_test();
+  transform_test();
+  // vector_test();
   
   // Camera c = Camera(a, a, a, a, a);
   return 0;

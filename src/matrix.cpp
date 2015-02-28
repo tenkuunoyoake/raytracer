@@ -57,7 +57,7 @@ Matrix Matrix::add(Matrix matrix_1, Matrix matrix_2) {
   
 }
 
-// Matrix multiply
+// Matrix multiply (4x4 with 4x4)
 Matrix Matrix::multiply(Matrix matrix_1, Matrix matrix_2) {
   
   // Declarations
@@ -72,6 +72,38 @@ Matrix Matrix::multiply(Matrix matrix_1, Matrix matrix_2) {
       }
       result.set_value(x, y, value);
     }
+  }
+  
+  return result;
+  
+}
+
+// Matrix multiply (4x4 with 1x3, scaled to 1x4)
+Vector Matrix::transform(Matrix matrix, Vector vector) {
+ 
+  // Declarations
+  Vector result(0, 0, 0);
+  float temp;
+  
+  for (int j = 0; j < 4; j++) {
+    
+    temp = matrix.get_value(0, j) * vector.x;
+    temp += matrix.get_value(1, j) * vector.y;
+    temp += matrix.get_value(2, j) * vector.z;
+    temp += matrix.get_value(3, j); // For translations, presumably...
+    
+    switch(j) {
+      case 0:
+	result.x = temp;
+	break;
+      case 1:
+	result.y = temp;
+	break;
+      case 2:
+	result.z = temp;
+	break;
+    }
+    
   }
   
   return result;

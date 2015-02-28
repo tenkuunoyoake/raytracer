@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <math.h>
+#include <stdio.h>
 
 //****************************************************
 // Vector
@@ -27,6 +28,8 @@ class Vector {                                        // note: vectors are simpl
     Vector& operator-=(const Vector&);
     Vector& operator*=(const float);
     Vector& operator/=(const float);
+    
+    static void print(Vector v);
 };
 
 Vector operator+(Vector, const Vector&);
