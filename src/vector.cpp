@@ -4,12 +4,6 @@
 // Vector
 //****************************************************
 
-Vector::Vector (float a, float b, float c) {
-  x = a;
-  y = b;
-  z = c;
-}
-
 float Vector::len() {
   return sqrt(x * x + y * y + z * z);
 }
@@ -53,6 +47,20 @@ Vector& Vector::operator/=(const float scalar) {
   y /= scalar;
   z /= scalar;
   return *this;
+}
+
+// Default Constructor
+Vector::Vector() {
+  x = 0;
+  y = 0;
+  z = 0;
+}
+
+// Shorthand
+Vector::Vector(float a, float b, float c) {
+  x = a;
+  y = b;
+  z = c;
 }
 
 Vector operator+(Vector lhs, const Vector& rhs) {

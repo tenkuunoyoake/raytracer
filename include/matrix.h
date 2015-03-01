@@ -1,10 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <cmath>
 #include <math.h>
 
-#ifndef _INCLUDE_VECTOR_H
-#define _INCLUDE_VECTOR_H
+#ifndef VECTOR_H
 #include <vector.h>
 #endif
 
