@@ -26,7 +26,9 @@
 
 #include <input.h>
 
-// #include <camera.h>
+#ifndef CAMERA_H
+#include <camera.h>
+#endif
 
 using namespace std;
 
@@ -113,11 +115,36 @@ void vector_test() {
   
 }
 
+void camera_test(){
+  Vector a = Vector(1.0, 2.0, 3.0);
+  Vector b = Vector(4.0, 5.0, 6.0);
+  Vector c = a + b;
+  Vector d = b - a;
+  Vector e = a * 2;
+  Camera zeroCam = Camera();
+  Camera cam = Camera(a, b, c, d, e);
+  printf("kek\n");
+  Vector::print(a);
+  Vector::print(b);
+  Vector::print(c);
+  Vector::print(d);
+  Vector::print(e);
+  printf("ayy lmao\n");
+  Vector::print(cam.origin);
+  Vector::print(cam.lLeft);
+  Vector::print(cam.lRight);
+  Vector::print(cam.uLeft);
+  Vector::print(cam.uRight);
+  printf("lots of zeros\n");
+  Vector::print(zeroCam.origin);
+}
+
 int main(int argc, char *argv[]) {
   
   // matrix_test();
-  transform_test();
+  //transform_test();
   // vector_test();
+  camera_test();
   
   // Camera c = Camera(a, a, a, a, a);
   return 0;
