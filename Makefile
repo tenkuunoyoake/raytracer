@@ -9,7 +9,6 @@ SRCDIR = src
 BUILDDIR = build
 
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-SOURCES := $(filter-out src/input.cpp, $(SOURCES))
 OBJECTS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(BUILDDIR)/%.o, $(SOURCES))
 
 all: main 

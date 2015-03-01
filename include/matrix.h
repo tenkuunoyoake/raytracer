@@ -1,3 +1,7 @@
+#ifndef MATRIX_H
+#define MATRIX_H
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

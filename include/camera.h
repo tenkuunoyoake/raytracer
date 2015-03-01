@@ -1,3 +1,7 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+#endif
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -14,6 +18,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifndef VECTOR_H
+#include <vector.h>
+#endif
+
 using namespace std;
 
 //****************************************************
@@ -21,7 +29,7 @@ using namespace std;
 //****************************************************
 class Camera {     
 	public:
-		Vector origin, uLeft, uRight, lLeft, lRight = Vector(0.0, 0.0, 0.0);
+		Vector origin, uLeft, uRight, lLeft, lRight;
 		Camera();
 		Camera(Vector, Vector, Vector, Vector, Vector);
 

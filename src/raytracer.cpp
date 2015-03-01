@@ -16,12 +16,16 @@
 
 // Self-defined
 
+#ifndef MATRIX_H
 #include <matrix.h>
+#endif
 
-#ifndef _INCLUDE_VECTOR_H
-#define _INCLUDE_VECTOR_H
+#ifndef VECTOR_H
 #include <vector.h>
 #endif
+
+#include <input.h>
+
 // #include <camera.h>
 
 using namespace std;
@@ -29,6 +33,7 @@ using namespace std;
 //****************************************************
 // Global Variables
 //****************************************************
+
 int image_width;
 int image_height;
 
