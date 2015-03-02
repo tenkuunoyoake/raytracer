@@ -24,21 +24,20 @@ void InputUtils::parse_float_input(char* input, float* output) {
   
 }
 
-void InputUtils::parse_camera_input(char* input, Matrix transform_matrix) {
+void InputUtils::parse_camera_input(Camera* camera,
+    char* input, Matrix transform_matrix) {
   
   // Declarations
   float output[15];
   
   InputUtils::parse_float_input(input, output);
   
-  /*
   camera->origin = Vector(output[0], output[1], output[2]); 
   camera->uLeft = Vector(output[3], output[4], output[5]);
   camera->uRight = Vector(output[6], output[7], output[8]);
   camera->lLeft = Vector(output[9], output[10], output[11]);
   camera->lRight = Vector(output[12], output[13], output[14]);
   // camera->set_transform(transform_matrix);
-  */
   
 }
 
@@ -111,7 +110,8 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
   
 }
 
-void InputUtils::parse_ptlight_input(char* input, Matrix transform_matrix) {
+void InputUtils::parse_ptlight_input(PointLight* ptlight, char* input, 
+    Matrix transform_matrix) {
   
   // Declarations
   float output[7];
@@ -121,50 +121,35 @@ void InputUtils::parse_ptlight_input(char* input, Matrix transform_matrix) {
   
   InputUtils::parse_float_input(input, output);
   
-  /*
-   ptlight->x = output[0];
-   ptlight->y = output[1];
-   ptlight->z = output[2];
-   ptlight->color.x = output[3];
-   ptlight->color.y = output[4];
-   ptlight->color.z = output[5];
+   ptlight->position = Vector(output[0], output[1], output[2]);
+   ptlight->color = Vector(output[3], output[4], output[5]);
    ptlight->falloff = output[6];
    ptlight->set_transform(transform_matrix);
-  */
   
 }
 
-void InputUtils::parse_dirlight_input(char* input, Matrix transform_matrix) {
+void InputUtils::parse_dirlight_input(DirLight* dirlight, char* input, 
+    Matrix transform_matrix) {
   
   // Declarations
   float output[6];
   
   InputUtils::parse_float_input(input, output);
   
-  /*
-    dirlight->x = output[0];
-    dirlight->y = output[1];
-    dirlight->z = output[2];
-    dirlight->color.x = output[3];
-    dirlight->color.y = output[4];
-    dirlight->color.z = output[5];
-    dirlight->set_transform(transform_matrix);
-  */
+  dirlight->direction = Vector(output[0], output[1], output[2]);
+  dirlight->color = Vector(output[3], output[4], output[5]);
+  dirlight->set_transform(transform_matrix);
   
 } 
 
-void InputUtils::parse_amblight_input(char* input) {
+void InputUtils::parse_amblight_input(Light* amblight, char* input) {
   
   // Declarations
   float output[3];
   
   InputUtils::parse_float_input(input, output);
   
-  /*
-   amblight->color.x = output[0];
-   amblight->color.y = output[1];
-   amblight->color.z = output[2];
- */
+  amblight->color = Vector(output[0], output[1], output[2]);
   
 }
 

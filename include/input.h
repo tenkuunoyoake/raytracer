@@ -14,11 +14,23 @@
 #endif
 
 #ifndef CAMERA_H
-// #include <camera.h>
+#include <camera.h>
 #endif
 
 #ifndef MATERIAL_H
 #include <material.h>
+#endif
+
+#ifndef LIGHT_H
+#include <light.h>
+#endif
+
+#ifndef DIRLIGHT_H
+#include <dirlight.h>
+#endif
+
+#ifndef POINTLIGHT_H
+#include <pointlight.h>
 #endif
 
 //****************************************************
@@ -33,7 +45,8 @@ class InputUtils {
     static void parse_float_input(char* input, float* output);
     
     // Camera
-    static void parse_camera_input(char* input, Matrix transform_matrix);
+    static void parse_camera_input(Camera* camera, char* input, 
+	Matrix transform_matrix);
     
     // Objects
     static void parse_sphere_input(char* input, Matrix transform_matrix, 
@@ -44,9 +57,11 @@ class InputUtils {
 	Material material);
     
     // Lights
-    static void parse_ptlight_input(char* input, Matrix transform_matrix);
-    static void parse_dirlight_input(char* input, Matrix transform_matrix);
-    static void parse_amblight_input(char* input);
+    static void parse_ptlight_input(PointLight* ptlight, char* input, 
+	Matrix transform_matrix);
+    static void parse_dirlight_input(DirLight* dirlight, char* input, 
+	Matrix transform_matrix);
+    static void parse_amblight_input(Light *amblight, char* input);
     
     // Material
     static void parse_material_input(Material* material, char* input);
