@@ -48,7 +48,8 @@ int image_width = 255;
 int image_height = 255;
 
 // Lol, and stuff...
-char output_filename[10] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '\0'};
+char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
+    'p', 'n', 'g', '\0'};
 
 Scene scene;
 

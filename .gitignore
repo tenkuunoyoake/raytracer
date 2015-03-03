@@ -3,6 +3,6 @@ lib/*
 
 bin/*
 
-output-01.png
+*.png
 
 .DS_Store
