@@ -1,7 +1,7 @@
 #include <input.h>
 
 //****************************************************
-// Input Helpers
+// Input Module
 //****************************************************
 
 void InputUtils::parse_float_input(char* input, float* output) {
@@ -16,7 +16,6 @@ void InputUtils::parse_float_input(char* input, float* output) {
   while (input != NULL) {
     // Translate the input into a float and store in output
     output[i] = atof(input);
-    printf("%f\n", output[i]);
     // Hop to the next input
     input = strtok(NULL, " ");
     i++;
@@ -24,25 +23,28 @@ void InputUtils::parse_float_input(char* input, float* output) {
   
 }
 
-void InputUtils::parse_camera_input(Camera* camera,
-    char* input, Matrix transform_matrix) {
+void InputUtils::parse_camera_input(Scene* scene, char* input, 
+    Matrix transform_matrix) {
   
   // Declarations
+  Camera camera;
   float output[15];
   
   InputUtils::parse_float_input(input, output);
   
-  camera->origin = Vector(output[0], output[1], output[2]); 
-  camera->uLeft = Vector(output[3], output[4], output[5]);
-  camera->uRight = Vector(output[6], output[7], output[8]);
-  camera->lLeft = Vector(output[9], output[10], output[11]);
-  camera->lRight = Vector(output[12], output[13], output[14]);
-  // camera->set_transform(transform_matrix);
+  camera.origin = Vector(output[0], output[1], output[2]); 
+  camera.uLeft = Vector(output[3], output[4], output[5]);
+  camera.uRight = Vector(output[6], output[7], output[8]);
+  camera.lLeft = Vector(output[9], output[10], output[11]);
+  camera.lRight = Vector(output[12], output[13], output[14]);
+  camera.set_transform(transform_matrix);
+  
+  scene->camera = camera;
   
 }
 
-void InputUtils::parse_sphere_input(char* input, Matrix transform_matrix, 
-    Material material) {
+void InputUtils::parse_sphere_input(Scene* scene, char* input, 
+    Matrix transform_matrix, Material material) {
   
   // Declarations
   float output[4];
@@ -61,8 +63,8 @@ void InputUtils::parse_sphere_input(char* input, Matrix transform_matrix,
   
 }
 
-void InputUtils::parse_triangle_input(char* input, Matrix transform_matrix, 
-    Material material) {
+void InputUtils::parse_triangle_input(Scene* scene, char* input, 
+    Matrix transform_matrix, Material material) {
   
   // Declarations
   float output[9];
@@ -110,10 +112,11 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
   
 }
 
-void InputUtils::parse_ptlight_input(PointLight* ptlight, char* input, 
+void InputUtils::parse_ptlight_input(Scene* scene, char* input, 
     Matrix transform_matrix) {
   
   // Declarations
+  PointLight ptlight;
   float output[7];
   
   // Default falloff to 0
@@ -121,35 +124,41 @@ void InputUtils::parse_ptlight_input(PointLight* ptlight, char* input,
   
   InputUtils::parse_float_input(input, output);
   
-   ptlight->position = Vector(output[0], output[1], output[2]);
-   ptlight->color = Vector(output[3], output[4], output[5]);
-   ptlight->falloff = output[6];
-   ptlight->set_transform(transform_matrix);
+  ptlight.position = Vector(output[0], output[1], output[2]);
+  ptlight.color = Vector(output[3], output[4], output[5]);
+  ptlight.falloff = output[6];
+  ptlight.set_transform(transform_matrix);
+  
+  scene->add_point_light(ptlight);
   
 }
 
-void InputUtils::parse_dirlight_input(DirLight* dirlight, char* input, 
+void InputUtils::parse_dirlight_input(Scene* scene, char* input, 
     Matrix transform_matrix) {
   
   // Declarations
+  DirLight dirlight;
   float output[6];
   
   InputUtils::parse_float_input(input, output);
   
-  dirlight->direction = Vector(output[0], output[1], output[2]);
-  dirlight->color = Vector(output[3], output[4], output[5]);
-  dirlight->set_transform(transform_matrix);
+  dirlight.direction = Vector(output[0], output[1], output[2]);
+  dirlight.color = Vector(output[3], output[4], output[5]);
+  dirlight.set_transform(transform_matrix);
+  scene->add_dir_light(dirlight);
   
 } 
 
-void InputUtils::parse_amblight_input(Light* amblight, char* input) {
+void InputUtils::parse_amblight_input(Scene* scene, char* input) {
   
   // Declarations
+  Light amblight;
   float output[3];
   
   InputUtils::parse_float_input(input, output);
   
-  amblight->color = Vector(output[0], output[1], output[2]);
+  amblight.color = Vector(output[0], output[1], output[2]);
+  scene->add_ambient_light(amblight);
   
 }
 
@@ -220,72 +229,3 @@ void InputUtils::parse_idt_transform_input(Matrix* transform_matrix) {
   *transform_matrix = Matrix::identity_matrix();
   
 }
-
-//****************************************************
-// Input Parsing
-//****************************************************
-/*
-
-void parse_input(char* input) {
-  
-  // Declarations
-  char line[256];
-  char header[4];
-  char *tokenised_line;
-  
-  Matrix transform_matrix; 
-  Material material;
-  
-  // Read from the file
-  FILE* file = fopen(input, "r");
-  
-  // Error if file does not exist
-  if (file == NULL) {
-    printf("File does not exist: %s\n", input);
-    return;
-  }
-  
-  // Print out each line
-  while (fgets(line, sizeof(line), file)) {
-    
-    // Grab the header of each line
-    strncpy(header, line, 3);
-    header[3] = '\0';
-    
-    // Tokenise the line, and get rid of header
-    tokenised_line = strtok(line, " ");
-    
-    if (strcmp(header, "cam") == 0) {
-      InputUtils::parse_camera_input(tokenised_line, transform_matrix);
-    } else if (strcmp(header, "sph") == 0) {
-      InputUtils::parse_sphere_input(tokenised_line, transform_matrix, 
-	  material);
-    } else if (strcmp(header, "tri") == 0) {
-      InputUtils::parse_triangle_input(tokenised_line, transform_matrix, 
-	  material);
-    } else if (strcmp(header, "obj") == 0) {
-      InputUtils::parse_obj_input(line, transformation_matrix, material);
-    } else if (strcmp(header, "ltp") == 0) {
-      InputUtils::parse_ptlight_input(tokenised_line, transform_matrix);
-    } else if (strcmp(header, "ltd") == 0) {
-      InputUtils::parse_dirlight_input(tokenised_line, transform_matrix);
-    } else if (strcmp(header, "lta") == 0) {
-      InputUtils::parse_amblight_input(tokenised_line);
-    } else if (strcmp(header, "mat") == 0) {
-      InputUtils::parse_material_input(*material, tokenised_line);
-    } else if (strcmp(header, "xft") == 0) {
-      InputUtils::parse_tl_transform_input(tokenised_line, *transform_matrix);
-    } else if (strcmp(header, "xfr") == 0) {
-      InputUtils::parse_rt_transform_input(tokenised_line, *transform_matrix);
-    } else if (strcmp(header, "xfs") == 0) {
-      InputUtils::parse_scl_transform_input(tokenised_line, *transform_matrix);
-    } else if (strcmp(header, "xfz") == 0) {
-      InputUtils::parse_idt_transform_input(*transform_matrix);
-    }
-  }
-  
-  // Close the file
-  fclose(file);
-  
-}
-*/

@@ -1,9 +1,16 @@
 #include <dirlight.h>
 
-DirLight::DirLight(Vector l_color, Vector l_direction) {
+DirLight::DirLight() {
+ 
+  transform = Matrix::identity_matrix();
+  
+}
+
+DirLight::DirLight(Vector l_direction, Vector l_color) {
   
   color = l_color;
-  direction = l_direction;
+  // Make sure the things are normalised
+  direction = l_direction.normalize();
   transform = Matrix::identity_matrix();
   
 }

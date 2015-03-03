@@ -1,3 +1,7 @@
+#ifndef POINTLIGHT_H
+#define POINTLIGHT_H
+#endif
+
 #ifndef LIGHT_H
 #include <light.h>
 #endif
@@ -19,6 +23,7 @@ class PointLight: public Light {
     Vector position;
     
     // Constructors
+    PointLight();
     PointLight(Vector color, Vector position, int falloff);
     
 };

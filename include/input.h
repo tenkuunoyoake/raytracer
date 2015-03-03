@@ -33,6 +33,10 @@
 #include <pointlight.h>
 #endif
 
+#ifndef SCENE_H
+#include <scene.h>
+#endif
+
 //****************************************************
 // InputUtils
 //****************************************************
@@ -45,23 +49,23 @@ class InputUtils {
     static void parse_float_input(char* input, float* output);
     
     // Camera
-    static void parse_camera_input(Camera* camera, char* input, 
+    static void parse_camera_input(Scene* scene, char* input, 
 	Matrix transform_matrix);
     
     // Objects
-    static void parse_sphere_input(char* input, Matrix transform_matrix, 
-	Material material);
-    static void parse_triangle_input(char* input, Matrix transform_matrix,
-	Material material);
+    static void parse_sphere_input(Scene* scene, char* input, 
+	Matrix transform_matrix, Material material);
+    static void parse_triangle_input(Scene* scene, char* input, 
+	Matrix transform_matrix, Material material);
     static void parse_obj_input(char* input, Matrix transform_matrix, 
 	Material material);
     
     // Lights
-    static void parse_ptlight_input(PointLight* ptlight, char* input, 
+    static void parse_ptlight_input(Scene* scene, char* input, 
 	Matrix transform_matrix);
-    static void parse_dirlight_input(DirLight* dirlight, char* input, 
+    static void parse_dirlight_input(Scene* scene, char* input, 
 	Matrix transform_matrix);
-    static void parse_amblight_input(Light *amblight, char* input);
+    static void parse_amblight_input(Scene* scene, char* input);
     
     // Material
     static void parse_material_input(Material* material, char* input);

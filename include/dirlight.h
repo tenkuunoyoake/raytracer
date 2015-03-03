@@ -1,3 +1,7 @@
+#ifndef DIRLIGHT_H
+#define DIRLIGHT_H
+#endif
+
 #ifndef LIGHT_H
 #include <light.h>
 #endif
@@ -14,7 +18,11 @@ class DirLight: public Light {
 
   public:
     
+    // Declarations
     Vector direction;
-    DirLight(Vector color, Vector direction);
+    
+    // Constructors
+    DirLight();
+    DirLight(Vector direction, Vector color);
     
 };
