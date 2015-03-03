@@ -251,16 +251,13 @@ int main(int argc, char *argv[]) {
   // vector_test();
   // camera_test();
   
-  /*
   if (argc == 2) {
     parse_input(argv[1]);
   } else {
     printf("Error: Incorrect input");
     exit(EXIT_FAILURE);
   }
-  */
   
-  parse_input(argv[1]);
   scene_test();
   
   // Camera c = Camera(a, a, a, a, a);
