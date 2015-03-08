@@ -21,5 +21,7 @@ class Ray {
     
     Ray();
     Ray(Vector pos, Vector dir, float min, float max);
+    
+    static void print(Ray input);
   
 };

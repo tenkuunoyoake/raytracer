@@ -17,3 +17,13 @@ Ray::Ray(Vector pos, Vector dir, float min, float max) {
   t_max = max;
   
 }
+
+void Ray::print(Ray input) {
+  
+  printf("Ray:\n");
+  printf("Origin: ");
+  Vector::print(input.position);
+  printf("Direction: ");
+  Vector::print(input.direction);
+  
+}

@@ -381,6 +381,28 @@ Matrix Matrix::identity_matrix() {
   
 }
 
+// Construct coordinate matrix
+Matrix Matrix::coordinate_matrix(Vector u, Vector v, Vector w) {
+ 
+  // Declarations
+  Matrix result = identity_matrix();
+  
+  result.set_value(0, 0, u.x);
+  result.set_value(1, 0, u.y);
+  result.set_value(2, 0, u.z);
+  
+  result.set_value(0, 1, v.x);
+  result.set_value(1, 1, v.y);
+  result.set_value(2, 1, v.z);
+  
+  result.set_value(0, 2, w.x);
+  result.set_value(1, 2, w.y);
+  result.set_value(2, 2, w.z);
+  
+  return result;
+  
+}
+
 void Matrix::print(Matrix input) {
   
   for (int y = 0; y < 4; y++) {

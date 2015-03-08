@@ -15,6 +15,7 @@
 //****************************************************
 // Vector
 //****************************************************
+
 class Vector {                                        // note: vectors are simply [x,y,z]
   
   public:                                             // so things like points and colors use Vector
@@ -29,6 +30,8 @@ class Vector {                                        // note: vectors are simpl
     Vector& operator/=(const float);
     
     static void print(Vector v);
+    static Vector cross(Vector a, Vector b);
+    static float dot(Vector a, Vector b);
     
     Vector();
     Vector(float, float, float);

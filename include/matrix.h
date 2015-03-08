@@ -64,6 +64,9 @@ class Matrix {
     // Construct identity matrix
     static Matrix identity_matrix();
     
+    // Construct coordinate matrix
+    static Matrix coordinate_matrix(Vector u, Vector v, Vector w);
+    
     static void print(Matrix input);
     
     // Constructor class

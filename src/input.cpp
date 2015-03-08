@@ -33,10 +33,10 @@ void InputUtils::parse_camera_input(Scene* scene, char* input,
   InputUtils::parse_float_input(input, output);
   
   camera.origin = Vector(output[0], output[1], output[2]); 
-  camera.uLeft = Vector(output[3], output[4], output[5]);
-  camera.uRight = Vector(output[6], output[7], output[8]);
-  camera.lLeft = Vector(output[9], output[10], output[11]);
-  camera.lRight = Vector(output[12], output[13], output[14]);
+  camera.lLeft = Vector(output[3], output[4], output[5]);
+  camera.lRight = Vector(output[6], output[7], output[8]);
+  camera.uLeft = Vector(output[9], output[10], output[11]);
+  camera.uRight = Vector(output[12], output[13], output[14]);
   camera.set_transform(transform_matrix);
   
   scene->camera = camera;

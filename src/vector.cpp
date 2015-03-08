@@ -15,6 +15,24 @@ Vector Vector::normalize() {
   return Vector(x / length, y / length, z / length);
 }
 
+Vector Vector::cross(Vector a, Vector b) {
+ 
+  Vector result;
+  
+  result.x = a.y * b.z - a.z * b.y;
+  result.y = a.z * b.x - a.x * b.z;
+  result.z = a.x * b.y - a.y * b.x;
+  
+  return result;
+  
+}
+
+float Vector::dot(Vector a, Vector b) {
+ 
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+  
+}
+
 void Vector::print(Vector v) {
   
   printf("(%f, %f, %f)\n", v.x, v.y, v.z);
