@@ -23,4 +23,4 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 
 .PHONY: clean
 clean: 
-	$(RM) -r $(BUILDDIR) $(TARGET) *.o raytracer
+	$(RM) -r $(BUILDDIR) $(TARGET) *.o raytracer *.png
