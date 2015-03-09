@@ -1,36 +1,41 @@
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cmath>
-
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <sys/time.h>
+#ifndef CAMERA_H
+#define CAMERA_H
 #endif
 
-#include <time.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cmath>
+
+#ifndef VECTOR_H
+#include <vector.h>
+#endif
+
+#ifndef MATRIX_H
+#include <matrix.h>
+#endif
+
+#ifndef RAY_H
+#include <ray.h>
+#endif
 
 using namespace std;
 
 //****************************************************
 // Classes and Methods
 //****************************************************
-class Camera {     
-	public:
-		Vector origin, uLeft, uRight, lLeft, lRight = Vector(0.0, 0.0, 0.0);
-		Camera();
-		Camera(Vector, Vector, Vector, Vector, Vector);
 
+class Camera {
+  
+  public:
+    
+    // Declarations
+    Vector origin, uLeft, uRight, lLeft, lRight;
+    Matrix transform;
+    
+    // Methods
+    void set_transform(Matrix c_transform);
+    Ray compute_viewing_ray(int i, int j, int width, int height);
+    
+    // Constructors
+    Camera();
+    Camera(Vector, Vector, Vector, Vector, Vector);
 };
 
-Camera::Camera(Vector e, Vector lL, Vector lR, Vector uL, Vector uR){
-	origin = e;
-	uLeft = uL;
-	uRight = uR;
-	lLeft = lL;
-	lRight = lR;
-}

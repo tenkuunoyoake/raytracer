@@ -1,10 +1,12 @@
+#ifndef MATRIX_H
+#define MATRIX_H
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <cmath>
 #include <math.h>
 
-#ifndef _INCLUDE_VECTOR_H
-#define _INCLUDE_VECTOR_H
+#ifndef VECTOR_H
 #include <vector.h>
 #endif
 
@@ -61,6 +63,9 @@ class Matrix {
     
     // Construct identity matrix
     static Matrix identity_matrix();
+    
+    // Construct coordinate matrix
+    static Matrix coordinate_matrix(Vector u, Vector v, Vector w);
     
     static void print(Matrix input);
     
