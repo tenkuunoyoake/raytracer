@@ -9,7 +9,6 @@ SRCDIR = src
 BUILDDIR = build
 
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-SOURCES := $(filter-out src/input.cpp, $(SOURCES))
 OBJECTS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(BUILDDIR)/%.o, $(SOURCES))
 
 all: main 
@@ -24,4 +23,4 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 
 .PHONY: clean
 clean: 
-	$(RM) -r $(BUILDDIR) $(TARGET) *.o raytracer 
+	$(RM) -r $(BUILDDIR) $(TARGET) *.o raytracer
