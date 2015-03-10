@@ -31,13 +31,15 @@ void Scene::render() {
     for (int i = 0; i < film.width; i++) {
 
       Ray view_ray;
+      view_ray.position = camera.origin;
       
       // Compute viewing ray
-      // Might be buggy..?
-      Vector view_point = Sampler::get_point(&camera, i, j, film.width, film.height);
+      Sampler::get_points(&view_points, &camera, i, j, film.width, film.height);
 
-      view_ray.position = camera.origin;
-      view_ray.direction = view_point - camera.origin;
+      while (!view_points.empty()) {
+        view_ray.direction = view_points.back() - camera.origin;
+        view_points.pop_back();
+      }
       
       if (i == 0 && j == 0) {
 	      Ray::print(view_ray);

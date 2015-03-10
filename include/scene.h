@@ -51,6 +51,7 @@ class Scene {
     vector<DirLight> dir_lights;
     vector<PointLight> point_lights;
     vector<Light> ambient_lights;
+    vector<Vector> view_points;
     
     // Methods
     

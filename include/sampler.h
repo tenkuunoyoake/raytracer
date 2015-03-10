@@ -2,6 +2,8 @@
 #define SAMPLER_H
 #endif
 
+#include <vector>
+
 #ifndef CAMERA_H
 #include <camera.h>
 #endif
@@ -18,6 +20,6 @@ class Sampler {
 
 public:
 
-    static Vector get_point(Camera* camera, int i, int j, int width, int height);
+    static void get_points(vector<Vector>* points, Camera* camera, int i, int j, int width, int height);
 
 };
