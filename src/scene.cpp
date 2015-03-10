@@ -35,7 +35,7 @@ void Scene::render() {
       Ray view_ray = camera.compute_viewing_ray(i, j, film.width, film.height);
       
       if (i == 0 && j == 0) {
-	Ray::print(view_ray);
+	      Ray::print(view_ray);
       }
       
       // Find first object hit by ray and its surface normal n
