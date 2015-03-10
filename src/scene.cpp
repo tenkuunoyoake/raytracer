@@ -29,10 +29,15 @@ void Scene::render() {
   // For each pixel do:
   for (int j = 0; j < film.height; j++) {
     for (int i = 0; i < film.width; i++) {
+
+      Ray view_ray;
       
       // Compute viewing ray
       // Might be buggy..?
-      Ray view_ray = camera.compute_viewing_ray(i, j, film.width, film.height);
+      Vector view_point = Sampler::get_point(&camera, i, j, film.width, film.height);
+
+      view_ray.position = camera.origin;
+      view_ray.direction = view_point - camera.origin;
       
       if (i == 0 && j == 0) {
 	      Ray::print(view_ray);

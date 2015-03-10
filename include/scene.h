@@ -29,6 +29,10 @@
 #include <film.h>
 #endif
 
+#ifndef SAMPLER_H
+#include <sampler.h>
+#endif
+
 using namespace std;
 
 //*****************************************************************************

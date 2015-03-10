@@ -18,6 +18,6 @@ class Sampler {
 
 public:
 
-    static Vector get_Point(Camera* camera, int i, int j, int width, int height);
+    static Vector get_point(Camera* camera, int i, int j, int width, int height);
 
 };
