@@ -210,7 +210,7 @@ void parse_input(char* input) {
     
     if (strcmp(header, "cam") == 0) {
       InputUtils::parse_camera_input(&scene, tokenised_line, 
-	  transform_matrix);
+	      transform_matrix);
     } else if (strcmp(header, "sph") == 0) {
       InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
 	  material);
