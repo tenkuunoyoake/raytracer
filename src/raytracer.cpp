@@ -62,11 +62,11 @@ char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
 Scene scene;
 
 //****************************************************
-// Test Functions
+// Actual Raytracer
 //****************************************************
 
-void draw_scene() {
-  
+void trace() {
+
   // Film is the class that writes to the image
   scene.film = Film(image_width, image_height);
   scene.film.output = output_filename;
@@ -77,7 +77,7 @@ void draw_scene() {
   // Once the scene has been rendered, free everything to make sure there are 
   // no memory leaks
   scene.dispose();
-  
+
 }
 
 //****************************************************
@@ -162,7 +162,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   
-  draw_scene();
+  // Trace on
+  trace();
 
   return 0;
   
