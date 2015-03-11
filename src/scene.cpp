@@ -32,33 +32,9 @@ void Scene::add_ambient_light(Light ambient_light) {
 
 void Scene::render() {
 
-  /*
-  int noise = 1;
-  Ray* view_rays = (Ray*) malloc(noise * sizeof(Ray));
-  */
-
   // For each pixel do:
   for (int j = 0; j < film.height; j++) {
     for (int i = 0; i < film.width; i++) {
-
-      // ELbert's is simpler
-
-      /*
-      camera.compute_viewing_rays(view_rays, noise, i, j, film.width,
-          film.height);
-
-      for (int ray_i = 0; ray_i < noise; ray_i++) {
-        for (unsigned sphere_i = 0; sphere_i < spheres.size(); sphere_i++) {
-
-          if (spheres[sphere_i].intersect(view_rays[ray_i])) {
-            film.set_pixel(i, j, Vector(1.0, 0.0, 0.0));
-          } else {
-            film.set_pixel(i, j, Vector(0.0, 0.0, 0.0));
-          }
-
-        }
-      }
-      */
 
       Ray view_ray;
       view_ray.position = camera.origin;
@@ -96,8 +72,6 @@ void Scene::render() {
   }
   
   film.write_to_image();
-
-  // free(view_rays);
 
 }
 

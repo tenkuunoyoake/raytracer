@@ -52,8 +52,8 @@ using namespace std;
 // Global Variables
 //****************************************************
 
-int image_width = 510;
-int image_height = 255;
+int image_width = 100;
+int image_height = 100;
 
 // Lol, and stuff...
 char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
