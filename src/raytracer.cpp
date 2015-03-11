@@ -62,6 +62,15 @@ char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
 Scene scene;
 
 //****************************************************
+// Actual Raytracer
+//****************************************************
+
+void trace(Ray ray, int depth, Vector *color){
+
+}
+
+
+//****************************************************
 // Test Functions
 //****************************************************
 
@@ -130,7 +139,7 @@ void shape_test() {
   Vector o = Vector(0.2, 0.2, 15);
   Vector d = Vector(0, 0, -1);
   float min = 0;
-  float max = 1000;
+  float max = 100;
   Ray testTR = Ray(o, d, min, max);
 
   bool hit = testT.intersect(testTR);
