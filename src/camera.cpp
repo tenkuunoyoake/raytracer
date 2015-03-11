@@ -46,11 +46,11 @@ void Camera::initialise_image_plane() {
   Vector term_1 = (top_center - left_center) * (Vector::dot(lr_dir, tb_dir)); 
   Vector term_2 = left_center - top_center;
   
-  intersect_t = Vector::dot(term_1, lr_dir) + Vector::dot(term_2, tb_dir); 
+  float intersect_t = Vector::dot(term_1, lr_dir) + Vector::dot(term_2, tb_dir); 
   intersect_t = intersect_t / (1 - pow(Vector::dot(tb_dir, lr_dir), 2));
   
   // Should be the correct center of interest
-  coi = top_center + tb_dir * intersect_t;
+  Vector coi = top_center + tb_dir * intersect_t;
 
   // d is the distance from the center of interest to the eye
   distance = (coi - origin).len();

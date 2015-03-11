@@ -49,19 +49,18 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
     Matrix transform_matrix, Material material) {
   
   // Declarations
+
+  Sphere sphere;
   float output[4];
   
   InputUtils::parse_float_input(input, output);
   
-  /* 
-  sphere->center_x = output[0];
-  sphere->center_y = output[1];
-  sphere->center_z = output[2];
-  sphere->radius = output[3]; 
-  sphere->set_transform(transform_matrix);
-  sphere->set_material(material);
-  */
-  
+  sphere.center = Vector(output[0], output[1], output[2]);
+  sphere.radius = output[3]; 
+  sphere.transform = transform_matrix;
+  //sphere->set_material(material);
+
+  scene->add_sphere(sphere);
   
 }
 

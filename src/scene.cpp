@@ -6,6 +6,12 @@ using namespace std;
 // Scene
 //*****************************************************************************
 
+void Scene::add_sphere(Sphere sphere) {
+
+  spheres.push_back(sphere);
+
+}
+
 void Scene::add_dir_light(DirLight dir_light) {
   
   dir_lights.push_back(dir_light);
@@ -25,9 +31,9 @@ void Scene::add_ambient_light(Light ambient_light) {
 }
 
 void Scene::render() {
-  
+
   /*
-  int noise = 1; // Temp
+  int noise = 1;
   Ray* view_rays = (Ray*) malloc(noise * sizeof(Ray));
   */
 
@@ -35,12 +41,23 @@ void Scene::render() {
   for (int j = 0; j < film.height; j++) {
     for (int i = 0; i < film.width; i++) {
 
-      // Not sure which one to use... probably Elbert's for now since it 
-      // seems more stable for correct inputs
+      // ELbert's is simpler
 
       /*
       camera.compute_viewing_rays(view_rays, noise, i, j, film.width,
           film.height);
+
+      for (int ray_i = 0; ray_i < noise; ray_i++) {
+        for (unsigned sphere_i = 0; sphere_i < spheres.size(); sphere_i++) {
+
+          if (spheres[sphere_i].intersect(view_rays[ray_i])) {
+            film.set_pixel(i, j, Vector(1.0, 0.0, 0.0));
+          } else {
+            film.set_pixel(i, j, Vector(0.0, 0.0, 0.0));
+          }
+
+        }
+      }
       */
 
       Ray view_ray;
@@ -50,23 +67,37 @@ void Scene::render() {
       Sampler::get_points(&view_points, &camera, i, j, film.width, film.height);
 
       while (!view_points.empty()) {
+
         view_ray.direction = view_points.back() - camera.origin;
+        view_ray.t_min = 0;
+        // Should NOT be infinity (for some reason)
+        view_ray.t_max = 10000; 
+
+        // Find first object hit by ray and its surface normal n
+
+        // Set pixel colour to value computed from hit point, light, and n
+        // For now, just set it to red.
+        for (unsigned sphere_i = 0; sphere_i < spheres.size(); sphere_i++) {
+
+          // Really, should only choose the one with the lowest t-value
+          if (spheres[sphere_i].intersect(view_ray)) {
+            film.set_pixel(i, j, Vector(1.0, 0.0, 0.0));
+          } else {
+            film.set_pixel(i, j, Vector(0.0, 0.0, 0.0));
+          }
+
+        }
+
         view_points.pop_back();
+
       }
-
-      // Find first object hit by ray and its surface normal n
-      
-      // Set pixel colour to value computed from hit point, light, and n
-
-      // Looks cool for now
-      film.set_pixel(i, j, Vector(i / 255.0, j / 255.0, 0.0));
 
     }
   }
   
   film.write_to_image();
 
-  //free(view_rays);
+  // free(view_rays);
 
 }
 
