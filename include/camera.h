@@ -30,9 +30,6 @@ class Camera {
     Vector origin, uLeft, uRight, lLeft, lRight;
     Matrix transform;
 
-    float intersect_t;
-    Vector coi;
-
     float distance; 
 
     float c_left;

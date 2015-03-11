@@ -33,6 +33,10 @@
 #include <sampler.h>
 #endif
 
+#ifndef SPHERE_H
+#include <sphere.h>
+#endif
+
 using namespace std;
 
 //*****************************************************************************
@@ -44,17 +48,19 @@ class Scene {
   public:
     
     // Declarations
-    
+
     Camera camera;
     Film film;
-    
+
     vector<DirLight> dir_lights;
     vector<PointLight> point_lights;
     vector<Light> ambient_lights;
     vector<Vector> view_points;
+    vector<Sphere> spheres;
     
     // Methods
-    
+
+    void add_sphere(Sphere sphere);
     void add_dir_light(DirLight dir_light);
     void add_point_light(PointLight point_light);
     void add_ambient_light(Light ambient_light);
