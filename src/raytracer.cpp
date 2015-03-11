@@ -183,7 +183,7 @@ void parse_input(char* input) {
   char header[4];
   char *tokenised_line;
   
-  Matrix transform_matrix; 
+  Matrix transform_matrix = Matrix::identity_matrix(); 
   Material material;
   
   // Read from the file

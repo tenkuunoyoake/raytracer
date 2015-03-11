@@ -87,12 +87,12 @@ Ray Camera::compute_viewing_ray(int i, int j, int width, int height) {
   return result;
 }
 
-void Camera::set_transform(Matrix c_transform) {
-  
-  for (int j = 0; j < 4; j++) {
-    for (int i = 0; i < 4; i++) {
-      transform.set_value(i, j, c_transform.get_value(i, j));
-    }
-  }
+void Camera::do_transform(Matrix c_transform) {
+
+  origin = Matrix::transform(c_transform, origin);
+  lLeft = Matrix::transform(c_transform, lLeft);
+  lRight = Matrix::transform(c_transform, lRight);
+  uLeft = Matrix::transform(c_transform, uLeft);
+  uRight = Matrix::transform(c_transform, uRight);
   
 }

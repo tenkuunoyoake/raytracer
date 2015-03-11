@@ -37,8 +37,10 @@ void InputUtils::parse_camera_input(Scene* scene, char* input,
   camera.lRight = Vector(output[6], output[7], output[8]);
   camera.uLeft = Vector(output[9], output[10], output[11]);
   camera.uRight = Vector(output[12], output[13], output[14]);
-  camera.set_transform(transform_matrix);
+
+  camera.do_transform(transform_matrix);
   
+
   scene->camera = camera;
   
 }
