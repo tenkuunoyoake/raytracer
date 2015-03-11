@@ -24,6 +24,14 @@
 #include <vector.h>
 #endif
 
+#ifndef SPHERE_H
+#include <sphere.h>
+#endif
+
+#ifndef TRIANGLE_H
+#include <triangle.h>
+#endif
+
 #include <input.h>
 
 #ifndef CAMERA_H
@@ -108,6 +116,38 @@ void transform_test() {
   Vector::print(Matrix::transform(composite, Vector(0, 0, 1)));
   
 }
+
+void shape_test() {
+  Matrix identity = Matrix::identity_matrix();
+  Vector col = Vector(1, 0, 0);
+  Vector p1 = Vector(0, 0, 0);
+  Vector p2 = Vector(1, 0, 0);
+  Vector p3 = Vector(0, 1, 0);
+
+  Triangle testT = Triangle(identity, col, p1, p2, p3);
+  Sphere testS = Sphere(identity, p1, col, 10);
+
+  Vector o = Vector(0.2, 0.2, 15);
+  Vector d = Vector(0, 0, -1);
+  float min = 0;
+  float max = 1000;
+  Ray testTR = Ray(o, d, min, max);
+
+  bool hit = testT.intersect(testTR);
+  bool hit2 = testS.intersect(testTR);
+
+  printf("my rads doe: %f\n", testS.radius);
+  printf("my traingle hit?: %d\n", hit);
+  printf("%d\n", hit2);
+
+  
+  Vector something = testS.intersectP(testTR);
+  Vector::print(something);
+
+  Vector::print(testT.intersectP(testTR));
+
+}
+  
 
 void vector_test() {
  
@@ -259,8 +299,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   
-  scene_test();
-  
+  //scene_test();
+  shape_test();
   // Camera c = Camera(a, a, a, a, a);
   return 0;
   
