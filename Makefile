@@ -28,10 +28,11 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(DEPDIR)/%.d: $(SRCDIR)/%.$(SRCEXT)
+	mkdir -p $(DEPDIR)
 	$(CXX) -M $(CXXFLAGS) $< > $@
 
 -include $(DEPENDS)
 
-.PHONY: clean
+.PHONY: clean all
 clean: 
-	$(RM) -r $(OBJECTS) $(TARGET) $(DEPENDS) *.png
+	$(RM) -r $(BUILDDIR) $(TARGET) $(DEPDIR) *.png
