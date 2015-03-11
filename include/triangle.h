@@ -22,7 +22,7 @@ class Triangle{
 		Vector v1;
 		Vector v2;
 		Vector v3;
-		Vector norm;
+		
 		
 		//constructors
 		Triangle();
@@ -31,5 +31,6 @@ class Triangle{
 		bool intersect(Ray);
 		Vector getNormal();
 		Vector intersectP(Ray);
+		Vector getNormalisedNormal();
 
 };

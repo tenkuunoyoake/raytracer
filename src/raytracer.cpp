@@ -139,11 +139,9 @@ void shape_test() {
   printf("my rads doe: %f\n", testS.radius);
   printf("my traingle hit?: %d\n", hit);
   printf("%d\n", hit2);
-
-  
   Vector something = testS.intersectP(testTR);
   Vector::print(something);
-
+  Vector::print(testT.getNormal());
   Vector::print(testT.intersectP(testTR));
 
 }

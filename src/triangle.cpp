@@ -19,6 +19,25 @@ Triangle::Triangle(Matrix trans, Vector col, Vector point1, Vector point2, Vecto
 	v3 = point3;
 }
 
+Vector Triangle::getNormal(){
+	Vector U = v2-v1;
+	Vector V = v3-v1;
+	float nx = U.y*V.z - U.z*V.y;
+	float ny = U.z*V.x - U.x*V.z;
+	float nz = U.x*V.y - U.y*V.x;
+	return Vector(nx, ny, nz);
+}
+
+Vector Triangle::getNormalisedNormal(){
+	Vector U = v2-v1;
+	Vector V = v3-v1;
+	float nx = U.y*V.z - U.z*V.y;
+	float ny = U.z*V.x - U.x*V.z;
+	float nz = U.x*V.y - U.y*V.x;
+	float mag = abs(nx) + abs(ny) + abs(nz);
+	return Vector(nx/mag, ny/mag, nz/mag);
+}
+
 bool Triangle::intersect(Ray ray){
 	Vector pos = ray.position;
 	Vector dir = ray.direction;
