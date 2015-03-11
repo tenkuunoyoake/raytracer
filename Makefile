@@ -1,3 +1,7 @@
+SHELL = /bin/sh
+.SUFFIXES:
+.SUFFIXES: .cpp .o .d .h
+
 CXXFLAGS = -g -Wall -Iinclude
 LDFLAGS =
 LDLIBS =
@@ -7,9 +11,11 @@ TARGET = bin/raytracer
 SRCEXT = cpp
 SRCDIR = src
 BUILDDIR = build
+DEPDIR = dep
 
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(BUILDDIR)/%.o, $(SOURCES))
+DEPENDS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(DEPDIR)/%.d, $(SOURCES))
 
 all: main 
 
@@ -20,6 +26,11 @@ main: $(OBJECTS)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	mkdir -p $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(DEPDIR)/%.d: $(SRCDIR)/%.$(SRCEXT)
+	$(CXX) -M $(CXXFLAGS) $< > $@
+
+-include $(DEPENDS)
 
 .PHONY: clean
 clean: 
