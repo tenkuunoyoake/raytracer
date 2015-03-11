@@ -24,10 +24,7 @@ Camera::Camera(Vector e, Vector lL, Vector lR, Vector uL, Vector uR){
 
 }
 
-Ray Camera::compute_viewing_ray(int i, int j, int width, int height) {
-  
-  // Declarations
-  Ray result;
+void Camera::compute_viewing_rays(Ray* results, int noise, int i, int j, int width, int height) {
   
   // Set view-up equal to y-axis
   Vector view_up = Vector(0, 1, 0); 
@@ -56,10 +53,10 @@ Ray Camera::compute_viewing_ray(int i, int j, int width, int height) {
   Vector coi = top_center + tb_dir * intersect_t;
   
   // d is the distance from the center of interest to the eye
-  float d = (coi - origin).len();
+  float d = (origin - coi).len();
   
   // View direction
-  Vector w_dir = (coi - origin).normalize();
+  Vector w_dir = (origin - coi).normalize();
   
   Vector u_dir = Vector::cross(view_up, w_dir);
   Vector v_dir = Vector::cross(w_dir, u_dir);
@@ -78,13 +75,15 @@ Ray Camera::compute_viewing_ray(int i, int j, int width, int height) {
   float bottom = (transformed_lRight - transformed_origin).y;
   
   // Compute u, v
-  float u = left + (right - left) * (i + 0.5) / width;
-  float v = bottom + (top - bottom) * (j + 0.5) / height;
+  for (int bucket = 0; bucket < noise; bucket++) {
+
+    float u = left + (right - left) * (i + 0.5) / width;
+    float v = bottom + (top - bottom) * (j + 0.5) / height;
+    results[bucket].direction = u * u_dir + v * v_dir - d * w_dir;
+    results[bucket].position = origin;
+    
+  }
   
-  result.direction = u * u_dir + v * v_dir + d * w_dir;
-  result.position = origin;
-  
-  return result;
 }
 
 void Camera::do_transform(Matrix c_transform) {

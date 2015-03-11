@@ -26,6 +26,9 @@ void Scene::add_ambient_light(Light ambient_light) {
 
 void Scene::render() {
   
+  int noise = 1;
+  Ray* view_rays = (Ray*) malloc(noise * sizeof(Ray));
+
   // For each pixel do:
   for (int j = 0; j < film.height; j++) {
     for (int i = 0; i < film.width; i++) {
@@ -41,8 +44,12 @@ void Scene::render() {
         view_points.pop_back();
       }
       
+      camera.compute_viewing_rays(view_rays, noise, i, j, film.width, \
+          film.height);
+
       if (i == 0 && j == 0) {
 	      Ray::print(view_ray);
+        Ray::print(view_rays[0]);
       }
       
       // Find first object hit by ray and its surface normal n
@@ -56,7 +63,8 @@ void Scene::render() {
   }
   
   film.write_to_image();
-  
+  free(view_rays);
+
 }
 
 void Scene::dispose() {

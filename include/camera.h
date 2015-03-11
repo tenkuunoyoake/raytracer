@@ -32,7 +32,8 @@ class Camera {
     
     // Methods
     void do_transform(Matrix c_transform);
-    Ray compute_viewing_ray(int i, int j, int width, int height);
+    void compute_viewing_rays(Ray* rays, int rays_size, int i, int j, 
+        int width, int height);
     
     // Constructors
     Camera();
