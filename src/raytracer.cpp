@@ -11,11 +11,10 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
     return;
   }
 
+  bool hit = false;
   float t_min = view_ray.t_max;
-  char closest_type = 0;
 
-  Triangle closest_triangle;
-  Sphere closest_sphere;
+  Shape* closest_shape;
 
   // Find first object hit by ray and its surface normal n
 
@@ -31,8 +30,8 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
       // If it's the closest object seen thus far
       if (scene->triangles[tri_i].intersectT(view_ray) < t_min) {
         t_min = scene->triangles[tri_i].intersectT(view_ray);
-        closest_triangle = scene->triangles[tri_i];
-        closest_type = 1;
+        closest_shape = &(scene->triangles[tri_i]);
+        hit = true;
       }
 
     }
@@ -48,26 +47,19 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
       // If it's the closest object seen thus far
       if (scene->spheres[sphere_i].intersectT(view_ray) < t_min) {
         t_min = scene->spheres[sphere_i].intersectT(view_ray);
-        closest_sphere = scene->spheres[sphere_i];
-        closest_type = 2;
+        closest_shape = &(scene->spheres[sphere_i]);
+        hit = true;
       }
 
     }
 
   }
 
-  switch (closest_type) {
-    case 0:
-      *color = Vector(0.0, 0.0, 0.0);
-      break;
-    // Triangle was closest object hit
-    case 1:
-      *color = closest_triangle.material.diffuse;
-      break;
-    // Sphere was closest object hit
-    case 2:
-      *color = closest_sphere.material.diffuse;
-      break;
+  if (!hit) {
+    *color = Vector(0.0, 0.0, 0.0);
+    return;
   }
+
+  *color = closest_shape->material.diffuse;
 
 }
