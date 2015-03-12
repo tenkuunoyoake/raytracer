@@ -14,11 +14,18 @@
 #include <ray.h>
 #endif
 
+#ifndef MATERIAL_H
+#include <material.h>
+#endif
+
+using namespace std;
+
 class Triangle{
+
 	public:
 		//declarations
 		Matrix transform;
-		Vector color;
+		Material material;
 		Vector v1;
 		Vector v2;
 		Vector v3;
@@ -26,11 +33,12 @@ class Triangle{
 		
 		//constructors
 		Triangle();
-		Triangle(Matrix, Vector, Vector, Vector, Vector);
+		Triangle(Matrix, Vector, Vector, Vector, Material material);
 
 		bool intersect(Ray);
-		Vector getNormal();
+		float intersectT(Ray ray);
 		Vector intersectP(Ray);
-		Vector getNormalisedNormal();
+
+		Vector getNormal();
 
 };

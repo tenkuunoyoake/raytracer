@@ -14,19 +14,32 @@
 #include <ray.h>
 #endif
 
+#ifndef MATERIAL_H
+#include <material.h>
+#endif
 
-class Sphere{
+using namespace std;
+
+//*****************************************************************************
+// Sphere
+//*****************************************************************************
+
+class Sphere {
+
 	public:
 		//declarations
-		Matrix transform;
 		Vector center;
-		Vector color;
 		float radius;
+
+		Matrix transform;
+		Material material;
+
 		//constructors
 		Sphere();
-		Sphere(Matrix, Vector, Vector, float);
+		Sphere(Matrix, Vector, float, Material material);
 
 		bool intersect(Ray);
 		Vector intersectP(Ray);
+		float intersectT(Ray ray);
 
 };
