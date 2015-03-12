@@ -1,26 +1,43 @@
+SHELL = /bin/sh
+.SUFFIXES:
+.SUFFIXES: .cpp .o .h .d
+
 CXXFLAGS = -g -Wall -Iinclude
 LDFLAGS =
 LDLIBS =
 VPATH = src
 
-TARGET = bin/raytracer
+TARGET = raytracer
 SRCEXT = cpp
 SRCDIR = src
 BUILDDIR = build
+DEPDIR = dep
 
-SOURCES := $(shell find $(SRCDIR) -name '*.$(SRCEXT)')
+SOURCES := $(wildcard $(SRCDIR)/*.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(BUILDDIR)/%.o, $(SOURCES))
+DEPENDS := $(patsubst $(SRCDIR)/%.$(SRCEXT), $(DEPDIR)/%.d, $(SOURCES))
 
-all: main
+all: $(TARGET)
 
-main: $(OBJECTS)
-	mkdir -p bin
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TARGET) $^ $(LDLIBS)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	mkdir -p $(BUILDDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@ 
+ifneq ($(MAKECMDGOALS), clean)
+-include $(DEPENDS)
+endif
 
-.PHONY: clean
+$(BUILDDIR)/%.o: | $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILDDIR):
+	mkdir $(BUILDDIR)
+
+$(DEPDIR)/%.d: $(SRCDIR)/%.$(SRCEXT) | $(DEPDIR)
+	$(CXX) -MM -MT $(patsubst $(DEPDIR)/%.d, $(BUILDDIR)/%.o, $@) $(CXXFLAGS) $< > $@
+
+$(DEPDIR):
+	mkdir $(DEPDIR)
+
+.PHONY: clean all
 clean:
-	$(RM) -r $(BUILDDIR) $(TARGET) *.png
+	$(RM) -r $(DEPDIR) $(BUILDDIR) $(TARGET) *.png
