@@ -9,10 +9,14 @@ float Vector::len() {
 }
 
 Vector Vector::normalize() {
+
   float length = len();
+
   if (length < 1e-10)
     return Vector(x, y, z);
+  
   return Vector(x / length, y / length, z / length);
+
 }
 
 Vector Vector::cross(Vector a, Vector b) {

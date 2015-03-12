@@ -1,3 +1,7 @@
+#ifndef INPUT_H
+#define INPUT_H
+#endif
+
 #include <vector>
 #include <iostream>
 #include <fstream>

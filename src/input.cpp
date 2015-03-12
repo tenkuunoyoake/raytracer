@@ -57,7 +57,7 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   sphere.center = Vector(output[0], output[1], output[2]);
   sphere.radius = output[3]; 
   sphere.transform = transform_matrix;
-  //sphere->set_material(material);
+  sphere.material = material;
 
   scene->add_sphere(sphere);
   
@@ -67,23 +67,19 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
     Matrix transform_matrix, Material material) {
   
   // Declarations
+
+  Triangle triangle;
   float output[9];
   
   InputUtils::parse_float_input(input, output);
   
-  /*
-  triangle->vertex1.x = output[0];
-  triangle->vertex1.y = output[1];
-  triangle->vertex1.z = output[2];
-  triangle->vertex2.x = output[3];
-  triangle->vertex2.y = output[4];
-  triangle->vertex2.z = output[5];
-  triangle->vertex3.x = output[6];
-  triangle->vertex3.y = output[7];
-  triangle->vertex3.z = output[8];
-  triangle->set_transform(transform_matrix);
-  triangle->set_material(material);
-  */
+  triangle.v1 = Vector(output[0], output[1], output[2]);
+  triangle.v2 = Vector(output[3], output[4], output[5]);
+  triangle.v3 = Vector(output[6], output[7], output[8]);
+  triangle.transform = transform_matrix;
+  triangle.material = material;
+
+  scene->add_triangle(triangle);
   
 }
 
@@ -165,7 +161,7 @@ void InputUtils::parse_amblight_input(Scene* scene, char* input) {
 void InputUtils::parse_material_input(Material* material, char* input) {
   
   // Declarations
-  float output[12];
+  float output[13];
   InputUtils::parse_float_input(input, output);
   
   material->ambient = Vector(output[0], output[1], output[2]);

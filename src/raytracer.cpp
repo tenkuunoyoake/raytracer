@@ -52,8 +52,8 @@ using namespace std;
 // Global Variables
 //****************************************************
 
-int image_width = 100;
-int image_height = 100;
+int image_width = 300;
+int image_height = 300;
 
 // Lol, and stuff...
 char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
@@ -121,17 +121,17 @@ void parse_input(char* input) {
 	      transform_matrix);
     } else if (strcmp(header, "sph") == 0) {
       InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
-	  material);
+	        material);
     } else if (strcmp(header, "tri") == 0) {
       InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
-	  material);
+	        material);
     } else if (strcmp(header, "obj") == 0) {
       InputUtils::parse_obj_input(line, transform_matrix, material);
     } else if (strcmp(header, "ltp") == 0) {
       InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
     } else if (strcmp(header, "ltd") == 0) {
       InputUtils::parse_dirlight_input(&scene, tokenised_line, 
-	  transform_matrix);
+	        transform_matrix);
     } else if (strcmp(header, "lta") == 0) {
       InputUtils::parse_amblight_input(&scene, tokenised_line);
     } else if (strcmp(header, "mat") == 0) {
