@@ -21,7 +21,7 @@ Sphere::Sphere(Matrix trans, Vector cen, float rad, Material mat) {
 
 }
 
-bool Sphere::intersect(Ray ray){
+bool Sphere::intersect(Ray ray) {
 
 	Vector pos = ray.position;
 	Vector dir = ray.direction;

@@ -2,42 +2,32 @@
 #define TRIANGLE_H
 #endif
 
+#ifndef SHAPE_H
+#include <shape.h>
+#endif
+
 #ifndef VECTOR_H
 #include <vector.h>
 #endif
 
-#ifndef MATRIX_H
-#include <matrix.h>
-#endif
-
-#ifndef RAY_H
-#include <ray.h>
-#endif
-
-#ifndef MATERIAL_H
-#include <material.h>
-#endif
-
 using namespace std;
 
-class Triangle{
+class Triangle : public Shape {
 
 	public:
 		//declarations
-		Matrix transform;
-		Material material;
 		Vector v1;
 		Vector v2;
 		Vector v3;
-		
-		
+
+		// Method Overloads
+		bool intersect(Ray);
+    Vector intersectP(Ray);
+    float intersectT(Ray ray);
+
 		//constructors
 		Triangle();
 		Triangle(Matrix, Vector, Vector, Vector, Material material);
-
-		bool intersect(Ray);
-		float intersectT(Ray ray);
-		Vector intersectP(Ray);
 
 		Vector getNormal();
 
