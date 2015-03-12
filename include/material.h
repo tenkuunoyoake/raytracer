@@ -20,11 +20,12 @@ class Material {
     Vector diffuse;
     Vector specular;
     Vector reflective;
+    float phong_e;
     
     // Constructors
     
     Material();
-    Material(Vector ka, Vector kd, Vector ks, Vector kr);
+    Material(Vector ka, Vector kd, Vector ks, Vector kr, float phong_e);
     
 };
 

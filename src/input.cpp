@@ -167,7 +167,8 @@ void InputUtils::parse_material_input(Material* material, char* input) {
   material->ambient = Vector(output[0], output[1], output[2]);
   material->diffuse = Vector(output[3], output[4], output[5]);
   material->specular = Vector(output[6], output[7], output[8]);
-  material->reflective = Vector(output[9], output[10], output[11]);
+  material->reflective = Vector(output[10], output[11], output[12]);
+  material->phong_e = output[9];
 
 }
 
