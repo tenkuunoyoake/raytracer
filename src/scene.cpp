@@ -1,6 +1,8 @@
 #include <scene.h>
 
-using namespace std;
+#ifndef RAYTRACER_H
+#include <raytracer.h>
+#endif
 
 //*****************************************************************************
 // Scene
@@ -9,6 +11,12 @@ using namespace std;
 void Scene::add_sphere(Sphere sphere) {
 
   spheres.push_back(sphere);
+
+}
+
+void Scene::add_triangle(Triangle triangle) {
+
+  triangles.push_back(triangle);
 
 }
 
@@ -35,6 +43,8 @@ void Scene::render() {
   // For each pixel do:
   for (int j = 0; j < film.height; j++) {
     for (int i = 0; i < film.width; i++) {
+      
+      Vector pixel_color;
 
       Ray view_ray;
       view_ray.position = camera.origin;
@@ -46,24 +56,11 @@ void Scene::render() {
 
         view_ray.direction = view_points.back() - camera.origin;
         view_ray.t_min = 0;
-        // Should NOT be infinity (for some reason)
         view_ray.t_max = 10000; 
 
-        // Find first object hit by ray and its surface normal n
+        Raytracer::trace(this, view_ray, 0, &pixel_color);
 
-        // Set pixel colour to value computed from hit point, light, and n
-        // For now, just set it to red.
-        for (unsigned sphere_i = 0; sphere_i < spheres.size(); sphere_i++) {
-
-          // Really, should only choose the one with the lowest t-value
-          if (spheres[sphere_i].intersect(view_ray)) {
-            film.set_pixel(i, j, Vector(1.0, 0.0, 0.0));
-          } else {
-            film.set_pixel(i, j, Vector(0.0, 0.0, 0.0));
-          }
-
-        }
-
+        film.set_pixel(i, j, pixel_color);
         view_points.pop_back();
 
       }

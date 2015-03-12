@@ -2,12 +2,12 @@
 #define DIRLIGHT_H
 #endif
 
-#ifndef LIGHT_H
-#include <light.h>
-#endif
-
 #ifndef VECTOR_H
 #include <vector.h>
+#endif
+
+#ifndef LIGHT_H
+#include <light.h>
 #endif
 
 //*****************************************************************************

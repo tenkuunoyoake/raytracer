@@ -2,8 +2,6 @@
 #define CAMERA_H
 #endif
 
-#include <cmath>
-
 #ifndef VECTOR_H
 #include <vector.h>
 #endif

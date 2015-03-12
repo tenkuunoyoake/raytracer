@@ -1,170 +1,73 @@
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cmath>
+#include <raytracer.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <sys/time.h>
-#endif
+//*****************************************************************************
+// Raytracer
+//*****************************************************************************
 
-#include <time.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
 
-// Self-defined
-
-#ifndef MATRIX_H
-#include <matrix.h>
-#endif
-
-#ifndef VECTOR_H
-#include <vector.h>
-#endif
-
-#ifndef SPHERE_H
-#include <sphere.h>
-#endif
-
-#ifndef TRIANGLE_H
-#include <triangle.h>
-#endif
-
-#include <input.h>
-
-#ifndef CAMERA_H
-#include <camera.h>
-#endif
-
-#ifndef FILM_H
-#include <film.h>
-#endif
-
-#ifndef SCENE_H
-#include <scene.h>
-#endif
-
-using namespace std;
-
-//****************************************************
-// Global Variables
-//****************************************************
-
-int image_width = 300;
-int image_height = 300;
-
-// Lol, and stuff...
-char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
-    'p', 'n', 'g', '\0'};
-
-Scene scene;
-
-//****************************************************
-// Actual Raytracer
-//****************************************************
-
-void trace() {
-
-  // Film is the class that writes to the image
-  scene.film = Film(image_width, image_height);
-  scene.film.output = output_filename;
-  
-  // Main Loop
-  scene.render();
-  
-  // Once the scene has been rendered, free everything to make sure there are 
-  // no memory leaks
-  scene.dispose();
-
-}
-
-//****************************************************
-// Input Parsing
-//****************************************************
-
-void parse_input(char* input) {
-  
-  // Declarations
-  char line[256];
-  char header[4];
-  char *tokenised_line;
-  
-  Matrix transform_matrix = Matrix::identity_matrix(); 
-  Material material;
-  
-  // Read from the file
-  FILE* file = fopen(input, "r");
-  
-  // Error if file does not exist
-  if (file == NULL) {
-    printf("File does not exist: %s\n", input);
+  if (depth > max_depth) {
+    *color = Vector(0.0, 0.0, 0.0);
     return;
   }
-  
-  output_filename[7] = input[6];
-  output_filename[8] = input[7];
-  
-  // Print out each line
-  while (fgets(line, sizeof(line), file)) {
-    
-    // Grab the header of each line
-    strncpy(header, line, 3);
-    header[3] = '\0';
-    
-    // Tokenise the line, and get rid of header
-    tokenised_line = strtok(line, " ");
-    
-    if (strcmp(header, "cam") == 0) {
-      InputUtils::parse_camera_input(&scene, tokenised_line, 
-	      transform_matrix);
-    } else if (strcmp(header, "sph") == 0) {
-      InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
-	        material);
-    } else if (strcmp(header, "tri") == 0) {
-      InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
-	        material);
-    } else if (strcmp(header, "obj") == 0) {
-      InputUtils::parse_obj_input(line, transform_matrix, material);
-    } else if (strcmp(header, "ltp") == 0) {
-      InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
-    } else if (strcmp(header, "ltd") == 0) {
-      InputUtils::parse_dirlight_input(&scene, tokenised_line, 
-	        transform_matrix);
-    } else if (strcmp(header, "lta") == 0) {
-      InputUtils::parse_amblight_input(&scene, tokenised_line);
-    } else if (strcmp(header, "mat") == 0) {
-      InputUtils::parse_material_input(&material, tokenised_line);
-    } else if (strcmp(header, "xft") == 0) {
-      InputUtils::parse_tl_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfr") == 0) {
-      InputUtils::parse_rt_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfs") == 0) {
-      InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfz") == 0) {
-      InputUtils::parse_idt_transform_input(&transform_matrix);
+
+  float t_min = view_ray.t_max;
+  char closest_type = 0;
+
+  Triangle closest_triangle;
+  Sphere closest_sphere;
+
+  // Find first object hit by ray and its surface normal n
+
+  // Set pixel colour to value computed from hit point, light, and n
+  // For now, just set it to red.
+
+  // For all triangles in the Scene
+  for (unsigned tri_i = 0; tri_i < scene->triangles.size(); tri_i++) {
+
+    // If there actually is an intersection
+    if (scene->triangles[tri_i].intersect(view_ray)) {
+
+      // If it's the closest object seen thus far
+      if (scene->triangles[tri_i].intersectT(view_ray) < t_min) {
+        t_min = scene->triangles[tri_i].intersectT(view_ray);
+        closest_triangle = scene->triangles[tri_i];
+        closest_type = 1;
+      }
+
     }
-    
-  }
-  
-  // Close the file
-  fclose(file);
-  
-}
 
-int main(int argc, char *argv[]) {
-  
-  if (argc == 2) {
-    parse_input(argv[1]);
-  } else {
-    printf("Error: Incorrect input");
-    exit(EXIT_FAILURE);
   }
-  
-  // Trace on
-  trace();
 
-  return 0;
-  
+  // For all spheres in the Scene
+  for (unsigned sphere_i = 0; sphere_i < scene->spheres.size(); sphere_i++) {
+
+    // If there actually is an intersection
+    if (scene->spheres[sphere_i].intersect(view_ray)) {
+
+      // If it's the closest object seen thus far
+      if (scene->spheres[sphere_i].intersectT(view_ray) < t_min) {
+        t_min = scene->spheres[sphere_i].intersectT(view_ray);
+        closest_sphere = scene->spheres[sphere_i];
+        closest_type = 2;
+      }
+
+    }
+
+  }
+
+  switch (closest_type) {
+    case 0:
+      *color = Vector(0.0, 0.0, 0.0);
+      break;
+    // Triangle was closest object hit
+    case 1:
+      *color = closest_triangle.material.diffuse;
+      break;
+    // Sphere was closest object hit
+    case 2:
+      *color = closest_sphere.material.diffuse;
+      break;
+  }
+
 }

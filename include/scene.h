@@ -37,6 +37,10 @@
 #include <sphere.h>
 #endif
 
+#ifndef TRIANGLE_H
+#include <triangle.h>
+#endif
+
 using namespace std;
 
 //*****************************************************************************
@@ -57,10 +61,12 @@ class Scene {
     vector<Light> ambient_lights;
     vector<Vector> view_points;
     vector<Sphere> spheres;
+    vector<Triangle> triangles;
     
     // Methods
 
     void add_sphere(Sphere sphere);
+    void add_triangle(Triangle triangle);
     void add_dir_light(DirLight dir_light);
     void add_point_light(PointLight point_light);
     void add_ambient_light(Light ambient_light);
