@@ -8,15 +8,9 @@
 // Scene
 //*****************************************************************************
 
-void Scene::add_sphere(Sphere sphere) {
+void Scene::add_surface(Shape* surface) {
 
-  spheres.push_back(sphere);
-
-}
-
-void Scene::add_triangle(Triangle triangle) {
-
-  triangles.push_back(triangle);
+  surfaces.push_back(surface);
 
 }
 

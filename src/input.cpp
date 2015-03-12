@@ -49,17 +49,17 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   
   // Declarations
 
-  Sphere sphere;
+  Sphere* sphere = new Sphere;
   float output[4];
   
   InputUtils::parse_float_input(input, output);
   
-  sphere.center = Vector(output[0], output[1], output[2]);
-  sphere.radius = output[3]; 
-  sphere.transform = transform_matrix;
-  sphere.material = material;
+  sphere->center = Vector(output[0], output[1], output[2]);
+  sphere->radius = output[3]; 
+  sphere->transform = transform_matrix;
+  sphere->material = material;
 
-  scene->add_sphere(sphere);
+  scene->add_surface(sphere);
   
 }
 
@@ -68,18 +68,18 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   
   // Declarations
 
-  Triangle triangle;
+  Triangle* triangle = new Triangle;
   float output[9];
   
   InputUtils::parse_float_input(input, output);
   
-  triangle.v1 = Vector(output[0], output[1], output[2]);
-  triangle.v2 = Vector(output[3], output[4], output[5]);
-  triangle.v3 = Vector(output[6], output[7], output[8]);
-  triangle.transform = transform_matrix;
-  triangle.material = material;
+  triangle->v1 = Vector(output[0], output[1], output[2]);
+  triangle->v2 = Vector(output[3], output[4], output[5]);
+  triangle->v3 = Vector(output[6], output[7], output[8]);
+  triangle->transform = transform_matrix;
+  triangle->material = material;
 
-  scene->add_triangle(triangle);
+  scene->add_surface(triangle);
   
 }
 

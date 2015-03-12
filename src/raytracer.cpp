@@ -22,32 +22,15 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
   // For now, just set it to red.
 
   // For all triangles in the Scene
-  for (unsigned tri_i = 0; tri_i < scene->triangles.size(); tri_i++) {
+  for (unsigned shape_i = 0; shape_i < scene->surfaces.size(); shape_i++) {
 
     // If there actually is an intersection
-    if (scene->triangles[tri_i].intersect(view_ray)) {
+    if (scene->surfaces[shape_i]->intersect(view_ray)) {
 
       // If it's the closest object seen thus far
-      if (scene->triangles[tri_i].intersectT(view_ray) < t_min) {
-        t_min = scene->triangles[tri_i].intersectT(view_ray);
-        closest_shape = &(scene->triangles[tri_i]);
-        hit = true;
-      }
-
-    }
-
-  }
-
-  // For all spheres in the Scene
-  for (unsigned sphere_i = 0; sphere_i < scene->spheres.size(); sphere_i++) {
-
-    // If there actually is an intersection
-    if (scene->spheres[sphere_i].intersect(view_ray)) {
-
-      // If it's the closest object seen thus far
-      if (scene->spheres[sphere_i].intersectT(view_ray) < t_min) {
-        t_min = scene->spheres[sphere_i].intersectT(view_ray);
-        closest_shape = &(scene->spheres[sphere_i]);
+      if (scene->surfaces[shape_i]->intersectT(view_ray) < t_min) {
+        t_min = scene->surfaces[shape_i]->intersectT(view_ray);
+        closest_shape = scene->surfaces[shape_i];
         hit = true;
       }
 
