@@ -32,6 +32,7 @@ class Vector {                                        // note: vectors are simpl
     static void print(Vector v);
     static Vector cross(Vector a, Vector b);
     static float dot(Vector a, Vector b);
+    static float mag(Vector x);
     
     Vector();
     Vector(float, float, float);

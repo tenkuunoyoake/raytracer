@@ -37,6 +37,10 @@ float Vector::dot(Vector a, Vector b) {
   
 }
 
+float Vector::mag(Vector x){
+  return sqrt(x.x*x.x + x.y*x.y + x.z*x.z);
+}
+
 void Vector::print(Vector v) {
   
   printf("(%f, %f, %f)\n", v.x, v.y, v.z);
