@@ -3,11 +3,11 @@
 #endif
 
 #ifndef SHAPE_H
-#include <shape.h>
+#include "shape.h"
 #endif
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 using namespace std;

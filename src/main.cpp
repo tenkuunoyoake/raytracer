@@ -17,39 +17,39 @@
 // Self-defined
 
 #ifndef MATRIX_H
-#include <matrix.h>
+#include "matrix.h"
 #endif
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 #ifndef SPHERE_H
-#include <sphere.h>
+#include "sphere.h"
 #endif
 
 #ifndef TRIANGLE_H
-#include <triangle.h>
+#include "triangle.h"
 #endif
 
 #ifndef CAMERA_H
-#include <camera.h>
+#include "camera.h"
 #endif
 
 #ifndef FILM_H
-#include <film.h>
+#include "film.h"
 #endif
 
 #ifndef SCENE_H
-#include <scene.h>
+#include "scene.h"
 #endif
 
 #ifndef INPUT_H
-#include <input.h>
+#include "input.h"
 #endif
 
 #ifndef RAYTRACER_H
-#include <raytracer.h>
+#include "raytracer.h"
 #endif
 
 using namespace std;

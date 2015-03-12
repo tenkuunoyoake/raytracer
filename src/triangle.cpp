@@ -1,7 +1,8 @@
-#include <triangle.h>
 #include <cmath>
 #include <limits>
 #include <math.h>
+
+#include "triangle.h"
 
 Triangle::Triangle() {
 

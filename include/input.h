@@ -14,31 +14,31 @@
 // Self-defined
 
 #ifndef MATRIX_H
-#include <matrix.h>
+#include "matrix.h"
 #endif
 
 #ifndef CAMERA_H
-#include <camera.h>
+#include "camera.h"
 #endif
 
 #ifndef MATERIAL_H
-#include <material.h>
+#include "material.h"
 #endif
 
 #ifndef LIGHT_H
-#include <light.h>
+#include "light.h"
 #endif
 
 #ifndef DIRLIGHT_H
-#include <dirlight.h>
+#include "dirlight.h"
 #endif
 
 #ifndef POINTLIGHT_H
-#include <pointlight.h>
+#include "pointlight.h"
 #endif
 
 #ifndef SCENE_H
-#include <scene.h>
+#include "scene.h"
 #endif
 
 //****************************************************

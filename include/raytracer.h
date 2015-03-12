@@ -3,35 +3,35 @@
 #endif
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 #ifndef RAY_H
-#include <ray.h>
+#include "ray.h"
 #endif
 
 #ifndef LIGHT_H
-#include <light.h>
+#include "light.h"
 #endif
 
 #ifndef DIRLIGHT_H
-#include <dirlight.h>
+#include "dirlight.h"
 #endif
 
 #ifndef POINTLIGHT_H
-#include <pointlight.h>
+#include "pointlight.h"
 #endif
 
 #ifndef SPHERE_H
-#include <sphere.h>
+#include "sphere.h"
 #endif
 
 #ifndef TRIANGLE_H
-#include <triangle.h>
+#include "triangle.h"
 #endif
 
 #ifndef SCENE_H
-#include <scene.h>
+#include "scene.h"
 #endif
 
 using namespace std;

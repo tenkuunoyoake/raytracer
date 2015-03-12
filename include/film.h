@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <lodepng.h>
+#include "lodepng.h"
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 //*****************************************************************************

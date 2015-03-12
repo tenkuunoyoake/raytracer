@@ -6,39 +6,39 @@
 #include <vector>
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 #ifndef CAMERA_H
-#include <camera.h>
+#include "camera.h"
 #endif
 
 #ifndef LIGHT_H
-#include <light.h>
+#include "light.h"
 #endif
 
 #ifndef DIRLIGHT_H
-#include <dirlight.h>
+#include "dirlight.h"
 #endif
 
 #ifndef POINTLIGHT_H
-#include <pointlight.h>
+#include "pointlight.h"
 #endif
 
 #ifndef FILM_H
-#include <film.h>
+#include "film.h"
 #endif
 
 #ifndef SAMPLER_H
-#include <sampler.h>
+#include "sampler.h"
 #endif
 
 #ifndef SPHERE_H
-#include <sphere.h>
+#include "sphere.h"
 #endif
 
 #ifndef TRIANGLE_H
-#include <triangle.h>
+#include "triangle.h"
 #endif
 
 using namespace std;

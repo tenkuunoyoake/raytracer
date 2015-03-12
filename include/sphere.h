@@ -2,12 +2,12 @@
 #define SPHERE_H
 #endif
 
-#ifndef SHAPE_H
-#include <shape.h>
+#ifndef VECTOR_H
+#include "vector.h"
 #endif
 
-#ifndef VECTOR_H
-#include <vector.h>
+#ifndef SHAPE_H
+#include "shape.h"
 #endif
 
 using namespace std;

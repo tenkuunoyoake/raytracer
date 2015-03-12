@@ -1,7 +1,7 @@
-#include <scene.h>
+#include "scene.h"
 
 #ifndef RAYTRACER_H
-#include <raytracer.h>
+#include "raytracer.h"
 #endif
 
 //*****************************************************************************

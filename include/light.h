@@ -2,16 +2,16 @@
 #define LIGHT_H
 #endif
 
-#ifndef RAY_H
-#include <ray.h>
+#ifndef VECTOR_H
+#include "vector.h"
 #endif
 
-#ifndef VECTOR_H
-#include <vector.h>
+#ifndef RAY_H
+#include "ray.h"
 #endif
 
 #ifndef MATRIX_H
-#include <matrix.h>
+#include "matrix.h"
 #endif
 
 //*****************************************************************************

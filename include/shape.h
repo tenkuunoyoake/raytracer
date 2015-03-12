@@ -3,15 +3,15 @@
 #endif
 
 #ifndef RAY_H
-#include <ray.h>
+#include "ray.h"
 #endif
 
 #ifndef MATRIX_H
-#include <matrix.h>
+#include "matrix.h"
 #endif
 
 #ifndef MATERIAL_H
-#include <material.h>
+#include "material.h"
 #endif
 
 using namespace std;

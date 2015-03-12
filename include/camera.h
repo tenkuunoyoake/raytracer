@@ -3,15 +3,11 @@
 #endif
 
 #ifndef VECTOR_H
-#include <vector.h>
+#include "vector.h"
 #endif
 
 #ifndef MATRIX_H
-#include <matrix.h>
-#endif
-
-#ifndef RAY_H
-#include <ray.h>
+#include "matrix.h"
 #endif
 
 using namespace std;

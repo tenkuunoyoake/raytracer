@@ -1,4 +1,4 @@
-#include <pointlight.h>
+#include "pointlight.h"
 
 //*****************************************************************************
 // PointLight
