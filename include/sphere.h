@@ -2,20 +2,12 @@
 #define SPHERE_H
 #endif
 
+#ifndef SHAPE_H
+#include <shape.h>
+#endif
+
 #ifndef VECTOR_H
 #include <vector.h>
-#endif
-
-#ifndef MATRIX_H
-#include <matrix.h>
-#endif
-
-#ifndef RAY_H
-#include <ray.h>
-#endif
-
-#ifndef MATERIAL_H
-#include <material.h>
 #endif
 
 using namespace std;
@@ -24,22 +16,20 @@ using namespace std;
 // Sphere
 //*****************************************************************************
 
-class Sphere {
+class Sphere : public Shape {
 
 	public:
 		//declarations
 		Vector center;
 		float radius;
 
-		Matrix transform;
-		Material material;
+		// Method overloads
+		bool intersect(Ray);
+    Vector intersectP(Ray);
+    float intersectT(Ray ray);
 
 		//constructors
 		Sphere();
 		Sphere(Matrix, Vector, float, Material material);
-
-		bool intersect(Ray);
-		Vector intersectP(Ray);
-		float intersectT(Ray ray);
 
 };
