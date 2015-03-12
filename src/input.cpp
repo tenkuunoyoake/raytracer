@@ -139,6 +139,7 @@ void InputUtils::parse_dirlight_input(Scene* scene, char* input,
   InputUtils::parse_float_input(input, output);
   
   dirlight.direction = Vector(output[0], output[1], output[2]);
+  dirlight.direction = dirlight.direction.normalize();
   dirlight.color = Vector(output[3], output[4], output[5]);
   dirlight.set_transform(transform_matrix);
   scene->add_dir_light(dirlight);
