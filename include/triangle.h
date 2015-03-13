@@ -25,6 +25,8 @@ class Triangle : public Shape {
     Vector intersectP(Ray);
     float intersectT(Ray ray);
 
+    void do_transform(Matrix matrix);
+
 		//constructors
 		Triangle();
 		Triangle(Matrix, Vector, Vector, Vector, Material material);

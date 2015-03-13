@@ -34,6 +34,14 @@ Vector Triangle::getNormal() {
 
 }
 
+void Triangle::do_transform(Matrix c_transform) {
+
+  v1 = Matrix::transform(c_transform, v1);
+  v2 = Matrix::transform(c_transform, v2);
+  v3 = Matrix::transform(c_transform, v3);
+  
+}
+
 bool Triangle::intersect(Ray ray){
 
 	Vector pos = ray.position;

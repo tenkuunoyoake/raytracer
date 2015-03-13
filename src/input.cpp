@@ -76,8 +76,9 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   triangle->v1 = Vector(output[0], output[1], output[2]);
   triangle->v2 = Vector(output[3], output[4], output[5]);
   triangle->v3 = Vector(output[6], output[7], output[8]);
-  triangle->transform = transform_matrix;
   triangle->material = material;
+
+  triangle->do_transform(transform_matrix);
 
   scene->add_surface(triangle);
   
