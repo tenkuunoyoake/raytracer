@@ -89,7 +89,7 @@ void parse_input(char* input) {
   // Error if file does not exist
   if (file == NULL) {
     printf("File does not exist: %s\n", input);
-    return;
+    exit(EXIT_FAILURE);
   }
   
   output_filename[7] = input[6];
