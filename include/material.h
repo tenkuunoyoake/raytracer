@@ -28,6 +28,7 @@ class Material {
     Material(Vector ka, Vector kd, Vector ks, Vector kr, float phong_e);
 
     //methods
+    // Vector reflection_v(Vector direction, Vector normal);
     Vector diffuse_c(Vector, Vector, Vector);
     Vector ambient_c(Vector);
     Vector specular_c(Vector, Vector, Vector, Vector);

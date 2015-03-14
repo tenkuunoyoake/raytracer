@@ -47,6 +47,7 @@ class Raytracer {
     static int max_depth; 
 
     // Methods
+    static Vector reflection_v(Vector direction, Vector normal);
     static bool shadow_ray(Scene* scene, Ray ray);
     static void shine_dir_lights(Vector *color, Scene *scene, 
         Material material, Vector surface, Vector viewer, Vector normal);

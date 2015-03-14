@@ -4,6 +4,22 @@
 // Raytracer
 //*****************************************************************************
 
+Vector Raytracer::reflection_v(Vector direction, Vector normal) {
+
+  Vector reflection;    
+  Vector scaled_normal;
+
+  reflection = -1 * direction;
+
+  float normal_scalar = 2 * Vector::dot(direction, normal);
+
+  reflection = reflection + (normal * normal_scalar); 
+  reflection = reflection.normalize();
+
+  return reflection;
+
+}
+
 bool Raytracer::shadow_ray(Scene* scene, Ray ray) {
 
   for (unsigned i = 0; i < scene->surfaces.size(); i++) {
@@ -55,6 +71,8 @@ void Raytracer::shine_point_lights(Vector *color, Scene* scene,
 
     Vector light_direction = point_light.position - surface;
     light_direction = light_direction.normalize();
+
+    light_direction = -1 * light_direction;
 
     // Dodge shadows
     Ray light_ray = Ray(surface, light_direction, 0.001, 10000);
@@ -131,7 +149,7 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
   Vector intersect = closest_shape->intersectP(view_ray);
   Vector normal = closest_shape->get_normal(intersect); 
 
-  Vector viewer = scene->camera.origin - intersect;
+  Vector viewer = view_ray.position - intersect;
   viewer = viewer.normalize();
 
   shine_dir_lights(color, scene, closest_shape->material, intersect, viewer, 
@@ -139,6 +157,26 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
   shine_point_lights(color, scene, closest_shape->material, intersect, viewer,
       normal);
   shine_ambient_lights(color, scene, closest_shape->material);
+
+   // Do the reflection thing
+  if (closest_shape->material.reflective.x > 0 || 
+      closest_shape->material.reflective.y > 0 ||
+      closest_shape->material.reflective.z > 0) {
+
+    Vector reflec_color;
+
+    float normal_scale = Vector::dot(view_ray.direction, normal) * 2;
+    Vector reflection = view_ray.direction - (normal * normal_scale); 
+
+    Ray reflec_ray = Ray(intersect, reflection, 0.01, 10000);
+
+    trace(scene, reflec_ray, depth + 1, &reflec_color);
+    reflec_color = Vector::point_multiply(closest_shape->material.reflective, 
+        reflec_color);
+
+    *color = *color + reflec_color;
+
+  }
 
   color->clamp();
 

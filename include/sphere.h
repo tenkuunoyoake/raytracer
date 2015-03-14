@@ -28,6 +28,8 @@ class Sphere : public Shape {
     Vector intersectP(Ray);
     float intersectT(Ray ray);
     Vector get_normal(Vector intersection);
+    
+    Ray transform_ray(Ray ray);
 
 		//constructors
 		Sphere();

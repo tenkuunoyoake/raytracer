@@ -24,6 +24,8 @@ Sphere::Sphere(Matrix trans, Vector cen, float rad, Material mat) {
 
 bool Sphere::intersect(Ray ray) {
 
+  ray = transform_ray(ray);
+
   Vector pos = ray.position;
   Vector dir = ray.direction;
 
@@ -100,5 +102,11 @@ float Sphere::intersectT(Ray ray) {
 Vector Sphere::get_normal(Vector intersection) {
 
   return (intersection - center) / radius;
+
+}
+
+Ray Sphere::transform_ray(Ray ray) {
+
+  return ray;
 
 }
