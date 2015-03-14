@@ -56,7 +56,7 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   
   sphere->center = Vector(output[0], output[1], output[2]);
   sphere->radius = output[3]; 
-  sphere->transform = transform_matrix;
+  sphere->transform = Matrix::inverse(transform_matrix);
   sphere->material = material;
 
   scene->add_surface(sphere);

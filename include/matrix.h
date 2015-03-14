@@ -42,6 +42,9 @@ class Matrix {
     
     // Vector multiply
     static Vector transform(Matrix matrix, Vector vector);
+
+    // Direction multiply
+    static Vector transform_dir(Matrix matrix, Vector vector);
     
     // Determinant
     static float determinant(Matrix input);

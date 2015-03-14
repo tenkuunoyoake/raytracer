@@ -48,7 +48,7 @@ void Scene::render() {
 
       while (!view_points.empty()) {
 
-        view_ray.direction = view_points.back() - camera.origin;
+        view_ray.direction = (view_points.back() - camera.origin);
         view_ray.t_min = 0;
         view_ray.t_max = 10000; 
 

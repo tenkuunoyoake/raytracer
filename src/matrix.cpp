@@ -94,20 +94,50 @@ Vector Matrix::transform(Matrix matrix, Vector vector) {
     
     switch(j) {
       case 0:
-	result.x = temp;
-	break;
+        result.x = temp;
+        break;
       case 1:
-	result.y = temp;
-	break;
+      	result.y = temp;
+      	break;
       case 2:
-	result.z = temp;
-	break;
+      	result.z = temp;
+      	break;
     }
     
   }
   
   return result;
   
+}
+
+Vector Matrix::transform_dir(Matrix matrix, Vector vector) {
+
+  // Declarations
+  Vector result(0, 0, 0);
+  float temp;
+  
+  for (int j = 0; j < 4; j++) {
+    
+    temp = matrix.get_value(0, j) * vector.x;
+    temp += matrix.get_value(1, j) * vector.y;
+    temp += matrix.get_value(2, j) * vector.z;
+    
+    switch(j) {
+      case 0:
+        result.x = temp;
+        break;
+      case 1:
+        result.y = temp;
+        break;
+      case 2:
+        result.z = temp;
+        break;
+    }
+    
+  }
+  
+  return result;
+
 }
 
 float Matrix::determinant(Matrix input) {
