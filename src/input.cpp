@@ -89,7 +89,14 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
 
   // Declarations
   int i = 5;
+  int linecount = 1;
   char filename[256];
+  char line[256];
+  char *tokenised_line;
+  float output[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  vector<Vector> vertices;
+  vector<Vector> vnormals;
+  vector<Vector> texture_coords;
   
   while (input[i] != '"' && input[i] != '\0') {
     filename[i - 5] = input[i];
@@ -99,6 +106,35 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
   filename[i - 5] = '\0';
 
   /* Load the obj file */
+  FILE* file = fopen(filename, "r");
+  
+  // Error if file does not exist
+  if (file == NULL) {
+    cerr << "File does not exist: " << filename << endl;
+    return;
+  }
+
+  while (fgets(line, sizeof(line), file)) {
+    
+    // Tokenise the line, and get rid of header
+    tokenised_line = strtok(line, " ");
+    
+    if (strcmp(tokenised_line[0], "v") == 0) {
+      InputUtils::parse_float_input(tokenised_line, output);
+    } else if (strcmp(tokenised_line[0], "vn") == 0) {
+      InputUtils::parse_float_input(tokenised_line, output);
+    } else if (strcmp(tokenised_line[0], "f") == 0) {
+      InputUtils::parse_face_input(&scene, tokenised_line, transform_matrix, 
+          material);
+    } else if (strcmp(tokenised_line[0], "vt") == 0) {
+      InputUtils::parse_float_input(tokenised_line, output);;
+    } else {
+      cerr << "Line " << linecount << "not formatted correctly." << endl;
+    }
+
+    linecount++;
+    
+  }
   
   /* 
   obj->set_transform(transform_matrix);
