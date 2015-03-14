@@ -54,6 +54,8 @@ bool Sphere::intersect(Ray ray) {
 // Assuming we only care about the first intersection point
 Vector Sphere::intersectP(Ray ray) {
 
+  ray = transform_ray(ray);
+
   Vector pos = ray.position;
   Vector dir = ray.direction;
 
@@ -70,6 +72,8 @@ Vector Sphere::intersectP(Ray ray) {
 }
 
 float Sphere::intersectT(Ray ray) {
+
+  ray = transform_ray(ray);
 
   Vector pos = ray.position;
   Vector dir = ray.direction;
@@ -101,12 +105,17 @@ float Sphere::intersectT(Ray ray) {
 
 Vector Sphere::get_normal(Vector intersection) {
 
-  return (intersection - center) / radius;
+  return Matrix::transform(
+          Matrix::transpose(
+            Matrix::inverse(transform)),((intersection - center) / radius)); 
 
 }
 
 Ray Sphere::transform_ray(Ray ray) {
 
-  return ray;
+  Vector newP = Matrix::transform(Matrix::inverse(transform), ray.position);
+  Vector newD = Matrix::transform(Matrix::inverse(transform), ray.direction);
+  Ray newRay = Ray(newP, newD, ray.t_min, ray.t_max);
+  return newRay;
 
 }
