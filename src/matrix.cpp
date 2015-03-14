@@ -66,11 +66,15 @@ Matrix Matrix::multiply(Matrix matrix_1, Matrix matrix_2) {
   
   for (int y = 0; y < 4; y++) {
     for (int x = 0; x < 4; x++) {
+
       value = 0;
+
       for (int i = 0; i < 4; i++) {
-	value += matrix_1.get_value(i, y) * matrix_2.get_value(x, i);
+	      value += matrix_1.get_value(i, y) * matrix_2.get_value(x, i);
       }
+
       result.set_value(x, y, value);
+      
     }
   }
   

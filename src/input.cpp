@@ -38,6 +38,8 @@ void InputUtils::parse_camera_input(Scene* scene, char* input,
   camera.uLeft = Vector(output[9], output[10], output[11]);
   camera.uRight = Vector(output[12], output[13], output[14]);
 
+  Vector::print(camera.lLeft);
+
   camera.do_transform(transform_matrix);
 
   scene->camera = camera;
@@ -122,9 +124,9 @@ void InputUtils::parse_ptlight_input(Scene* scene, char* input,
   InputUtils::parse_float_input(input, output);
   
   ptlight.position = Vector(output[0], output[1], output[2]);
+  ptlight.position = Matrix::transform(transform_matrix, ptlight.position);
   ptlight.color = Vector(output[3], output[4], output[5]);
   ptlight.falloff = output[6];
-  ptlight.set_transform(transform_matrix);
   
   scene->add_point_light(ptlight);
   
@@ -141,8 +143,10 @@ void InputUtils::parse_dirlight_input(Scene* scene, char* input,
   
   dirlight.direction = Vector(output[0], output[1], output[2]);
   dirlight.direction = dirlight.direction.normalize();
+  dirlight.direction = Matrix::transform_dir(transform_matrix, 
+      dirlight.direction)
   dirlight.color = Vector(output[3], output[4], output[5]);
-  dirlight.set_transform(transform_matrix);
+
   scene->add_dir_light(dirlight);
   
 } 
@@ -184,7 +188,6 @@ void InputUtils::parse_tl_transform_input(char* input, Matrix* transform_matrix)
   
   /* Create a translation matrix that translates by [x, y, z] */
   translation = Matrix::translation_matrix(output[0], output[1], output[2]);
-  
   // Apply that onto the transform matrix
   *transform_matrix = Matrix::multiply(*transform_matrix, translation);
   

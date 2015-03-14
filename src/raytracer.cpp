@@ -50,7 +50,7 @@ void Raytracer::shine_dir_lights(Shape* shape, Vector *color, Scene* scene,
     Vector light_direction = -1 * dir_light.direction;
 
     // Dodge shadows
-    Ray light_ray = Ray(surface, light_direction, 0.0001, 10000);
+    Ray light_ray = Ray(surface, light_direction, 0, 10000);
 
     if (shadow_ray(scene, light_ray, shape)) {
       continue;
@@ -77,8 +77,6 @@ void Raytracer::shine_point_lights(Shape *shape, Vector *color, Scene* scene,
 
     Vector light_direction = point_light.position - surface;
     light_direction = light_direction.normalize();
-
-    light_direction = -1 * light_direction;
 
     // Dodge shadows
     Ray light_ray = Ray(surface, light_direction, 0, 10000);
