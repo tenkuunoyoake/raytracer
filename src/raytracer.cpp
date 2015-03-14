@@ -20,11 +20,17 @@ Vector Raytracer::reflection_v(Vector direction, Vector normal) {
 
 }
 
-bool Raytracer::shadow_ray(Scene* scene, Ray ray) {
+bool Raytracer::shadow_ray(Scene* scene, Ray ray, Shape* shape) {
 
   for (unsigned i = 0; i < scene->surfaces.size(); i++) {
     if (scene->surfaces[i]->intersect(ray)) {
+
+      if (scene->surfaces[i] == shape) {
+        continue;
+      }
+
       return true;
+
     }
   }
 
@@ -32,8 +38,8 @@ bool Raytracer::shadow_ray(Scene* scene, Ray ray) {
 
 }
 
-void Raytracer::shine_dir_lights(Vector *color, Scene* scene, Material material, 
-    Vector surface, Vector viewer, Vector normal) {
+void Raytracer::shine_dir_lights(Shape* shape, Vector *color, Scene* scene, 
+    Material material, Vector surface, Vector viewer, Vector normal) {
 
   // Iterate through directional lights
   for (unsigned i = 0; i < scene->dir_lights.size(); i++) {
@@ -44,9 +50,9 @@ void Raytracer::shine_dir_lights(Vector *color, Scene* scene, Material material,
     Vector light_direction = -1 * dir_light.direction;
 
     // Dodge shadows
-    Ray light_ray = Ray(surface, light_direction, 0.001, 10000);
+    Ray light_ray = Ray(surface, light_direction, 0.0001, 10000);
 
-    if (shadow_ray(scene, light_ray)) {
+    if (shadow_ray(scene, light_ray, shape)) {
       continue;
     }
 
@@ -61,7 +67,7 @@ void Raytracer::shine_dir_lights(Vector *color, Scene* scene, Material material,
 
 }
 
-void Raytracer::shine_point_lights(Vector *color, Scene* scene, 
+void Raytracer::shine_point_lights(Shape *shape, Vector *color, Scene* scene, 
     Material material, Vector surface, Vector viewer, Vector normal) {
 
   // Iterate through point lights
@@ -75,9 +81,9 @@ void Raytracer::shine_point_lights(Vector *color, Scene* scene,
     light_direction = -1 * light_direction;
 
     // Dodge shadows
-    Ray light_ray = Ray(surface, light_direction, 0.001, 10000);
+    Ray light_ray = Ray(surface, light_direction, 0, 10000);
 
-    if (shadow_ray(scene, light_ray)) {
+    if (shadow_ray(scene, light_ray, shape)) {
       continue;
     }
 
@@ -85,10 +91,6 @@ void Raytracer::shine_point_lights(Vector *color, Scene* scene,
         normal);
     Vector specular_color = material.specular_c(point_light.color, 
         light_direction, viewer, normal);
-
-    if (diffuse_color.x != 0 || diffuse_color.y > 0.0001 || diffuse_color.z > 0.0001) {
-      Vector::print(diffuse_color);
-    }
 
     *color = *color + diffuse_color + specular_color;
 
@@ -142,7 +144,7 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
   }
 
   if (!hit) {
-    *color = Vector(0.0, 0.0, 0.0);
+    *color = Vector();
     return;
   }
 
@@ -152,10 +154,10 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
   Vector viewer = view_ray.position - intersect;
   viewer = viewer.normalize();
 
-  shine_dir_lights(color, scene, closest_shape->material, intersect, viewer, 
-      normal);
-  shine_point_lights(color, scene, closest_shape->material, intersect, viewer,
-      normal);
+  shine_dir_lights(closest_shape, color, scene, closest_shape->material,
+    intersect, viewer, normal);
+  shine_point_lights(closest_shape, color, scene, closest_shape->material, 
+      intersect, viewer, normal);
   shine_ambient_lights(color, scene, closest_shape->material);
 
    // Do the reflection thing
@@ -168,7 +170,7 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
     float normal_scale = Vector::dot(view_ray.direction, normal) * 2;
     Vector reflection = view_ray.direction - (normal * normal_scale); 
 
-    Ray reflec_ray = Ray(intersect, reflection, 0.01, 10000);
+    Ray reflec_ray = Ray(intersect, reflection, 0.05, 10000);
 
     trace(scene, reflec_ray, depth + 1, &reflec_color);
     reflec_color = Vector::point_multiply(closest_shape->material.reflective, 

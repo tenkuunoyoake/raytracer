@@ -53,7 +53,7 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   float output[4];
   
   InputUtils::parse_float_input(input, output);
-  
+
   sphere->center = Vector(output[0], output[1], output[2]);
   sphere->radius = output[3]; 
   sphere->transform = Matrix::inverse(transform_matrix);

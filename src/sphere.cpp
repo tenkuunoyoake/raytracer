@@ -60,7 +60,6 @@ Vector Sphere::intersectP(Ray ray) {
   float t = intersectT(ray);
 
   if (t >= ray.t_min && t <= ray.t_max) {
-    // Vector(pos.x + dir.x * t1, pos.y + dir.y * t1, pos.z + dir.z * t1);
     return pos + (t * dir);
   } else {
     return Vector(std::numeric_limits<float>::infinity(), 
@@ -116,7 +115,6 @@ Ray Sphere::transform_ray(Ray ray) {
 
   Vector new_position = Matrix::transform(transform, ray.position);
   Vector new_direction = Matrix::transform_dir(transform, ray.direction);
-  new_direction = new_direction;
 
   Ray new_ray = Ray(new_position, new_direction, ray.t_min, ray.t_max);
 
