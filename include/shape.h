@@ -30,5 +30,6 @@ class Shape {
     virtual bool intersect(Ray) =0;
     virtual Vector intersectP(Ray) =0;
     virtual float intersectT(Ray ray) =0;
+    virtual Vector get_normal(Vector intersection) =0;
 
 };

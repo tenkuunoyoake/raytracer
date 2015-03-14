@@ -23,6 +23,7 @@ class Vector {                                        // note: vectors are simpl
     float x, y, z;
     float len();
     Vector normalize();
+    void clamp();
 
     Vector& operator+=(const Vector&);
     Vector& operator-=(const Vector&);
@@ -32,7 +33,7 @@ class Vector {                                        // note: vectors are simpl
     static void print(Vector v);
     static Vector cross(Vector a, Vector b);
     static float dot(Vector a, Vector b);
-    static float mag(Vector x);
+    static Vector point_multiply(Vector a, Vector b);
     
     Vector();
     Vector(float, float, float);

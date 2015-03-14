@@ -96,3 +96,9 @@ float Sphere::intersectT(Ray ray) {
   return -1;
 
 }
+
+Vector Sphere::get_normal(Vector intersection) {
+
+  return (intersection - center) / radius;
+
+}

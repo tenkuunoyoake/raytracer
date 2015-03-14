@@ -24,30 +24,45 @@ Material::Material(Vector ka, Vector kd, Vector ks, Vector kr, float pe) {
   
 }
 
-Vector Material::diffuseC(Vector factor, Vector color, Vector light, 
-              Vector normal){
-  float similarity = (Vector::dot(light, normal))/(Vector::mag(light)*Vector::mag(normal));
-  if(similarity < 0) return Vector(0.0, 0.0, 0.0);
+Vector Material::diffuse_c(Vector color, Vector light, Vector normal) {
+
+  float similarity = Vector::dot(light, normal) / (light.len() * normal.len());
+
+  if (similarity < 0) {
+    return Vector();
+  }
+
   float result = Vector::dot(light, normal);
-  Vector final = Vector(factor.x*color.x, factor.y*color.y, factor.z*color.z); //I_d*k_d
-  final*=result;
+  Vector final = Vector::point_multiply(diffuse, color) * result; 
   return final;
+
 }
 
-Vector Material::ambientC(Vector factor, Vector color){
-  return Vector(factor.x*color.x, factor.y*color.y, factor.z*color.z);
+Vector Material::ambient_c(Vector color) {
+
+  return Vector::point_multiply(ambient, color);
+
 }
 
-Vector Material::specularC(Vector factor, Vector color, Vector light,
-              Vector viewer, Vector normal, float power){
-  float dbl = 2.0*Vector::dot(light, normal); //2*(I DOT n)
-  Vector r = dbl*normal; //2*(I DOT n)*n
-  Vector rb = r + -1.0*light;
+Vector Material::specular_c(Vector color, Vector light, Vector viewer, 
+    Vector normal) {
+
+  float dbl = 2.0 * Vector::dot(light, normal); 
+  Vector r = dbl * normal;
+  Vector rb = r + -1 * light;
+
+  float similarity = (Vector::dot(rb, viewer)) / (rb.len() * viewer.len());
+
+  if (similarity < 0) {
+    return Vector();
+  } 
+
   float rbv = Vector::dot(rb, viewer);
-  rbv = pow(rbv, power);
-  Vector final = Vector(factor.x*color.x, factor.y*color.y, factor.z*color.z);
-  final*=rbv;
-  float similarity = (Vector::dot(rb, viewer))/(Vector::mag(rb)*Vector::mag(viewer));
-  if(similarity < 0) return Vector(0.0, 0.0, 0.0);
-  return final;
+  rbv = pow(rbv, phong_e);
+
+  Vector final = Vector::point_multiply(specular, color);
+  final = final * rbv;
+
+ return final;
+
 }

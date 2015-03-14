@@ -24,6 +24,7 @@ class Triangle : public Shape {
     bool intersect(Ray);
     Vector intersectP(Ray);
     float intersectT(Ray ray);
+    Vector get_normal(Vector intersection);
 
     void do_transform(Matrix matrix);
 

@@ -27,6 +27,7 @@ class Sphere : public Shape {
 		bool intersect(Ray);
     Vector intersectP(Ray);
     float intersectT(Ray ray);
+    Vector get_normal(Vector intersection);
 
 		//constructors
 		Sphere();

@@ -25,12 +25,12 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
 
 }
 
-Vector Triangle::getNormal() {
+Vector Triangle::get_normal(Vector intersection) {
 
   Vector U = v2 - v1;
   Vector V = v3 - v1;
 
-  return Vector::cross(U, V);
+  return Vector::cross(U, V).normalize();
 
 }
 

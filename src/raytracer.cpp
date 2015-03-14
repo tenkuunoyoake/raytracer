@@ -4,6 +4,91 @@
 // Raytracer
 //*****************************************************************************
 
+bool Raytracer::shadow_ray(Scene* scene, Ray ray) {
+
+  for (unsigned i = 0; i < scene->surfaces.size(); i++) {
+    if (scene->surfaces[i]->intersect(ray)) {
+      return true;
+    }
+  }
+
+  return false;
+
+}
+
+void Raytracer::shine_dir_lights(Vector *color, Scene* scene, Material material, 
+    Vector surface, Vector viewer, Vector normal) {
+
+  // Iterate through directional lights
+  for (unsigned i = 0; i < scene->dir_lights.size(); i++) {
+
+    // Get current directional light
+    DirLight dir_light = scene->dir_lights[i];
+    // Have direction of light->surface, want direction of surface->light
+    Vector light_direction = -1 * dir_light.direction;
+
+    // Dodge shadows
+    Ray light_ray = Ray(surface, light_direction, 0.001, 10000);
+
+    if (shadow_ray(scene, light_ray)) {
+      continue;
+    }
+
+    Vector diffuse_color = material.diffuse_c(dir_light.color, light_direction, 
+        normal);
+    Vector specular_color = material.specular_c(dir_light.color, 
+        light_direction, viewer, normal);
+
+    *color = *color + diffuse_color + specular_color;
+
+  }
+
+}
+
+void Raytracer::shine_point_lights(Vector *color, Scene* scene, 
+    Material material, Vector surface, Vector viewer, Vector normal) {
+
+  // Iterate through point lights
+  for (unsigned i = 0; i < scene->point_lights.size(); i++) {
+
+    PointLight point_light = scene->point_lights[i];
+
+    Vector light_direction = point_light.position - surface;
+    light_direction = light_direction.normalize();
+
+    // Dodge shadows
+    Ray light_ray = Ray(surface, light_direction, 0.001, 10000);
+
+    if (shadow_ray(scene, light_ray)) {
+      continue;
+    }
+
+    Vector diffuse_color = material.diffuse_c(point_light.color, light_direction, 
+        normal);
+    Vector specular_color = material.specular_c(point_light.color, 
+        light_direction, viewer, normal);
+
+    if (diffuse_color.x != 0 || diffuse_color.y > 0.0001 || diffuse_color.z > 0.0001) {
+      Vector::print(diffuse_color);
+    }
+
+    *color = *color + diffuse_color + specular_color;
+
+  }
+        
+}
+
+void Raytracer::shine_ambient_lights(Vector *color, Scene* scene, 
+    Material material) {
+ 
+  // Iterate through ambient lights
+  for (unsigned i = 0; i < scene->ambient_lights.size(); i++) {
+    Light ambient_light = scene->ambient_lights[i];
+    *color = *color + material.ambient_c(ambient_light.color);
+  }
+  
+}
+
 void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
 
   if (depth > max_depth) {
@@ -43,6 +128,18 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
     return;
   }
 
-  *color = closest_shape->material.diffuse;
+  Vector intersect = closest_shape->intersectP(view_ray);
+  Vector normal = closest_shape->get_normal(intersect); 
+
+  Vector viewer = scene->camera.origin - intersect;
+  viewer = viewer.normalize();
+
+  shine_dir_lights(color, scene, closest_shape->material, intersect, viewer, 
+      normal);
+  shine_point_lights(color, scene, closest_shape->material, intersect, viewer,
+      normal);
+  shine_ambient_lights(color, scene, closest_shape->material);
+
+  color->clamp();
 
 }

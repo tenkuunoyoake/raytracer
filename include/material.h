@@ -28,9 +28,9 @@ class Material {
     Material(Vector ka, Vector kd, Vector ks, Vector kr, float phong_e);
 
     //methods
-    Vector diffuseC(Vector, Vector, Vector, Vector);
-    Vector ambientC(Vector, Vector);
-    Vector specularC(Vector, Vector, Vector, Vector, Vector, float);
+    Vector diffuse_c(Vector, Vector, Vector);
+    Vector ambient_c(Vector);
+    Vector specular_c(Vector, Vector, Vector, Vector);
     
 };
 

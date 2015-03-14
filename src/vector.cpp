@@ -37,8 +37,32 @@ float Vector::dot(Vector a, Vector b) {
   
 }
 
-float Vector::mag(Vector x){
-  return sqrt(x.x*x.x + x.y*x.y + x.z*x.z);
+Vector Vector::point_multiply(Vector a, Vector b) {
+
+  Vector result;
+
+  result.x = a.x * b.x;
+  result.y = a.y * b.y;
+  result.z = a.z * b.z;
+
+  return result;
+
+}
+
+void Vector::clamp() {
+
+  if (x > 1) {
+    x = 1;
+  }
+
+  if (y > 1) { 
+    y = 1; 
+  }
+
+  if (z > 1) {
+    z = 1;
+  }
+
 }
 
 void Vector::print(Vector v) {
