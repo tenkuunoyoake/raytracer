@@ -107,20 +107,20 @@ void parse_input(char* input) {
     
     if (strcmp(header, "cam") == 0) {
       InputUtils::parse_camera_input(&scene, tokenised_line, 
-	      transform_matrix);
+        transform_matrix);
     } else if (strcmp(header, "sph") == 0) {
       InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
-	        material);
+          material);
     } else if (strcmp(header, "tri") == 0) {
       InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
-	        material);
+          material);
     } else if (strcmp(header, "obj") == 0) {
       InputUtils::parse_obj_input(line, transform_matrix, material);
     } else if (strcmp(header, "ltp") == 0) {
       InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
     } else if (strcmp(header, "ltd") == 0) {
       InputUtils::parse_dirlight_input(&scene, tokenised_line, 
-	        transform_matrix);
+          transform_matrix);
     } else if (strcmp(header, "lta") == 0) {
       InputUtils::parse_amblight_input(&scene, tokenised_line);
     } else if (strcmp(header, "mat") == 0) {

@@ -14,23 +14,23 @@ using namespace std;
 
 class Triangle : public Shape {
 
-	public:
-		//declarations
-		Vector v1;
-		Vector v2;
-		Vector v3;
+  public:
+    //declarations
+    Vector v1;
+    Vector v2;
+    Vector v3;
 
-		// Method Overloads
-		bool intersect(Ray);
+    // Method Overloads
+    bool intersect(Ray);
     Vector intersectP(Ray);
     float intersectT(Ray ray);
 
     void do_transform(Matrix matrix);
 
-		//constructors
-		Triangle();
-		Triangle(Matrix, Vector, Vector, Vector, Material material);
+    //constructors
+    Triangle();
+    Triangle(Matrix, Vector, Vector, Vector, Material material);
 
-		Vector getNormal();
+    Vector getNormal();
 
 };
