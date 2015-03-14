@@ -58,8 +58,8 @@ using namespace std;
 // Global Variables
 //****************************************************
 
-int image_width = 300;
-int image_height = 300;
+int image_width = 600;
+int image_height = 600;
 
 int Raytracer::max_depth = 5;
 

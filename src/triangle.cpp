@@ -50,29 +50,31 @@ bool Triangle::intersect(Ray ray){
   float min = ray.t_min;
   float max = ray.t_max;
 
+  // the actual thing
   Vector e1 = v2-v1;
   Vector e2 = v3-v1;
-
-  Vector s = pos-v1;
   Vector p = Vector::cross(dir, e2);
-  Vector q = Vector::cross(s, e1);
-
   float a = Vector::dot(p, e1);
 
-  if(a == 0) {
-    return false;
-  }
+  if(a > -0.00001 && a < 0.00001) return false;
 
-  float beta = (1 / a) * Vector::dot(s, p);
-  float gamma = (1 / a) * Vector::dot(dir, q);
-  float t = (1 / a) * Vector::dot(e2, q);
+  float f = 1/a;
 
-  // beta < 0 || gamma < 0 || beta > 1 || gamma > 1 || beta + gamma > 1 
-  if (beta < 0 || gamma < 0 || beta + gamma > 1 || t > max || t < min) {
-    return false;
-  } else {
-    return true;
-  }
+  Vector s = pos-v1;
+  float beta = f * Vector::dot(s, p);
+
+  if(beta < 0 || beta > 1.0) return false;
+
+  Vector q = Vector::cross(s, e1);
+  float gamma = f * Vector::dot(dir, q);
+
+  if(gamma < 0.0 || beta + gamma > 1.0) return false;
+
+  float t = f * Vector::dot(e2, q);
+
+  if(t < min || t > max) return false;
+
+  return true;
 
 }
 
@@ -108,11 +110,6 @@ float Triangle::intersectT(Ray ray) {
   Vector q = Vector::cross(s, e1);
 
   float a = Vector::dot(p, e1);
-
-  if (a == 0) {
-    printf("This shouldn't be printing check if you passed ur things right.");
-    return -1;
-  }
 
   return (1 / a) * (Vector::dot(e2, q));
 
