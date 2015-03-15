@@ -76,6 +76,8 @@ void Raytracer::shine_point_lights(Shape *shape, Vector *color, Scene* scene,
     PointLight point_light = scene->point_lights[i];
 
     Vector light_direction = point_light.position - surface;
+    float light_distance = light_direction.len();
+
     light_direction = light_direction.normalize();
 
     // Dodge shadows
@@ -89,6 +91,17 @@ void Raytracer::shine_point_lights(Shape *shape, Vector *color, Scene* scene,
         normal);
     Vector specular_color = material.specular_c(point_light.color, 
         light_direction, viewer, normal);
+
+    switch (point_light.falloff) {
+      case 1:
+        diffuse_color = diffuse_color / light_distance;
+        specular_color = specular_color / light_distance;
+        break;
+      case 2:
+        diffuse_color = diffuse_color / (light_distance * light_distance);
+        specular_color = specular_color / (light_distance * light_distance);
+        break;
+    }
 
     *color = *color + diffuse_color + specular_color;
 
@@ -156,7 +169,10 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
     intersect, viewer, normal);
   shine_point_lights(closest_shape, color, scene, closest_shape->material, 
       intersect, viewer, normal);
-  shine_ambient_lights(color, scene, closest_shape->material);
+
+  if (depth < 1) {
+    shine_ambient_lights(color, scene, closest_shape->material);
+  }
 
    // Do the reflection thing
   if (closest_shape->material.reflective.x > 0 || 
