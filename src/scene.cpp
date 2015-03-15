@@ -39,6 +39,7 @@ void Scene::render() {
     for (int i = 0; i < film.width; i++) {
       
       Vector pixel_color;
+      Vector final_color;
 
       Ray view_ray;
       view_ray.position = camera.origin;
@@ -54,10 +55,17 @@ void Scene::render() {
 
         Raytracer::trace(this, view_ray, 0, &pixel_color, NULL);
 
-        film.set_pixel(i, j, pixel_color);
+        final_color = final_color + pixel_color;
+        
+        // Make sure to reset the colour of the pixel
+        pixel_color = Vector();
+
         view_points.pop_back();
 
       }
+
+      final_color = final_color / (Sampler::samples * Sampler::samples);
+      film.set_pixel(i, j, final_color);
 
     }
   }

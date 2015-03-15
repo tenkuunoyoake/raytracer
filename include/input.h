@@ -41,6 +41,10 @@
 #include "scene.h"
 #endif
 
+#ifndef SAMPLER_H
+#include "sampler.h"
+#endif
+
 //****************************************************
 // InputUtils
 //****************************************************
@@ -79,5 +83,8 @@ class InputUtils {
     static void parse_rt_transform_input(char* input, Matrix* transform_matrix);
     static void parse_scl_transform_input(char* input, Matrix* transform_matrix);
     static void parse_idt_transform_input(Matrix* transform_matrix);
+
+    // Distributed Ray Tracing
+    static void parse_antialias_input(char* input);
   
 };

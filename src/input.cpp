@@ -30,7 +30,7 @@ void InputUtils::parse_camera_input(Scene* scene, char* input,
   Camera camera;
   float output[15];
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   camera.origin = Vector(output[0], output[1], output[2]); 
   camera.lLeft = Vector(output[3], output[4], output[5]);
@@ -52,7 +52,7 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   Sphere* sphere = new Sphere;
   float output[4];
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
 
   sphere->center = Vector(output[0], output[1], output[2]);
   sphere->radius = output[3]; 
@@ -71,7 +71,7 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   Triangle* triangle = new Triangle;
   float output[9];
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   triangle->v1 = Vector(output[0], output[1], output[2]);
   triangle->v2 = Vector(output[3], output[4], output[5]);
@@ -119,7 +119,7 @@ void InputUtils::parse_ptlight_input(Scene* scene, char* input,
   // Default falloff to 0
   output[6] = 0; 
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   ptlight.position = Vector(output[0], output[1], output[2]);
   ptlight.position = Matrix::transform(transform_matrix, ptlight.position);
@@ -137,7 +137,7 @@ void InputUtils::parse_dirlight_input(Scene* scene, char* input,
   DirLight dirlight;
   float output[6];
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   dirlight.direction = Vector(output[0], output[1], output[2]);
   dirlight.direction = dirlight.direction.normalize();
@@ -155,7 +155,7 @@ void InputUtils::parse_amblight_input(Scene* scene, char* input) {
   Light amblight;
   float output[3];
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   amblight.color = Vector(output[0], output[1], output[2]);
   scene->add_ambient_light(amblight);
@@ -166,7 +166,7 @@ void InputUtils::parse_material_input(Material* material, char* input) {
   
   // Declarations
   float output[13];
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   material->ambient = Vector(output[0], output[1], output[2]);
   material->diffuse = Vector(output[3], output[4], output[5]);
@@ -182,7 +182,7 @@ void InputUtils::parse_tl_transform_input(char* input, Matrix* transform_matrix)
   float output[3];
   Matrix translation;
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   /* Create a translation matrix that translates by [x, y, z] */
   translation = Matrix::translation_matrix(output[0], output[1], output[2]);
@@ -197,7 +197,7 @@ void InputUtils::parse_rt_transform_input(char* input, Matrix* transform_matrix)
   float output[3];
   Matrix rotation;
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   // Create a rotation matrix that rotates by the exponential map [x, y, z]
   rotation = Matrix::rotation_matrix(output[0], output[1], output[2]);
@@ -213,7 +213,7 @@ void InputUtils::parse_scl_transform_input(char* input, Matrix* transform_matrix
   float output[3];
   Matrix scalar;
   
-  InputUtils::parse_float_input(input, output);
+  parse_float_input(input, output);
   
   // Create a scalar matrix that scales to [x, y, z]
   scalar = Matrix::scalar_matrix(output[0], output[1], output[2]);
@@ -228,4 +228,14 @@ void InputUtils::parse_idt_transform_input(Matrix* transform_matrix) {
   // Set the matrix back to the identity
   *transform_matrix = Matrix::identity_matrix();
   
+}
+
+void InputUtils::parse_antialias_input(char* input) {
+
+  float output[1];
+  
+  parse_float_input(input, output);
+
+  Sampler::samples = (int) output[0];
+
 }

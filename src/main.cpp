@@ -63,6 +63,9 @@ int image_height = 1000;
 
 int Raytracer::max_depth = 5;
 
+// Samples n x n points
+int Sampler::samples = 1; 
+
 // Lol, and stuff...
 char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
     'p', 'n', 'g', '\0'};
@@ -133,6 +136,8 @@ void parse_input(char* input) {
       InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix);
     } else if (strcmp(header, "xfz") == 0) {
       InputUtils::parse_idt_transform_input(&transform_matrix);
+    } else if (strcmp(header, "als") == 0) {
+      InputUtils::parse_antialias_input(tokenised_line);
     }
     
   }
