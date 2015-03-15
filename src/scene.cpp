@@ -52,7 +52,7 @@ void Scene::render() {
         view_ray.t_min = 0;
         view_ray.t_max = 10000; 
 
-        Raytracer::trace(this, view_ray, 0, &pixel_color);
+        Raytracer::trace(this, view_ray, 0, &pixel_color, NULL);
 
         film.set_pixel(i, j, pixel_color);
         view_points.pop_back();

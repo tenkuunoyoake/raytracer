@@ -56,6 +56,7 @@ class Raytracer {
     static void shine_ambient_lights(Vector *color, Scene* scene, 
       Material material);
 
-    static void trace(Scene* scene, Ray ray, int depth, Vector* color);
+    static void trace(Scene* scene, Ray ray, int depth, Vector* color,
+        Shape* last_shape);
 
 };

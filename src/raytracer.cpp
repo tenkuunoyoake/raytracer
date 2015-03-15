@@ -120,7 +120,8 @@ void Raytracer::shine_ambient_lights(Vector *color, Scene* scene,
   
 }
 
-void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
+void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
+    Shape* last_shape) {
 
   if (depth > max_depth) {
     *color = Vector(0.0, 0.0, 0.0);
@@ -145,9 +146,16 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
 
       // If it's the closest object seen thus far
       if (scene->surfaces[shape_i]->intersectT(view_ray) < t_min) {
+
+        // Don't reflect off of yourself
+        if (last_shape == scene->surfaces[shape_i]) {
+          continue;
+        }
+
         t_min = scene->surfaces[shape_i]->intersectT(view_ray);
         closest_shape = scene->surfaces[shape_i];
         hit = true;
+
       }
 
     }
@@ -184,9 +192,9 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color) {
     float normal_scale = Vector::dot(view_ray.direction, normal) * 2;
     Vector reflection = view_ray.direction - (normal * normal_scale); 
 
-    Ray reflec_ray = Ray(intersect, reflection, 0.05, 10000);
+    Ray reflec_ray = Ray(intersect, reflection, 0, 10000);
 
-    trace(scene, reflec_ray, depth + 1, &reflec_color);
+    trace(scene, reflec_ray, depth + 1, &reflec_color, closest_shape);
     reflec_color = Vector::point_multiply(closest_shape->material.reflective, 
         reflec_color);
 
