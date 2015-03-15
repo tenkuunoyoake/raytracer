@@ -115,7 +115,8 @@ void parse_input(char* input) {
       InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
           material);
     } else if (strcmp(header, "obj") == 0) {
-      InputUtils::parse_obj_input(&scene, line, transform_matrix, material);
+      InputUtils::parse_obj_input(&scene, tokenised_line, transform_matrix,
+          material);
     } else if (strcmp(header, "ltp") == 0) {
       InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
     } else if (strcmp(header, "ltd") == 0) {

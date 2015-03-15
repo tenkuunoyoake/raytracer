@@ -8,33 +8,79 @@ Triangle::Triangle() {
 
   transform = Matrix::identity_matrix();
   material = Material();
-  v1 = Vector(1, 0, 0);
-  v2 = Vector(0, 1, 0);
-  v3 = Vector(0, 0, 1);
+  v1 = Vector(0, 0, 0);
+  v2 = Vector(0, 0, 0);
+  v3 = Vector(0, 0, 0);
   vnorm1 = Vector(0, 0, 0);
   vnorm2 = Vector(0, 0, 0);
   vnorm3 = Vector(0, 0, 0);
+  tcoord1 = Vector(0, 0, 0);
+  tcoord2 = Vector(0, 0, 0);
+  tcoord3 = Vector(0, 0, 0);
+  U = Vector(0, 0, 0);
+  V = Vector(0, 0, 0);
+  d00 = d01 = d11 = inv_denom = 0;
 
 }
 
 Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3, 
     Material mat) {
 
-  transform = trans;
   material = mat;
   v1 = point1;
   v2 = point2;
   v3 = point3;
-  vnorm1 = vnorm2 = vnorm3 = Vector::cross(v2 - v1, v3 - v1);
+  do_transform(trans);
+  tcoord1 = Vector(0, 0, 0);
+  tcoord2 = Vector(0, 0, 0);
+  tcoord3 = Vector(0, 0, 0);
+  U = v2 - v1;
+  V = v3 - v1;
+  vnorm1 = vnorm2 = vnorm3 = Vector::cross(U, V).normalize();
+  d00 = Vector::dot(U, U);
+  d01 = Vector::dot(U, V);
+  d11 = Vector::dot(V, V);
+  inv_denom = 1 / (d00 * d11 - d01 * d01);
 
 }
 
-Vector Triangle::getNormal() {
+Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3, 
+    Vector norm1, Vector norm2, Vector norm3, Vector tc1, Vector tc2,
+    Vector tc3, Material mat) {
 
-  Vector U = v2 - v1;
-  Vector V = v3 - v1;
+  material = mat;
+  v1 = point1;
+  v2 = point2;
+  v3 = point3;
+  do_transform(trans);
+  U = v2 - v1;
+  V = v3 - v1;
+  vnorm1 = norm1.normalize();
+  vnorm2 = norm2.normalize();
+  vnorm3 = norm3.normalize();
+  tcoord1 = tc1;
+  tcoord2 = tc2;
+  tcoord3 = tc3;
+  d00 = Vector::dot(U, U);
+  d01 = Vector::dot(U, V);
+  d11 = Vector::dot(V, V);
+  inv_denom = 1 / (d00 * d11 - d01 * d01);
 
-  return Vector::cross(U, V);
+}
+
+Vector Triangle::getNormal(Vector point) {
+
+  // Get barycentric coordinates
+  Vector W = point - v1;
+  float d20 = Vector::dot(W, U);
+  float d21 = Vector::dot(W, V);
+  float v = (d11 * d20 - d01 * d21) * inv_denom;
+  float w = (d00 * d21 - d01 * d20) * inv_denom;
+  float u = 1 - v - w;
+
+  Vector normal = u * vnorm1 + v * vnorm2 + w * vnorm3;
+
+  return normal.normalize();
 
 }
 
