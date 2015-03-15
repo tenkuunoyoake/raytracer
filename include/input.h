@@ -65,8 +65,10 @@ class InputUtils {
 	Matrix transform_matrix, Material material);
     static void parse_triangle_input(Scene* scene, char* input, 
 	Matrix transform_matrix, Material material);
-    static void parse_obj_input(char* input, Matrix transform_matrix, 
-	Material material);
+    static void parse_obj_input(Scene* scene, char* input,
+    Matrix transform_matrix, Material material);
+    static void parse_face_input(char* input, int* vertnum,
+    int* vnormnum, int* tcoordnum);
     
     // Lights
     static void parse_ptlight_input(Scene* scene, char* input, 

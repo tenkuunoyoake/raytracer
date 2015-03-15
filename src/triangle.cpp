@@ -11,6 +11,9 @@ Triangle::Triangle() {
   v1 = Vector(1, 0, 0);
   v2 = Vector(0, 1, 0);
   v3 = Vector(0, 0, 1);
+  vnorm1 = Vector(0, 0, 0);
+  vnorm2 = Vector(0, 0, 0);
+  vnorm3 = Vector(0, 0, 0);
 
 }
 
@@ -22,6 +25,21 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
   v1 = point1;
   v2 = point2;
   v3 = point3;
+  vnorm1 = vnorm2 = vnorm3 = Vector::cross(v2 - v1, v3 - v1);
+
+}
+
+Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
+    Vector norm1, Vector norm2, Vector norm3, Material mat) {
+
+  transform = trans;
+  material = mat;
+  v1 = point1;
+  v2 = point2;
+  v3 = point3;
+  vnorm1 = norm1;
+  vnorm2 = norm2;
+  vnorm3 = norm3;
 
 }
 

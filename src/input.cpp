@@ -84,8 +84,8 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   
 }
 
-void InputUtils::parse_obj_input(char* input, Matrix transform_matrix, 
-    Material material) {
+void InputUtils::parse_obj_input(Scene* scene, char* input,
+    Matrix transform_matrix, Material material) {
 
   // Declarations
   int i = 5;
@@ -121,15 +121,25 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
     
     if (strcmp(tokenised_line[0], "v") == 0) {
       InputUtils::parse_float_input(tokenised_line, output);
+      Vector vertex = Vector(output[0], output[1], output[2]);
+      vertices.push_back(vertex);
     } else if (strcmp(tokenised_line[0], "vn") == 0) {
       InputUtils::parse_float_input(tokenised_line, output);
+      Vector normal = Vector(output[0], output[1], output[2]);
+      vnormals.push_back(normal);
     } else if (strcmp(tokenised_line[0], "f") == 0) {
-      InputUtils::parse_face_input(&scene, tokenised_line, transform_matrix, 
-          material);
+      int vertnum[3];
+      int vnormnum[3];
+      int tcoordnum[3];
+      InputUtils::parse_face_input(tokenised_line, vertnum, vnormnum, 
+          tcoordnum);
     } else if (strcmp(tokenised_line[0], "vt") == 0) {
-      InputUtils::parse_float_input(tokenised_line, output);;
+      InputUtils::parse_float_input(tokenised_line, output);
+      Vector tcoord = Vector(output[0], output[1]);
+      texture_coords.push_back(tcoord);
     } else {
-      cerr << "Line " << linecount << "not formatted correctly." << endl;
+      cerr << "Command \"" << tokenised_line[0] << "\" unrecognized. Line " <<
+          linecount << " ignored." << endl;
     }
 
     linecount++;
@@ -143,6 +153,11 @@ void InputUtils::parse_obj_input(char* input, Matrix transform_matrix,
   // Just to get rid of a stupid warning
   printf("%s", filename); 
   
+}
+
+void InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum
+    int* tcoordnum) {
+
 }
 
 void InputUtils::parse_ptlight_input(Scene* scene, char* input, 

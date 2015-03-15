@@ -19,6 +19,9 @@ class Triangle : public Shape {
     Vector v1;
     Vector v2;
     Vector v3;
+    Vector vnorm1;
+    Vector vnorm2;
+    Vector vnorm3;
 
     // Method Overloads
     bool intersect(Ray);
@@ -29,7 +32,8 @@ class Triangle : public Shape {
 
     //constructors
     Triangle();
-    Triangle(Matrix, Vector, Vector, Vector, Material material);
+    Triangle(Matrix, Vector, Vector, Vector, Material);
+    Triangle(Matrix, Vector, Vector, Vector, Vector, Vector, Vector, Material);
 
     Vector getNormal();
 
