@@ -29,20 +29,6 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
 
 }
 
-Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
-    Vector norm1, Vector norm2, Vector norm3, Material mat) {
-
-  transform = trans;
-  material = mat;
-  v1 = point1;
-  v2 = point2;
-  v3 = point3;
-  vnorm1 = norm1;
-  vnorm2 = norm2;
-  vnorm3 = norm3;
-
-}
-
 Vector Triangle::getNormal() {
 
   Vector U = v2 - v1;

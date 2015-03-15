@@ -89,14 +89,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
 
   // Declarations
   int i = 5;
-  int linecount = 1;
   char filename[256];
-  char line[256];
-  char *tokenised_line;
-  float output[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-  vector<Vector> vertices;
-  vector<Vector> vnormals;
-  vector<Vector> texture_coords;
   
   while (input[i] != '"' && input[i] != '\0') {
     filename[i - 5] = input[i];
@@ -114,31 +107,77 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     return;
   }
 
+  int linecount = 1;
+  char line[256];
+  char *tokenised_line;
+  float output[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  vector<Vector> vertices;
+  vector<Vector> vnormals;
+  vector<Vector> texture_coords;
+
+  // Create offset and provide "nonexistent" coordinate
+  vertices.push_back(Vector(0, 0, 0));
+  vnormals.push_back(Vector(0, 0, 0));
+  texture_coords.push_back(Vector(0, 0, 0));
+
   while (fgets(line, sizeof(line), file)) {
     
     // Tokenise the line, and get rid of header
     tokenised_line = strtok(line, " ");
     
-    if (strcmp(tokenised_line[0], "v") == 0) {
+    if (strcmp(tokenised_line, "v") == 0) {
+
       InputUtils::parse_float_input(tokenised_line, output);
       Vector vertex = Vector(output[0], output[1], output[2]);
       vertices.push_back(vertex);
-    } else if (strcmp(tokenised_line[0], "vn") == 0) {
+    
+    } else if (strcmp(tokenised_line, "vn") == 0) {
+      
       InputUtils::parse_float_input(tokenised_line, output);
       Vector normal = Vector(output[0], output[1], output[2]);
       vnormals.push_back(normal);
-    } else if (strcmp(tokenised_line[0], "f") == 0) {
-      int vertnum[3];
-      int vnormnum[3];
-      int tcoordnum[3];
-      InputUtils::parse_face_input(tokenised_line, vertnum, vnormnum, 
-          tcoordnum);
-    } else if (strcmp(tokenised_line[0], "vt") == 0) {
+    
+    } else if (strcmp(tokenised_line, "f") == 0) {
+
+      int vertnum[3] = {0, 0, 0};
+      int vnormnum[3] = {0, 0, 0};
+      int tcoordnum[3] = {0, 0, 0};
+
+      int success = InputUtils::parse_face_input(tokenised_line, vertnum, vnormnum, 
+          tcoordnum, linecount);
+      if (success != 0)
+        continue;
+
+      Triangle* triangle = new Triangle;
+      
+      try {
+        triangle->v1 = vertices.at(vertnum[0]);
+        triangle->v2 = vertices.at(vertnum[1]);
+        triangle->v3 = vertices.at(vertnum[2]);
+        triangle->vnorm1 = vnormals.at(vnormnum[0]);
+        triangle->vnorm2 = vnormals.at(vnormnum[1]);
+        triangle->vnorm3 = vnormals.at(vnormnum[2]);
+        triangle->tcoord1 = texture_coords.at(tcoordnum[0]);
+        triangle->tcoord2 = texture_coords.at(tcoordnum[1]);
+        triangle->tcoord3 = texture_coords.at(tcoordnum[2]);
+      } catch (const std::out_of_range& e) {
+        cerr << "Line " << linecount << " does not contain valid parameters. Line ignored." << endl;
+        continue;
+      }
+
+      triangle->material = material;
+      triangle->do_transform(transform_matrix);
+
+      scene->add_surface(triangle);
+
+    } else if (strcmp(tokenised_line, "vt") == 0) {
+      
       InputUtils::parse_float_input(tokenised_line, output);
-      Vector tcoord = Vector(output[0], output[1]);
+      Vector tcoord = Vector(output[0], output[1], 0);
       texture_coords.push_back(tcoord);
+    
     } else {
-      cerr << "Command \"" << tokenised_line[0] << "\" unrecognized. Line " <<
+      cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
           linecount << " ignored." << endl;
     }
 
@@ -146,17 +185,53 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     
   }
   
-  /* 
-  obj->set_transform(transform_matrix);
-  */
-  
-  // Just to get rid of a stupid warning
-  printf("%s", filename); 
-  
 }
 
-void InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum
-    int* tcoordnum) {
+int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
+    int* tcoordnum, int linecount) {
+
+  // Declarations
+  int i = 0;
+  
+  // Strip the header
+  input = strtok(NULL, " ");
+  
+  // Until the end of input is reached
+  while (input != NULL) {
+
+    // Can only support exactly 3 vertices
+    if (i >= 3) {
+      cerr << "Line " << linecount << " has extra parameters, which were ignored." << endl;
+      break;
+    }
+
+    // Extract vertex from input
+    if (!isdigit(input[0])) {
+      cerr << "Line " << linecount << " was not formatted correctly, and was ignored." << endl;
+      return 1;
+    }
+    vertnum[i] = atoi(input);
+
+    // Advance to tcoord, and attempt to extract
+    input = strpbrk(input, "/") + 1;
+    tcoordnum[i] = atoi(input);
+
+    // Advance to vnorm, and attempt to extract
+    input = strpbrk(input, "/") + 1;
+    vnormnum[i] = atoi(input);
+    
+    // Hop to the next input
+    input = strtok(NULL, " ");
+    i++;
+  }
+
+  // Can only support exactly 3 vertices
+  if (i < 3) {
+    cerr << "Line " << linecount << " does not contain enough parameters, and was ignored." << endl;
+    return 1;
+  }
+
+  return 0;
 
 }
 

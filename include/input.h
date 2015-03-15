@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 #include <math.h>
 #include <stdio.h>
@@ -67,8 +68,8 @@ class InputUtils {
 	Matrix transform_matrix, Material material);
     static void parse_obj_input(Scene* scene, char* input,
     Matrix transform_matrix, Material material);
-    static void parse_face_input(char* input, int* vertnum,
-    int* vnormnum, int* tcoordnum);
+    static int parse_face_input(char* input, int* vertnum,
+    int* vnormnum, int* tcoordnum, int linecount);
     
     // Lights
     static void parse_ptlight_input(Scene* scene, char* input, 
