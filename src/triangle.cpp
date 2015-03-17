@@ -17,9 +17,6 @@ Triangle::Triangle() {
   tcoord1 = Vector(0, 0, 0);
   tcoord2 = Vector(0, 0, 0);
   tcoord3 = Vector(0, 0, 0);
-  U = Vector(0, 0, 0);
-  V = Vector(0, 0, 0);
-  d00 = d01 = d11 = inv_denom = 0;
 
 }
 
@@ -34,13 +31,9 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
   tcoord1 = Vector(0, 0, 0);
   tcoord2 = Vector(0, 0, 0);
   tcoord3 = Vector(0, 0, 0);
-  U = v2 - v1;
-  V = v3 - v1;
+  Vector U = v2 - v1;
+  Vector V = v3 - v1;
   vnorm1 = vnorm2 = vnorm3 = Vector::cross(U, V).normalize();
-  d00 = Vector::dot(U, U);
-  d01 = Vector::dot(U, V);
-  d11 = Vector::dot(V, V);
-  inv_denom = 1 / (d00 * d11 - d01 * d01);
 
 }
 
@@ -53,32 +46,36 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
   v2 = point2;
   v3 = point3;
   do_transform(trans);
-  U = v2 - v1;
-  V = v3 - v1;
   vnorm1 = norm1.normalize();
   vnorm2 = norm2.normalize();
   vnorm3 = norm3.normalize();
   tcoord1 = tc1;
   tcoord2 = tc2;
   tcoord3 = tc3;
-  d00 = Vector::dot(U, U);
-  d01 = Vector::dot(U, V);
-  d11 = Vector::dot(V, V);
-  inv_denom = 1 / (d00 * d11 - d01 * d01);
 
 }
 
 Vector Triangle::getNormal(Vector point) {
 
-  // Get barycentric coordinates
-  Vector W = point - v1;
-  float d20 = Vector::dot(W, U);
-  float d21 = Vector::dot(W, V);
-  float v = (d11 * d20 - d01 * d21) * inv_denom;
-  float w = (d00 * d21 - d01 * d20) * inv_denom;
-  float u = 1 - v - w;
+  Vector U = vnorm2 - vnorm1;
+  Vector V = vnorm3 - vnorm1;
 
-  Vector normal = u * vnorm1 + v * vnorm2 + w * vnorm3;
+  // x = x1 + beta * (x2 - x1) + gamma * (x3 - x1)
+  // b * (x2 - x1) = x - x1 - gamma * (x3 - x1)
+  // beta = [(x - x1) + gamma * (x1 - x3)] / (x2 - x1)
+  // y = y1 + beta * (y2 - y1) + gamma * (y3 - y1)
+  // y - y1 = [(x - x1) + gamma * (x1 - x3)] / (x2 - x1) + gamma * (y3 - y1)
+  // g * [(x1 - x3) / (x2 - x1) + (y3 - y1)] = (y - y1) - (x1 - x) / (x2 - x1)
+  // g * [(x1 - x3) + (y3 - y1) * (x2 - x1)] = (y - y1) * (x2 - x1) - (x1 -x)
+
+  float gamma = (v1.x - v3.x) + (v3.y - v1.y) * (v2.x - v1.x);
+  if (gamma != 0)
+    gamma = ((point.y - v1.y) * (v2.x - v1.x) + (point.x - v1.x)) / gamma;
+  float beta = (point.x - v1.x) + gamma * (v1.x - v3.x);
+  if (v2.x - v1.x != 0)
+    beta = beta / (v2.x - v1.x);
+
+  Vector normal = vnorm1 + beta * U + gamma * V;
 
   return normal.normalize();
 

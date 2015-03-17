@@ -25,12 +25,6 @@ class Triangle : public Shape {
     Vector tcoord1;
     Vector tcoord2;
     Vector tcoord3;
-    Vector U;
-    Vector V;
-    float d00;
-    float d01;
-    float d11;
-    float inv_denom;
 
     // Method Overloads
     bool intersect(Ray);
