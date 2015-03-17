@@ -218,14 +218,12 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
       input = strpbrk(input, "/") + 1;
       tcoordnum[i] = atoi(input);
     }
-    cout << tcoordnum[i] << " ";
 
     // Attempt to extract vnorm
     if (strchr(input, '/') != NULL) {
       input = strpbrk(input, "/") + 1;
       vnormnum[i] = atoi(input);
     }
-    cout << vnormnum[i] << endl;
     
     // Hop to the next input
     input = strtok(NULL, " ");
