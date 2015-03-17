@@ -75,9 +75,9 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   Vector point2 = Vector(output[3], output[4], output[5]);
   Vector point3 = Vector(output[6], output[7], output[8]);
 
-  Triangle triangle = Triangle(transform_matrix, point1, point2, point3, material);
+  Triangle* triangle = new Triangle(transform_matrix, point1, point2, point3, material);
 
-  scene->add_surface(&triangle);
+  scene->add_surface(triangle);
   
 }
 
@@ -143,7 +143,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         continue;
       }
 
-      Triangle triangle;
+      Triangle* triangle;
       
       try {
         Vector point1 = vertices.at(vertnum[0]);
@@ -153,15 +153,15 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         Vector coord2 = texture_coords.at(tcoordnum[1]);
         Vector coord3 = texture_coords.at(tcoordnum[2]);
         if (vnormnum[0] == 0 && vnormnum[1] == 0 && vnormnum[2] == 0) {
-          triangle = Triangle(transform_matrix, point1, point2, point3, material);
-          triangle.tcoord1 = coord1;
-          triangle.tcoord2 = coord2;
-          triangle.tcoord3 = coord3;
+          triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+          triangle->tcoord1 = coord1;
+          triangle->tcoord2 = coord2;
+          triangle->tcoord3 = coord3;
         } else {
           Vector norm1 = vnormals.at(vnormnum[0]);
           Vector norm2 = vnormals.at(vnormnum[1]);
           Vector norm3 = vnormals.at(vnormnum[2]);
-          triangle = Triangle(transform_matrix, point1, point2, point3,
+          triangle = new Triangle(transform_matrix, point1, point2, point3,
               norm1, norm2, norm3, coord1, coord2, coord3, material);
         }
       } catch (const std::out_of_range& e) {
@@ -170,7 +170,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         continue;
       }
 
-      scene->add_surface(&triangle);
+      scene->add_surface(triangle);
 
     } else if (strcmp(tokenised_line, "vt") == 0) {
       
