@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 #include <math.h>
 #include <stdio.h>
@@ -45,6 +46,10 @@
 #include "sampler.h"
 #endif
 
+#ifndef VECTOR_H
+#include "vector.h"
+#endif
+
 //****************************************************
 // InputUtils
 //****************************************************
@@ -65,8 +70,10 @@ class InputUtils {
 	Matrix transform_matrix, Material material);
     static void parse_triangle_input(Scene* scene, char* input, 
 	Matrix transform_matrix, Material material);
-    static void parse_obj_input(char* input, Matrix transform_matrix, 
-	Material material);
+    static void parse_obj_input(Scene* scene, char* input,
+    Matrix transform_matrix, Material material);
+    static int parse_face_input(char* input, int* vertnum,
+    int* vnormnum, int* tcoordnum, int linecount);
     
     // Lights
     static void parse_ptlight_input(Scene* scene, char* input, 

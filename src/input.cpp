@@ -67,46 +67,187 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
     Matrix transform_matrix, Material material) {
   
   // Declarations
-
-  Triangle* triangle = new Triangle;
   float output[9];
   
   parse_float_input(input, output);
   
-  triangle->v1 = Vector(output[0], output[1], output[2]);
-  triangle->v2 = Vector(output[3], output[4], output[5]);
-  triangle->v3 = Vector(output[6], output[7], output[8]);
-  triangle->material = material;
+  Vector point1 = Vector(output[0], output[1], output[2]);
+  Vector point2 = Vector(output[3], output[4], output[5]);
+  Vector point3 = Vector(output[6], output[7], output[8]);
 
-  triangle->do_transform(transform_matrix);
+  Triangle triangle = Triangle(transform_matrix, point1, point2, point3, material);
 
-  scene->add_surface(triangle);
+  scene->add_surface(&triangle);
   
 }
 
-void InputUtils::parse_obj_input(char* input, Matrix transform_matrix, 
-    Material material) {
+void InputUtils::parse_obj_input(Scene* scene, char* input,
+    Matrix transform_matrix, Material material) {
 
   // Declarations
-  int i = 5;
-  char filename[256];
-  
-  while (input[i] != '"' && input[i] != '\0') {
-    filename[i - 5] = input[i];
-    i++;
-  }
-  
-  filename[i - 5] = '\0';
+  input = strtok(NULL, " ");
 
   /* Load the obj file */
+  FILE* file = fopen(input, "r");
   
-  /* 
-  obj->set_transform(transform_matrix);
-  */
+  // Error if file does not exist
+  if (file == NULL) {
+    cerr << "File does not exist: " << input << endl;
+    return;
+  }
+
+  int linecount = 1;
+  char line[256];
+  char *tokenised_line;
+  float output[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  vector<Vector> vertices;
+  vector<Vector> vnormals;
+  vector<Vector> texture_coords;
+
+  // Create offset and provide "nonexistent" coordinate
+  vertices.push_back(Vector(0, 0, 0));
+  vnormals.push_back(Vector(0, 0, 0));
+  texture_coords.push_back(Vector(0, 0, 0));
+
+  while (fgets(line, sizeof(line), file)) {
+    
+    // Tokenise the line, and get rid of header
+    tokenised_line = strtok(line, " ");
+    
+    if (strcmp(tokenised_line, "v") == 0) {
+
+      InputUtils::parse_float_input(tokenised_line, output);
+      cout << "Vertex line " << linecount << ": ";
+      cout << output[0] << " " << output[1] << " " << output[2] << endl;
+      Vector vertex = Vector(output[0], output[1], output[2]);
+      vertices.push_back(vertex);
+    
+    } else if (strcmp(tokenised_line, "vn") == 0) {
+      
+      InputUtils::parse_float_input(tokenised_line, output);
+      cout << "Normal line " << linecount << ": ";
+      cout << output[0] << " " << output[1] << " " << output[2] << endl;
+      Vector normal = Vector(output[0], output[1], output[2]);
+      vnormals.push_back(normal);
+    
+    } else if (strcmp(tokenised_line, "f") == 0) {
+
+      int vertnum[3] = {0, 0, 0};
+      int vnormnum[3] = {0, 0, 0};
+      int tcoordnum[3] = {0, 0, 0};
+
+      int success = InputUtils::parse_face_input(tokenised_line, vertnum, vnormnum, 
+          tcoordnum, linecount);
+      if (success != 0) {
+        linecount++;
+        continue;
+      }
+
+      Triangle triangle;
+      
+      try {
+        Vector point1 = vertices.at(vertnum[0]);
+        Vector point2 = vertices.at(vertnum[1]);
+        Vector point3 = vertices.at(vertnum[2]);
+        Vector coord1 = texture_coords.at(tcoordnum[0]);
+        Vector coord2 = texture_coords.at(tcoordnum[1]);
+        Vector coord3 = texture_coords.at(tcoordnum[2]);
+        if (vnormnum[0] == 0 && vnormnum[1] == 0 && vnormnum[2] == 0) {
+          triangle = Triangle(transform_matrix, point1, point2, point3, material);
+          triangle.tcoord1 = coord1;
+          triangle.tcoord2 = coord2;
+          triangle.tcoord3 = coord3;
+        } else {
+          Vector norm1 = vnormals.at(vnormnum[0]);
+          Vector norm2 = vnormals.at(vnormnum[1]);
+          Vector norm3 = vnormals.at(vnormnum[2]);
+          triangle = Triangle(transform_matrix, point1, point2, point3,
+              norm1, norm2, norm3, coord1, coord2, coord3, material);
+        }
+      } catch (const std::out_of_range& e) {
+        cerr << "Line " << linecount << " does not contain valid parameters. Line ignored." << endl;
+        linecount++;
+        continue;
+      }
+
+      scene->add_surface(&triangle);
+
+    } else if (strcmp(tokenised_line, "vt") == 0) {
+      
+      InputUtils::parse_float_input(tokenised_line, output);
+      cout << "Texture line " << linecount << ": ";
+      cout << output[0] << " " << output[1] << endl;
+      Vector tcoord = Vector(output[0], output[1], 0);
+      texture_coords.push_back(tcoord);
+    
+    } else if (tokenised_line[0] == '#') {
+      cout << "Line " << linecount << " is a comment." << endl;
+      linecount++;
+      continue;
+    } else {
+      cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
+          linecount << " ignored." << endl;
+    }
+
+    linecount++;
+    
+  }
   
-  // Just to get rid of a stupid warning
-  printf("%s", filename); 
+}
+
+int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
+    int* tcoordnum, int linecount) {
+
+  // Declarations
+  int i = 0;
   
+  // Strip the header
+  input = strtok(NULL, " ");
+  
+  // Until the end of input is reached
+  while (input != NULL) {
+
+    // Can only support exactly 3 vertices
+    if (i >= 3) {
+      cerr << "Line " << linecount << " has extra parameters, which were ignored." << endl;
+      break;
+    }
+
+    // Extract vertex from input
+    if (!isdigit(input[0])) {
+      cerr << "Line " << linecount << " was not formatted correctly, and was ignored." << endl;
+      return 1;
+    }
+    vertnum[i] = atoi(input);
+    cout << "Face line " << linecount << ": " << vertnum[i] << " ";
+
+    // Attempt to extract tcoord
+    if (strchr(input, '/') != NULL) {
+      input = strpbrk(input, "/") + 1;
+      tcoordnum[i] = atoi(input);
+    }
+    cout << tcoordnum[i] << " ";
+
+    // Attempt to extract vnorm
+    if (strchr(input, '/') != NULL) {
+      input = strpbrk(input, "/") + 1;
+      vnormnum[i] = atoi(input);
+    }
+    cout << vnormnum[i] << endl;
+    
+    // Hop to the next input
+    input = strtok(NULL, " ");
+    i++;
+  }
+
+  // Can only support exactly 3 vertices
+  if (i < 3) {
+    cerr << "Line " << linecount << " does not contain enough parameters, and was ignored." << endl;
+    return 1;
+  }
+
+  return 0;
+
 }
 
 void InputUtils::parse_ptlight_input(Scene* scene, char* input, 
