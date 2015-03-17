@@ -40,6 +40,4 @@ class Triangle : public Shape {
     Triangle(Matrix, Vector, Vector, Vector, Vector, Vector, Vector,
         Vector, Vector, Vector, Material);
 
-    Vector getNormal(Vector);
-
 };
