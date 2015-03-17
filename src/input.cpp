@@ -117,16 +117,12 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     if (strcmp(tokenised_line, "v") == 0) {
 
       InputUtils::parse_float_input(tokenised_line, output);
-      cout << "Vertex line " << linecount << ": ";
-      cout << output[0] << " " << output[1] << " " << output[2] << endl;
       Vector vertex = Vector(output[0], output[1], output[2]);
       vertices.push_back(vertex);
     
     } else if (strcmp(tokenised_line, "vn") == 0) {
       
       InputUtils::parse_float_input(tokenised_line, output);
-      cout << "Normal line " << linecount << ": ";
-      cout << output[0] << " " << output[1] << " " << output[2] << endl;
       Vector normal = Vector(output[0], output[1], output[2]);
       vnormals.push_back(normal);
     
@@ -175,13 +171,10 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     } else if (strcmp(tokenised_line, "vt") == 0) {
       
       InputUtils::parse_float_input(tokenised_line, output);
-      cout << "Texture line " << linecount << ": ";
-      cout << output[0] << " " << output[1] << endl;
       Vector tcoord = Vector(output[0], output[1], 0);
       texture_coords.push_back(tcoord);
     
     } else if (tokenised_line[0] == '#') {
-      cout << "Line " << linecount << " is a comment." << endl;
       linecount++;
       continue;
     } else {
@@ -219,7 +212,6 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
       return 1;
     }
     vertnum[i] = atoi(input);
-    cout << "Face line " << linecount << ": " << vertnum[i] << " ";
 
     // Attempt to extract tcoord
     if (strchr(input, '/') != NULL) {
