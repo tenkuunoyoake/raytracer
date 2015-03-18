@@ -81,11 +81,25 @@ Vector Triangle::get_normal(Vector point) {
 
 }
 
+void Triangle::compute_bounding_box() {
+
+  bbox.x_min = min(min(v1.x, v2.x), v3.x);
+  bbox.x_max = max(max(v1.x, v2.x), v3.x);
+  bbox.y_min = min(min(v1.y, v2.y), v3.y);
+  bbox.y_max = max(max(v1.y, v2.y), v3.y);
+  bbox.z_min = min(min(v1.z, v2.z), v3.z);
+  bbox.z_max = max(max(v1.z, v2.z), v3.z);
+
+}
+
+
 void Triangle::do_transform(Matrix c_transform) {
 
   v1 = Matrix::transform(c_transform, v1);
   v2 = Matrix::transform(c_transform, v2);
   v3 = Matrix::transform(c_transform, v3);
+
+  compute_bounding_box();
   
 }
 

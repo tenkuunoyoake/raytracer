@@ -2,7 +2,7 @@ SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .cpp .o .h .d
 
-CXXFLAGS = -g -Wall -Iinclude
+CXXFLAGS = -g -Wall -Iinclude -fopenmp
 LDFLAGS =
 LDLIBS =
 VPATH = src

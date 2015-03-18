@@ -33,6 +33,10 @@
 #include "sampler.h"
 #endif
 
+#ifndef SHAPE_H
+#include "shape.h"
+#endif
+
 #ifndef SPHERE_H
 #include "sphere.h"
 #endif
@@ -59,8 +63,10 @@ class Scene {
     vector<DirLight> dir_lights;
     vector<PointLight> point_lights;
     vector<Light> ambient_lights;
-    vector<Vector> view_points;
     vector<Shape*> surfaces;
+
+    vector<Shape*> sort_shapes(vector<Shape*> shapes, int axis);
+    void create_bbox_tree();
     
     // Methods
 

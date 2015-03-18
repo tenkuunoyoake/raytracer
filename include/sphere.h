@@ -28,6 +28,7 @@ class Sphere : public Shape {
     Vector intersectP(Ray);
     float intersectT(Ray ray);
     Vector get_normal(Vector intersection);
+    void compute_bounding_box();
     
     Ray transform_ray(Ray ray);
 

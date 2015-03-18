@@ -163,6 +163,9 @@ int main(int argc, char *argv[]) {
   scene.film = Film(image_width, image_height);
   scene.film.output = output_filename;
   
+  // Intersection acceleration
+  scene.create_bbox_tree();
+
   // Main Loop
   scene.render();
   

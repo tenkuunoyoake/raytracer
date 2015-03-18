@@ -58,6 +58,7 @@ void InputUtils::parse_sphere_input(Scene* scene, char* input,
   sphere->radius = output[3]; 
   sphere->transform = Matrix::inverse(transform_matrix);
   sphere->material = material;
+  sphere->compute_bounding_box();
 
   scene->add_surface(sphere);
   
