@@ -68,6 +68,7 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   
   // Declarations
   float output[9];
+  Triangle* triangle;
   
   parse_float_input(input, output);
   
@@ -75,7 +76,15 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   Vector point2 = Vector(output[3], output[4], output[5]);
   Vector point3 = Vector(output[6], output[7], output[8]);
 
-  Triangle* triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+  Vector U = point2 - point1;
+  Vector V = point3 - point1;
+  Vector normal = Vector::cross(U, V);
+  Vector view = (point1 + point2 + point3) / 3 - scene->camera.origin;
+  if (Vector::dot(normal, view) > 0) {
+    triangle = new Triangle(transform_matrix, point1, point3, point2, material);
+  } else {
+    triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+  }
 
   scene->add_surface(triangle);
   
@@ -87,7 +96,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
   // Declarations
   input = strtok(NULL, " ");
 
-  /* Load the obj file */
+  // Load the obj file
   FILE* file = fopen(input, "r");
   
   // Error if file does not exist
@@ -96,6 +105,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     return;
   }
 
+  // More declarations
   int linecount = 1;
   char line[256];
   char *tokenised_line;
@@ -142,14 +152,24 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
       Triangle* triangle;
       
       try {
+
         Vector point1 = vertices.at(vertnum[0]);
         Vector point2 = vertices.at(vertnum[1]);
         Vector point3 = vertices.at(vertnum[2]);
         Vector coord1 = texture_coords.at(tcoordnum[0]);
         Vector coord2 = texture_coords.at(tcoordnum[1]);
         Vector coord3 = texture_coords.at(tcoordnum[2]);
+
         if (vnormnum[0] == 0 && vnormnum[1] == 0 && vnormnum[2] == 0) {
-          triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+          Vector U = point2 - point1;
+          Vector V = point3 - point1;
+          Vector normal = Vector::cross(U, V);
+          Vector view = (point1 + point2 + point3) / 3 - scene->camera.origin;
+          if (Vector::dot(normal, view) > 0) {
+            triangle = new Triangle(transform_matrix, point1, point3, point2, material);
+          } else {
+            triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+          }
           triangle->tcoord1 = coord1;
           triangle->tcoord2 = coord2;
           triangle->tcoord3 = coord3;
@@ -160,6 +180,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
           triangle = new Triangle(transform_matrix, point1, point2, point3,
               norm1, norm2, norm3, coord1, coord2, coord3, material);
         }
+
       } catch (const std::out_of_range& e) {
         cerr << "Line " << linecount << " does not contain valid parameters. Line ignored." << endl;
         linecount++;
@@ -185,6 +206,9 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     linecount++;
     
   }
+
+  // Close the file
+  fclose(file);
   
 }
 
