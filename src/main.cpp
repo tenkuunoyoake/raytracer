@@ -66,9 +66,7 @@ int Raytracer::max_depth = 5;
 // Samples n x n points
 int Sampler::samples = 1; 
 
-// Lol, and stuff...
-char output_filename[14] = {'o', 'u', 't', 'p', 'u', 't', '-', '0', '0', '.',
-    'p', 'n', 'g', '\0'};
+char output_filename[] = "output-00.png";
 
 Scene scene;
 
@@ -78,68 +76,70 @@ Scene scene;
 
 void parse_input(char* input) {
   
-  // Declarations
-  char line[256];
-  char header[4];
-  char *tokenised_line;
-  
-  Matrix transform_matrix = Matrix::identity_matrix(); 
-  Material material;
-  
   // Read from the file
   FILE* file = fopen(input, "r");
   
   // Error if file does not exist
   if (file == NULL) {
-    printf("File does not exist: %s\n", input);
+    cerr << "File does not exist: " << input << endl;
     exit(EXIT_FAILURE);
   }
-  
+
+  // Assuming input name is of the format "input-nn"
   output_filename[7] = input[6];
   output_filename[8] = input[7];
+
+  // Declarations
+  char line[256];
+  char *tokenised_line;
+  int linecount = 1;
+  
+  Matrix transform_matrix = Matrix::identity_matrix(); 
+  Material material;
   
   // Print out each line
   while (fgets(line, sizeof(line), file)) {
     
-    // Grab the header of each line
-    strncpy(header, line, 3);
-    header[3] = '\0';
-    
-    // Tokenise the line, and get rid of header
+    // Tokenise the line, starting at header
     tokenised_line = strtok(line, " ");
     
-    if (strcmp(header, "cam") == 0) {
+    if (strcmp(tokenised_line, "cam") == 0) {
       InputUtils::parse_camera_input(&scene, tokenised_line, 
-        transform_matrix);
-    } else if (strcmp(header, "sph") == 0) {
+          transform_matrix);
+    } else if (strcmp(tokenised_line, "sph") == 0) {
       InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
           material);
-    } else if (strcmp(header, "tri") == 0) {
+    } else if (strcmp(tokenised_line, "tri") == 0) {
       InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
           material);
-    } else if (strcmp(header, "obj") == 0) {
+    } else if (strcmp(tokenised_line, "obj") == 0) {
       InputUtils::parse_obj_input(&scene, tokenised_line, transform_matrix,
           material);
-    } else if (strcmp(header, "ltp") == 0) {
+    } else if (strcmp(tokenised_line, "ltp") == 0) {
       InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
-    } else if (strcmp(header, "ltd") == 0) {
+    } else if (strcmp(tokenised_line, "ltd") == 0) {
       InputUtils::parse_dirlight_input(&scene, tokenised_line, 
           transform_matrix);
-    } else if (strcmp(header, "lta") == 0) {
+    } else if (strcmp(tokenised_line, "lta") == 0) {
       InputUtils::parse_amblight_input(&scene, tokenised_line);
-    } else if (strcmp(header, "mat") == 0) {
+    } else if (strcmp(tokenised_line, "mat") == 0) {
       InputUtils::parse_material_input(&material, tokenised_line);
-    } else if (strcmp(header, "xft") == 0) {
+    } else if (strcmp(tokenised_line, "xft") == 0) {
       InputUtils::parse_tl_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfr") == 0) {
+    } else if (strcmp(tokenised_line, "xfr") == 0) {
       InputUtils::parse_rt_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfs") == 0) {
+    } else if (strcmp(tokenised_line, "xfs") == 0) {
       InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(header, "xfz") == 0) {
+    } else if (strcmp(tokenised_line, "xfz") == 0) {
       InputUtils::parse_idt_transform_input(&transform_matrix);
-    } else if (strcmp(header, "als") == 0) {
+    } else if (strcmp(tokenised_line, "als") == 0) {
       InputUtils::parse_antialias_input(tokenised_line);
+    } else {
+      cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
+          linecount << " ignored." << endl;
     }
+
+    linecount++;
     
   }
   

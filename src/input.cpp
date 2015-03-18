@@ -105,7 +105,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
   
   // Error if file does not exist
   if (file == NULL) {
-    cerr << "File does not exist: " << input << endl;
+    cerr << ".obj file does not exist: " << input << endl;
     return;
   }
 
@@ -190,7 +190,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         }
 
       } catch (const std::out_of_range& e) {
-        cerr << "Line " << linecount << " does not contain valid parameters. Line ignored." << endl;
+        cerr << "Line " << linecount << " of .obj file does not contain valid parameters. Line ignored." << endl;
         linecount++;
         continue;
       }
@@ -208,7 +208,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
       continue;
     } else {
       cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
-          linecount << " ignored." << endl;
+          linecount << " of .obj file ignored." << endl;
     }
 
     linecount++;
@@ -234,13 +234,13 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
 
     // Can only support exactly 3 vertices
     if (i >= 3) {
-      cerr << "Line " << linecount << " has extra parameters, which were ignored." << endl;
+      cerr << "Line " << linecount << " of .obj file has extra parameters, which were ignored." << endl;
       break;
     }
 
     // Extract vertex from input
     if (!isdigit(input[0])) {
-      cerr << "Line " << linecount << " was not formatted correctly, and was ignored." << endl;
+      cerr << "Line " << linecount << " of .obj file was not formatted correctly, and was ignored." << endl;
       return 1;
     }
     vertnum[i] = atoi(input);
@@ -264,7 +264,7 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
 
   // Can only support exactly 3 vertices
   if (i < 3) {
-    cerr << "Line " << linecount << " does not contain enough parameters, and was ignored." << endl;
+    cerr << "Line " << linecount << " of .obj file does not contain enough parameters, and was ignored." << endl;
     return 1;
   }
 
