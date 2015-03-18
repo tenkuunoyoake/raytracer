@@ -23,7 +23,9 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 ifneq ($(MAKECMDGOALS), clean)
+ifneq ($(MAKECMDGOALS), cleanpng)
 -include $(DEPENDS)
+endif
 endif
 
 $(BUILDDIR)/%.o: | $(BUILDDIR)
