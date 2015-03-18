@@ -76,14 +76,18 @@ void InputUtils::parse_triangle_input(Scene* scene, char* input,
   Vector point2 = Vector(output[3], output[4], output[5]);
   Vector point3 = Vector(output[6], output[7], output[8]);
 
+  // Check direction of normal in relation to camera
+  point1 = Matrix::transform(transform_matrix, point1);
+  point2 = Matrix::transform(transform_matrix, point2);
+  point3 = Matrix::transform(transform_matrix, point3);
   Vector U = point2 - point1;
   Vector V = point3 - point1;
   Vector normal = Vector::cross(U, V);
   Vector view = (point1 + point2 + point3) / 3 - scene->camera.origin;
   if (Vector::dot(normal, view) > 0) {
-    triangle = new Triangle(transform_matrix, point1, point3, point2, material);
+    triangle = new Triangle(Matrix::identity_matrix(), point1, point3, point2, -1*normal, material);
   } else {
-    triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+    triangle = new Triangle(Matrix::identity_matrix(), point1, point2, point3, normal, material);
   }
 
   scene->add_surface(triangle);
@@ -161,14 +165,18 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         Vector coord3 = texture_coords.at(tcoordnum[2]);
 
         if (vnormnum[0] == 0 && vnormnum[1] == 0 && vnormnum[2] == 0) {
+          // Check direction of normal in relation to camera
+          point1 = Matrix::transform(transform_matrix, point1);
+          point2 = Matrix::transform(transform_matrix, point2);
+          point3 = Matrix::transform(transform_matrix, point3);
           Vector U = point2 - point1;
           Vector V = point3 - point1;
           Vector normal = Vector::cross(U, V);
           Vector view = (point1 + point2 + point3) / 3 - scene->camera.origin;
           if (Vector::dot(normal, view) > 0) {
-            triangle = new Triangle(transform_matrix, point1, point3, point2, material);
+            triangle = new Triangle(Matrix::identity_matrix(), point1, point3, point2, -1*normal, material);
           } else {
-            triangle = new Triangle(transform_matrix, point1, point2, point3, material);
+            triangle = new Triangle(Matrix::identity_matrix(), point1, point2, point3, normal, material);
           }
           triangle->tcoord1 = coord1;
           triangle->tcoord2 = coord2;

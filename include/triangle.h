@@ -36,7 +36,7 @@ class Triangle : public Shape {
 
     //constructors
     Triangle();
-    Triangle(Matrix, Vector, Vector, Vector, Material);
+    Triangle(Matrix, Vector, Vector, Vector, Vector, Material);
     Triangle(Matrix, Vector, Vector, Vector, Vector, Vector, Vector,
         Vector, Vector, Vector, Material);
 

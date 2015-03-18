@@ -21,7 +21,7 @@ Triangle::Triangle() {
 }
 
 Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3, 
-    Material mat) {
+    Vector norm, Material mat) {
 
   transform = trans;
   material = mat;
@@ -32,9 +32,7 @@ Triangle::Triangle(Matrix trans, Vector point1, Vector point2, Vector point3,
   tcoord1 = Vector(0, 0, 0);
   tcoord2 = Vector(0, 0, 0);
   tcoord3 = Vector(0, 0, 0);
-  Vector U = v2 - v1;
-  Vector V = v3 - v1;
-  vnorm1 = vnorm2 = vnorm3 = Vector::cross(U, V).normalize();
+  vnorm1 = vnorm2 = vnorm3 = norm.normalize();
 
 }
 
