@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
   if (argc == 2) {
     parse_input(argv[1]);
   } else {
-    printf("Error: Incorrect input");
+    cerr << "Error: Incorrect input" << endl;
     exit(EXIT_FAILURE);
   }
   
