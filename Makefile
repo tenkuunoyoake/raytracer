@@ -38,6 +38,9 @@ $(DEPDIR)/%.d: $(SRCDIR)/%.$(SRCEXT) | $(DEPDIR)
 $(DEPDIR):
 	mkdir $(DEPDIR)
 
-.PHONY: clean all
+.PHONY: clean cleanpng all
 clean:
 	$(RM) -r $(DEPDIR) $(BUILDDIR) $(TARGET) *.png
+
+cleanpng:
+	$(RM) *.png
