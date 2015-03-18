@@ -14,16 +14,18 @@ Material::Material() {
   diffuse = Vector(0, 0, 0);
   specular = Vector(0, 0, 0);
   reflective = Vector(0, 0, 0);
+  refract = false;
   phong_e = 0.0f;
   
 }
 
-Material::Material(Vector ka, Vector kd, Vector ks, Vector kr, float pe) {
+Material::Material(Vector ka, Vector kd, Vector ks, Vector kr, float pe, bool re) {
  
   ambient = ka;
   diffuse = kd;
   specular = ks;
   reflective = kr;
+  refract = re;
   phong_e = pe;
   
 }

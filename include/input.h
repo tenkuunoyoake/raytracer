@@ -93,5 +93,6 @@ class InputUtils {
 
     // Distributed Ray Tracing
     static void parse_antialias_input(char* input);
+    static void parse_refract_input(Material* material, char* input);
   
 };

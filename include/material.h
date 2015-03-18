@@ -20,15 +20,17 @@ class Material {
     Vector diffuse;
     Vector specular;
     Vector reflective;
+    bool refract;
+    static const bool alwaysRf = true;
     float phong_e;
+    static const float glassIndex = 1.52;
+    static const float airIndex = 1.0;
     
     // Constructors
     
     Material();
-    Material(Vector ka, Vector kd, Vector ks, Vector kr, float phong_e);
+    Material(Vector ka, Vector kd, Vector ks, Vector kr, float phong_e, bool refract);
 
-    //methods
-    // Vector reflection_v(Vector direction, Vector normal);
     Vector diffuse_c(Vector, Vector, Vector);
     Vector ambient_c(Vector);
     Vector specular_c(Vector, Vector, Vector, Vector);

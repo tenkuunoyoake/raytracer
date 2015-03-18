@@ -16,6 +16,7 @@ class Ray {
     
     Vector position;
     Vector direction;
+    bool into;
     float t_min;
     float t_max;
     

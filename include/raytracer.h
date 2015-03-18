@@ -59,4 +59,7 @@ class Raytracer {
     static void trace(Scene* scene, Ray ray, int depth, Vector* color,
         Shape* last_shape);
 
+    static bool canRefract(Vector direction, Vector normal, float index, Material material);
+    static Ray refract(Vector direction, Vector normal, float index, Material material, Vector intersect);
+
 };

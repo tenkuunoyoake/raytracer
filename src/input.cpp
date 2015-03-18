@@ -402,3 +402,15 @@ void InputUtils::parse_antialias_input(char* input) {
   Sampler::samples = (int) output[0];
 
 }
+
+void InputUtils::parse_refract_input(Material* material, char* input) {
+  float output[1];
+  parse_float_input(input, output);
+  if(output[0] == 1){
+    material->refract = true;
+  }
+  else{
+    material->refract = false;
+  }
+  
+}

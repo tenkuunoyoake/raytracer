@@ -6,6 +6,7 @@ Ray::Ray() {
   direction = Vector(0, 0, 0);
   t_min = 0;
   t_max = 0;
+  into = true;
   
 }
 
@@ -15,6 +16,7 @@ Ray::Ray(Vector pos, Vector dir, float min, float max) {
   direction = dir;
   t_min = min;
   t_max = max;
+  into = true;
   
 }
 

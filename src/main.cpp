@@ -134,6 +134,8 @@ void parse_input(char* input) {
       InputUtils::parse_idt_transform_input(&transform_matrix);
     } else if (strcmp(tokenised_line, "als") == 0) {
       InputUtils::parse_antialias_input(tokenised_line);
+    } else if (strcmp(tokenised_line, "rfc") == 0) {
+      InputUtils::parse_refract_input(&material, tokenised_line);
     } else {
       cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
           linecount << " ignored." << endl;
