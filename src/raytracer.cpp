@@ -140,7 +140,8 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
   }
 
    // Do the reflection thing
-  if (closest_shape->material.reflective.x > 0 || 
+  if (!(closest_shape->material.refract &&
+      closest_shape->material.reflective.x > 0) || 
       closest_shape->material.reflective.y > 0 ||
       closest_shape->material.reflective.z > 0) {
 
@@ -170,9 +171,11 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
       refracted = refract(dir, normal, closest_shape->material.glassIndex, closest_shape->material, intersect); //returns t
       c = -1.0*dn;
       kvector = Vector(1,1,1);
+      //printf("%f\n", closest_shape->material.glassIndex);
     }
     else {
-      Vector partial = -5*0.15*(*color);
+      Vector partial = -2*0.15*(*color);
+      //Vector::print(partial);
       kvector = Vector(expf(partial.x), expf(partial.y), expf(partial.z));
       if(canRefract(dir, -1.0*normal, 1/closest_shape->material.glassIndex, closest_shape->material)) {
         refracted = refract(dir, -1.0*normal, 1/closest_shape->material.glassIndex, closest_shape->material, intersect);
@@ -218,12 +221,11 @@ bool Raytracer::canRefract(Vector direction, Vector normal, float ind, Material 
 
 Ray Raytracer::refract(Vector direction, Vector normal, float ind, Material material, Vector intersect) {
      //do refract
-    float index = material.glassIndex;
-    float n = ind/index;
-    float cos1 = -1*Vector::dot(direction, normal); // -(n dot d)
+    float n = 1/ind;
+    float cos1 = Vector::dot(direction, normal); // n dot d)
     float cos2 = 1.0 - n*n*(1 -cos1*cos1); //that thing under the root
     if(cos2 > 0.0){
-      Vector part1 = direction + cos1*normal;
+      Vector part1 = direction - cos1*normal;
       Vector newD = n*part1 - sqrt(cos2) * normal;
       Ray refract_ray = Ray(intersect, newD, 0, 10000);
       return refract_ray;
