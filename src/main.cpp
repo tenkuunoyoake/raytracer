@@ -101,9 +101,11 @@ void parse_input(char* input) {
   while (fgets(line, sizeof(line), file)) {
     
     // Tokenise the line, starting at header
-    tokenised_line = strtok(line, " \n\t");
-    
-    if (strcmp(tokenised_line, "cam") == 0) {
+    tokenised_line = strtok(line, " \n\t\r");
+
+    if (tokenised_line == NULL) {
+      // Do nothing
+    } else if (strcmp(tokenised_line, "cam") == 0) {
       InputUtils::parse_camera_input(&scene, tokenised_line, 
           transform_matrix, linecount);
     } else if (strcmp(tokenised_line, "sph") == 0) {
@@ -141,7 +143,7 @@ void parse_input(char* input) {
       InputUtils::parse_antialias_input(tokenised_line, linecount);
     } else if (strcmp(tokenised_line, "rfc") == 0) {
       InputUtils::parse_refract_input(&material, tokenised_line, linecount);
-    } else if (!strcmp(tokenised_line, "\n") == 0) {
+    } else {
         cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
             linecount << " ignored." << endl;
     }
@@ -180,7 +182,8 @@ int main(int argc, char *argv[]) {
   // no memory leaks
   scene.dispose();
 
-  float timeElapsed = ((float) (clock() - start)) / CLOCKS_PER_SEC / 2; 
+  float timeElapsed = ((float) (clock() - start)) / CLOCKS_PER_SEC / 2;
+  cout << "Time elapsed: ";
   printf("%fs\n", timeElapsed);
 
   return 0;

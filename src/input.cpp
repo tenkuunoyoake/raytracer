@@ -11,7 +11,7 @@ int InputUtils::parse_float_input(char* input, float* output, int size,
   int i = 0;
   
   // Strip the header
-  input = strtok(NULL, " \n\t");
+  input = strtok(NULL, " \n\t\r");
   
   // Until the end of input is reached
   while (input != NULL) {
@@ -24,7 +24,7 @@ int InputUtils::parse_float_input(char* input, float* output, int size,
       output[i] = atof(input);
     }
     // Hop to the next input
-    input = strtok(NULL, " \n\t");
+    input = strtok(NULL, " \n\t\r");
     i++;
   }
 
@@ -129,10 +129,12 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     Matrix transform_matrix, Material material, int linecount) {
 
   // Strip the header
-  input = strtok(NULL, " \n\t");
+  input = strtok(NULL, " \n\t\r");
 
   // Load the obj file
-  FILE* file = fopen(input, "r");
+  FILE* file = NULL;
+  if (input != NULL)
+    file = fopen(input, "r");
   
   // Error if file does not exist
   if (file == NULL) {
@@ -161,9 +163,11 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
   while (fgets(line, sizeof(line), file)) {
     
     // Tokenise the line, and get rid of header
-    tokenised_line = strtok(line, " \n\t");
+    tokenised_line = strtok(line, " \n\t\r");
     
-    if (strcmp(tokenised_line, "v") == 0) {
+    if (tokenised_line == NULL) {
+      // Do nothing
+    } else if (strcmp(tokenised_line, "v") == 0) {
 
       success = parse_float_input(tokenised_line, output, 3, objlinecount);
       // Can only support exactly 3 inputs
@@ -266,7 +270,7 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
     } else if (tokenised_line[0] == '#') {
       objlinecount++;
       continue;
-    } else if (!strcmp(tokenised_line, "\n") == 0) {
+    } else {
       cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
           objlinecount << " ignored." << endl;
     }
@@ -289,7 +293,7 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
   int i = 0;
   
   // Strip the header
-  input = strtok(NULL, " \n\t");
+  input = strtok(NULL, " \n\t\r");
   
   // Until the end of input is reached
   while (input != NULL) {
@@ -317,7 +321,7 @@ int InputUtils::parse_face_input(char* input, int* vertnum, int* vnormnum,
     }
     
     // Hop to the next input
-    input = strtok(NULL, " \n\t");
+    input = strtok(NULL, " \n\t\r");
     i++;
   }
 
@@ -497,7 +501,7 @@ void InputUtils::parse_idt_transform_input(char* input, Matrix* transform_matrix
     int linecount) {
 
   // Determine if there are extra parameters
-  input = strtok(NULL, " \n\t");
+  input = strtok(NULL, " \n\t\r");
   if (input != NULL) {
     cerr << "Line " << linecount << " has extra parameters, which were ignored." << endl;
   }
