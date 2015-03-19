@@ -59,40 +59,48 @@ class InputUtils {
   public:
     
     // Float input helper
-    static void parse_float_input(char* input, float* output);
+    static int parse_float_input(char* input, float* output,
+    int size, int linecount);
     
     // Camera
     static void parse_camera_input(Scene* scene, char* input, 
-	Matrix transform_matrix);
+	Matrix transform_matrix, int linecount);
     
     // Objects
     static void parse_sphere_input(Scene* scene, char* input, 
-	Matrix transform_matrix, Material material);
+	Matrix transform_matrix, Material material, int linecount);
     static void parse_triangle_input(Scene* scene, char* input, 
-	Matrix transform_matrix, Material material);
+	Matrix transform_matrix, Material material, int linecount);
     static void parse_obj_input(Scene* scene, char* input,
-    Matrix transform_matrix, Material material);
+    Matrix transform_matrix, Material material, int linecount);
     static int parse_face_input(char* input, int* vertnum,
-    int* vnormnum, int* tcoordnum, int linecount);
+    int* vnormnum, int* tcoordnum, int size, int linecount);
     
     // Lights
     static void parse_ptlight_input(Scene* scene, char* input, 
-	Matrix transform_matrix);
+	Matrix transform_matrix, int linecount);
     static void parse_dirlight_input(Scene* scene, char* input, 
-	Matrix transform_matrix);
-    static void parse_amblight_input(Scene* scene, char* input);
+	Matrix transform_matrix, int linecount);
+    static void parse_amblight_input(Scene* scene, char* input,
+    int linecount);
     
     // Material
-    static void parse_material_input(Material* material, char* input);
+    static void parse_material_input(Material* material, char* input,
+    int linecount);
     
     // Transforms
-    static void parse_tl_transform_input(char* input, Matrix* transform_matrix);
-    static void parse_rt_transform_input(char* input, Matrix* transform_matrix);
-    static void parse_scl_transform_input(char* input, Matrix* transform_matrix);
-    static void parse_idt_transform_input(Matrix* transform_matrix);
+    static void parse_tl_transform_input(char* input, Matrix* transform_matrix,
+    int linecount);
+    static void parse_rt_transform_input(char* input, Matrix* transform_matrix,
+    int linecount);
+    static void parse_scl_transform_input(char* input, Matrix* transform_matrix,
+    int linecount);
+    static void parse_idt_transform_input(char* input, Matrix* transform_matrix,
+    int linecount);
 
     // Distributed Ray Tracing
-    static void parse_antialias_input(char* input);
-    static void parse_refract_input(Material* material, char* input);
+    static void parse_antialias_input(char* input, int linecount);
+    static void parse_refract_input(Material* material, char* input,
+    int linecount);
   
 };
