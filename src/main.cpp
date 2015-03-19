@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
   scene.film.output = output_filename;
   
   // Intersection acceleration
-  scene.create_bbox_tree();
+  scene.bbox_tree = new BoundingTree(scene.surfaces, NULL, 0, true);
 
   // Main Loop
   scene.render();

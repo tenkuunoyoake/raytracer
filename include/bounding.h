@@ -2,12 +2,7 @@
 #define BOUNDING_H
 #endif
 
-#include <iostream>
 #include <vector>
-
-#ifndef VECTOR_H
-#include "vector.h"
-#endif
 
 #ifndef RAY_H
 #include "ray.h"
@@ -33,5 +28,6 @@ class BoundingBox {
 
     // Methods
     bool intersect(Ray ray);
+    static void print(BoundingBox* bbox);
 
 };

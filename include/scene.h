@@ -45,6 +45,10 @@
 #include "triangle.h"
 #endif
 
+#ifndef BOUNDTREE_H
+#include "boundtree.h"
+#endif
+
 using namespace std;
 
 //*****************************************************************************
@@ -60,13 +64,12 @@ class Scene {
     Camera camera;
     Film film;
 
+    BoundingTree* bbox_tree;
+
     vector<DirLight> dir_lights;
     vector<PointLight> point_lights;
     vector<Light> ambient_lights;
     vector<Shape*> surfaces;
-
-    vector<Shape*> sort_shapes(vector<Shape*> shapes, int axis);
-    void create_bbox_tree();
     
     // Methods
 

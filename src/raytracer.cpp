@@ -22,19 +22,8 @@ Vector Raytracer::reflection_v(Vector direction, Vector normal) {
 
 bool Raytracer::shadow_ray(Scene* scene, Ray ray, Shape* shape) {
 
-  for (unsigned i = 0; i < scene->surfaces.size(); i++) {
-    if (scene->surfaces[i]->intersect(ray)) {
-
-      if (scene->surfaces[i] == shape) {
-        continue;
-      }
-
-      return true;
-
-    }
-  }
-
-  return false;
+  Shape* surface = scene->bbox_tree->intersect_object(ray, shape);
+  return (surface != NULL);
 
 }
 
@@ -127,42 +116,10 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
     *color = Vector(0.0, 0.0, 0.0);
     return;
   }
+  
+  Shape* closest_shape = scene->bbox_tree->intersect_object(view_ray, last_shape);
 
-  bool hit = false;
-  float t_min = view_ray.t_max;
-
-  Shape* closest_shape;
-
-  // Find first object hit by ray and its surface normal n
-
-  // Set pixel colour to value computed from hit point, light, and n
-  // For now, just set it to red.
-
-  // For all triangles in the Scene
-  for (unsigned shape_i = 0; shape_i < scene->surfaces.size(); shape_i++) {
-
-    // If there actually is an intersection
-    if (scene->surfaces[shape_i]->intersect(view_ray)) {
-
-      // If it's the closest object seen thus far
-      if (scene->surfaces[shape_i]->intersectT(view_ray) < t_min) {
-
-        // Don't reflect off of yourself
-        if (last_shape == scene->surfaces[shape_i]) {
-          continue;
-        }
-
-        t_min = scene->surfaces[shape_i]->intersectT(view_ray);
-        closest_shape = scene->surfaces[shape_i];
-        hit = true;
-
-      }
-
-    }
-
-  }
-
-  if (!hit) {
+  if (closest_shape == NULL) {
     *color = Vector();
     return;
   }

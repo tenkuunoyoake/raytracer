@@ -8,6 +8,15 @@ using namespace std;
 
 bool BoundingBox::intersect(Ray ray) {
 
+  // Return true if the ray is inside the bounding box
+  if (ray.position.x >= x_min && ray.position.x <= x_max &&
+      ray.position.y >= y_min && ray.position.y <= y_max &&
+      ray.position.z >= z_min && ray.position.z <= z_max) {
+
+    return true;
+
+  }
+
   float t_min;
   float t_max;
 
@@ -37,5 +46,17 @@ bool BoundingBox::intersect(Ray ray) {
   }
 
   return true;
+
+}
+
+void BoundingBox::print(BoundingBox* bbox) {
+
+  printf("Bounding Box: \n");
+  printf("x_min: %f\n", bbox->x_min);
+  printf("x_max: %f\n", bbox->x_max);
+  printf("y_min: %f\n", bbox->y_min);
+  printf("y_max: %f\n", bbox->y_max);
+  printf("z_min: %f\n", bbox->z_min);
+  printf("z_max: %f\n", bbox->z_max);
 
 }
