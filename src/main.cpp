@@ -101,41 +101,46 @@ void parse_input(char* input) {
   while (fgets(line, sizeof(line), file)) {
     
     // Tokenise the line, starting at header
-    tokenised_line = strtok(line, " ");
+    tokenised_line = strtok(line, " \n\t");
     
     if (strcmp(tokenised_line, "cam") == 0) {
       InputUtils::parse_camera_input(&scene, tokenised_line, 
-          transform_matrix);
+          transform_matrix, linecount);
     } else if (strcmp(tokenised_line, "sph") == 0) {
       InputUtils::parse_sphere_input(&scene, tokenised_line, transform_matrix, 
-          material);
+          material, linecount);
     } else if (strcmp(tokenised_line, "tri") == 0) {
       InputUtils::parse_triangle_input(&scene, tokenised_line, transform_matrix, 
-          material);
+          material, linecount);
     } else if (strcmp(tokenised_line, "obj") == 0) {
       InputUtils::parse_obj_input(&scene, tokenised_line, transform_matrix,
-          material);
+          material, linecount);
     } else if (strcmp(tokenised_line, "ltp") == 0) {
-      InputUtils::parse_ptlight_input(&scene, tokenised_line, transform_matrix);
+      InputUtils::parse_ptlight_input(&scene, tokenised_line,
+          transform_matrix, linecount);
     } else if (strcmp(tokenised_line, "ltd") == 0) {
       InputUtils::parse_dirlight_input(&scene, tokenised_line, 
-          transform_matrix);
+          transform_matrix, linecount);
     } else if (strcmp(tokenised_line, "lta") == 0) {
-      InputUtils::parse_amblight_input(&scene, tokenised_line);
+      InputUtils::parse_amblight_input(&scene, tokenised_line, linecount);
     } else if (strcmp(tokenised_line, "mat") == 0) {
-      InputUtils::parse_material_input(&material, tokenised_line);
+      InputUtils::parse_material_input(&material, tokenised_line, linecount);
     } else if (strcmp(tokenised_line, "xft") == 0) {
-      InputUtils::parse_tl_transform_input(tokenised_line, &transform_matrix);
+      InputUtils::parse_tl_transform_input(tokenised_line, &transform_matrix,
+          linecount);
     } else if (strcmp(tokenised_line, "xfr") == 0) {
-      InputUtils::parse_rt_transform_input(tokenised_line, &transform_matrix);
+      InputUtils::parse_rt_transform_input(tokenised_line, &transform_matrix,
+          linecount);
     } else if (strcmp(tokenised_line, "xfs") == 0) {
-      InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix);
+      InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix,
+          linecount);
     } else if (strcmp(tokenised_line, "xfz") == 0) {
-      InputUtils::parse_idt_transform_input(&transform_matrix);
+      InputUtils::parse_idt_transform_input(tokenised_line, &transform_matrix,
+          linecount);
     } else if (strcmp(tokenised_line, "als") == 0) {
-      InputUtils::parse_antialias_input(tokenised_line);
+      InputUtils::parse_antialias_input(tokenised_line, linecount);
     } else if (strcmp(tokenised_line, "rfc") == 0) {
-      InputUtils::parse_refract_input(&material, tokenised_line);
+      InputUtils::parse_refract_input(&material, tokenised_line, linecount);
     } else if (!strcmp(tokenised_line, "\n") == 0) {
       cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
           linecount << " ignored." << endl;
