@@ -130,15 +130,16 @@ void parse_input(char* input) {
       InputUtils::parse_rt_transform_input(tokenised_line, &transform_matrix);
     } else if (strcmp(tokenised_line, "xfs") == 0) {
       InputUtils::parse_scl_transform_input(tokenised_line, &transform_matrix);
-    } else if (strcmp(tokenised_line, "xfz") == 0) {
+    } else if (strcmp(tokenised_line, "xfz") == 0 ||
+          strcmp(tokenised_line, "xfz\n") == 0) {
       InputUtils::parse_idt_transform_input(&transform_matrix);
     } else if (strcmp(tokenised_line, "als") == 0) {
       InputUtils::parse_antialias_input(tokenised_line);
     } else if (strcmp(tokenised_line, "rfc") == 0) {
       InputUtils::parse_refract_input(&material, tokenised_line);
     } else if (!strcmp(tokenised_line, "\n") == 0) {
-      cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
-          linecount << " ignored." << endl;
+        cerr << "Command \"" << tokenised_line << "\" unrecognized. Line " <<
+            linecount << " ignored." << endl;
     }
 
     linecount++;
@@ -151,6 +152,8 @@ void parse_input(char* input) {
 }
 
 int main(int argc, char *argv[]) {
+
+  clock_t start = clock(); 
   
   if (argc == 2) {
     parse_input(argv[1]);
@@ -172,6 +175,9 @@ int main(int argc, char *argv[]) {
   // Once the scene has been rendered, free everything to make sure there are 
   // no memory leaks
   scene.dispose();
+
+  float timeElapsed = ((float) (clock() - start)) / CLOCKS_PER_SEC / 2; 
+  printf("%fs\n", timeElapsed);
 
   return 0;
   
