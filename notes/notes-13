@@ -9,3 +9,5 @@ Features: .obj file parsing
 		  Ambient light
 		  Matrix transformations
 		  Anti-aliasing
+
+Source: angel.obj obtained from http://inst.eecs.berkeley.edu/~cs184/fa09/resources.php
