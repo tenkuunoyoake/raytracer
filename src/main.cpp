@@ -61,7 +61,7 @@ using namespace std;
 int image_width = 1000;
 int image_height = 1000;
 
-int Raytracer::max_depth = 2;
+int Raytracer::max_depth = 3;
 
 // Samples n x n points
 int Sampler::samples = 1; 
