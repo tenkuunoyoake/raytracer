@@ -1,0 +1,11 @@
+Title: Mars with Deimos and Phobos
+Command line input: ./raytracer input-10
+Run time: 37s
+Features: Spheres
+		  Reflections
+		  Shadows
+		  Phong shading
+		  Point light
+		  Directional light
+		  Ambient light
+		  Anti-aliasing
