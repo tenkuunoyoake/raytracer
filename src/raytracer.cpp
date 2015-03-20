@@ -141,7 +141,7 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
 
    // Do the reflection thing
   if (!(closest_shape->material.refract &&
-      closest_shape->material.reflective.x > 0) || 
+      closest_shape->material.reflective.x) > 0 || 
       closest_shape->material.reflective.y > 0 ||
       closest_shape->material.reflective.z > 0) {
 
@@ -174,7 +174,7 @@ void Raytracer::trace(Scene* scene, Ray view_ray, int depth, Vector* color,
       //printf("%f\n", closest_shape->material.glassIndex);
     }
     else {
-      Vector partial = -2*0.15*(*color);
+      Vector partial = Vector(0.2, 0.2, 0.2);
       //Vector::print(partial);
       kvector = Vector(expf(partial.x), expf(partial.y), expf(partial.z));
       if(canRefract(dir, -1.0*normal, 1/closest_shape->material.glassIndex, closest_shape->material)) {
