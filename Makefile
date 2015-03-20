@@ -46,3 +46,6 @@ clean:
 
 cleanpng:
 	$(RM) *.png
+
+cleannotpng:
+	$(RM) -r $(DEPDIR) $(BUILDDIR) $(TARGET)

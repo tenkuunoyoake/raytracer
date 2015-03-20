@@ -133,8 +133,12 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
 
   // Load the obj file
   FILE* file = NULL;
-  if (input != NULL)
-    file = fopen(input, "r");
+  if (input) {
+    file = fopen(input, "r"); 
+  } else {
+    cerr << "Line " << linecount << " does not contain enough parameters, and was ignored." << endl;
+    return;
+  }
   
   // Error if file does not exist
   if (file == NULL) {
@@ -142,6 +146,11 @@ void InputUtils::parse_obj_input(Scene* scene, char* input,
         linecount << " ignored." << endl;
     return;
   }
+
+  // Check for extra parameters
+  input = strtok(NULL, " \n\t\r");
+  if (input)
+    cerr << "Line " << linecount << " has extra parameters, which were ignored." << endl;
 
   cout << "Now parsing .obj file: " << input << endl;
 
