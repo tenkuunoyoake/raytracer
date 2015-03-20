@@ -61,7 +61,7 @@ using namespace std;
 int image_width = 1000;
 int image_height = 1000;
 
-int Raytracer::max_depth = 5;
+int Raytracer::max_depth = 2;
 
 // Samples n x n points
 int Sampler::samples = 1; 
@@ -158,8 +158,6 @@ void parse_input(char* input) {
 }
 
 int main(int argc, char *argv[]) {
-
-  clock_t start = clock(); 
   
   if (argc == 2) {
     parse_input(argv[1]);
@@ -181,10 +179,6 @@ int main(int argc, char *argv[]) {
   // Once the scene has been rendered, free everything to make sure there are 
   // no memory leaks
   scene.dispose();
-
-  float timeElapsed = ((float) (clock() - start)) / CLOCKS_PER_SEC / 2;
-  cout << "Time elapsed: ";
-  printf("%fs\n", timeElapsed);
 
   return 0;
   
