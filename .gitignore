@@ -3,6 +3,4 @@ lib/*
 
 bin/*
 
-*.png
-
 .DS_Store

@@ -1,0 +1,9 @@
+Title: Balloon Dog
+Command line input: ./raytracer input-11
+Run time: 38s
+Features: Ellipsoids
+		  Matrix transformations (scaling, rotation, translation)
+		  Shadows
+		  Directional light
+		  Ambient light
+		  Anti-aliasing
