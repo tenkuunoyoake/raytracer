@@ -1,0 +1,11 @@
+Title: The Angel
+Command line input: ./raytracer input-13
+Run time: 1228s
+Features: .obj file parsing
+		  Camera transformations
+		  Shadows
+		  Phong shading
+		  Directional light
+		  Ambient light
+		  Matrix transformations
+		  Anti-aliasing

@@ -1,0 +1,12 @@
+Title: Looking at the glass ball through the glass ball
+Command line input: ./raytracer input-38
+Run time: 103s
+Features: Transparency with refraction (glass only)
+		  Shadows
+		  Phong shading
+		  Directional light
+		  Ambient light
+		  Point light
+		  Spheres
+		  Triangles
+		  Anti-aliasing
