@@ -140,7 +140,7 @@ Shape* BoundingTree::intersect_object(Ray ray, Shape* shadow_shape) {
   // If there's only one shape, return it if it intersects
   if (leaf) {
 
-    if (shape->intersect(ray)) {
+    if (shape->intersect(ray) && (shape != shadow_shape)) {
       closest_shape = shape;
     }
 
